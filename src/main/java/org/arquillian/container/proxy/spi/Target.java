@@ -10,7 +10,7 @@ public class Target {
         JBOSS_EAP
     }
 
-    static enum Type {
+    public static enum Type {
         Remote,
         Managed,
         Embedded
