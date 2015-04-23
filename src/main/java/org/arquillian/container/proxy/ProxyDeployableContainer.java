@@ -6,10 +6,17 @@ import static org.arquillian.container.proxy.Utils.join;
 
 import java.io.File;
 import java.net.URLClassLoader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.concurrent.Callable;
 
 import org.arquillian.container.proxy.spi.Profile;
+import org.arquillian.container.proxy.spi.Target;
+import org.arquillian.container.proxy.spi.Target.Type;
 import org.jboss.arquillian.container.impl.MapObject;
 import org.jboss.arquillian.container.spi.client.container.ContainerConfiguration;
 import org.jboss.arquillian.container.spi.client.container.DeployableContainer;
@@ -21,15 +28,25 @@ import org.jboss.arquillian.core.api.Injector;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.shrinkwrap.api.Archive;
+import org.jboss.shrinkwrap.api.GenericArchive;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.exporter.ExplodedExporter;
+import org.jboss.shrinkwrap.api.importer.ZipImporter;
 import org.jboss.shrinkwrap.descriptor.api.Descriptor;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
+import org.jboss.shrinkwrap.resolver.api.maven.MavenArtifactInfo;
+import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenCoordinate;
+import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenCoordinates;
 import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenDependency;
 
 public class ProxyDeployableContainer implements DeployableContainer<ProxyDeployableContainerConfiguration> {
 
+    private static final String MAVEN_OUTPUT_DIRECTORY = "target";
+    private static final String GRADLE_OUTPUT_DIRECTORY = "bin";
     private ClassLoader classloader;
     private DeployableContainer delegate;
     private Map<String, String> delegateConfiguration;
+    private Map<String, String> systemProperties = new HashMap<String, String>();
 
     @Inject
     private Instance<Injector> injectorInst;
@@ -53,6 +70,76 @@ public class ProxyDeployableContainer implements DeployableContainer<ProxyDeploy
     public void setup(ProxyDeployableContainerConfiguration configuration) {
 
         Profile profile = configuration.getProfile();
+        Target target = profile.getTarget();
+        Type type = target.getType();
+
+        switch(profile.getTarget().getType()) {
+            case Managed: {
+                File serverHome = resolveDistributablePackage(configuration, profile, type);
+                setDefaultConfigurationProperties(profile, serverHome);
+                break;
+            }
+            case Embedded: {
+                resolveDistributablePackage(configuration, profile, type);
+                break;
+            }
+        }
+        resolveClasspathDependencies(profile);
+    }
+
+    private File resolveDistributablePackage(
+        ProxyDeployableContainerConfiguration configuration,
+        Profile profile, Type type) {
+        MavenCoordinate distributableCoordinate = profile.getDistributableCoordinates();
+        if(distributableCoordinate != null) {
+            File uncompressDirectory = Maven.resolver().resolve(distributableCoordinate.toCanonicalForm()).withoutTransitivity()
+                        .asSingle(GenericArchive.class)
+                        .as(ExplodedExporter.class).exportExploded(new File(getOutputDirectory(configuration)), "server");
+            return getServerHome(uncompressDirectory);
+        }
+        return null;
+    }
+
+    private File getServerHome(File uncompressDirectory) {
+        File[] currentDirectoryContent = uncompressDirectory.listFiles();
+        //only one root directory should be here
+        if(currentDirectoryContent.length == 1 && currentDirectoryContent[0].isDirectory()) {
+            return currentDirectoryContent[0];
+        } else {
+            //means that the server is uncompressed without a root directory
+            return uncompressDirectory;
+        }
+
+    }
+    private void setDefaultConfigurationProperties(Profile profile, File serverHome) {
+        Map<String, String> configuration = profile.getDefaultConfigurationPropertyVariablesValue(serverHome.getAbsolutePath());
+        Set<Entry<String, String>> entrySet = configuration.entrySet();
+        for (Entry<String, String> property : entrySet) {
+            String propertyKey = property.getKey();
+            if(isSystemPropertyNotSet(propertyKey) && !delegateConfiguration.containsKey(propertyKey)) {
+                delegateConfiguration.put(propertyKey, property.getValue());
+            }
+        }
+    }
+
+    private boolean isSystemPropertyNotSet(String systemProperty) {
+        return System.getProperty(systemProperty) == null;
+    }
+
+    private String getOutputDirectory(ProxyDeployableContainerConfiguration configuration) {
+        if(Files.exists(Paths.get(GRADLE_OUTPUT_DIRECTORY))) {
+            return GRADLE_OUTPUT_DIRECTORY;
+        } else {
+            if(Files.exists(Paths.get(MAVEN_OUTPUT_DIRECTORY))) {
+                return MAVEN_OUTPUT_DIRECTORY;
+            } else {
+                //we assume by default a Maven layout
+                return MAVEN_OUTPUT_DIRECTORY;
+            }
+        }
+    }
+
+    private void resolveClasspathDependencies(Profile profile) {
         String[] dependencies = profile.getDependencies();
         System.out.println("Resolving dependencies:\n" + join(dependencies));
 
