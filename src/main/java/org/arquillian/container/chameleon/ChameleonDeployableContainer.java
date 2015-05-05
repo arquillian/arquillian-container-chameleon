@@ -141,13 +141,11 @@ public class ChameleonDeployableContainer implements DeployableContainer<Chamele
 
     private void resolveClasspathDependencies(Profile profile) {
         String[] dependencies = profile.getDependencies();
-        System.out.println("Resolving dependencies:\n" + join(dependencies));
 
         try {
             MavenDependency[] mavenDependencies = toMavenDependencies(dependencies, profile.getExclusions());
 
             File[] archives = Maven.configureResolver().addDependencies(mavenDependencies).resolve().withTransitivity().asFile();
-            System.out.println("Resolved:\n" + join(archives));
             classloader = new URLClassLoader(toURLs(archives), ChameleonDeployableContainer.class.getClassLoader());
 
             final Class<?> delegateClass = classloader.loadClass(profile.getDeloyableContainerClass());
