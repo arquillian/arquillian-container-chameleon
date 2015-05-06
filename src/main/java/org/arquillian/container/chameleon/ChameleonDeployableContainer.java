@@ -1,8 +1,8 @@
-package org.arquillian.container.proxy;
+package org.arquillian.container.chameleon;
 
-import static org.arquillian.container.proxy.Utils.toMavenDependencies;
-import static org.arquillian.container.proxy.Utils.toURLs;
-import static org.arquillian.container.proxy.Utils.join;
+import static org.arquillian.container.chameleon.Utils.join;
+import static org.arquillian.container.chameleon.Utils.toMavenDependencies;
+import static org.arquillian.container.chameleon.Utils.toURLs;
 
 import java.io.File;
 import java.net.URLClassLoader;
@@ -14,9 +14,9 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
-import org.arquillian.container.proxy.spi.Profile;
-import org.arquillian.container.proxy.spi.Target;
-import org.arquillian.container.proxy.spi.Target.Type;
+import org.arquillian.container.chameleon.spi.Profile;
+import org.arquillian.container.chameleon.spi.Target;
+import org.arquillian.container.chameleon.spi.Target.Type;
 import org.jboss.arquillian.container.impl.MapObject;
 import org.jboss.arquillian.container.spi.client.container.ContainerConfiguration;
 import org.jboss.arquillian.container.spi.client.container.DeployableContainer;
@@ -39,7 +39,7 @@ import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenCoordinate;
 import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenCoordinates;
 import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenDependency;
 
-public class ProxyDeployableContainer implements DeployableContainer<ProxyDeployableContainerConfiguration> {
+public class ChameleonDeployableContainer implements DeployableContainer<ChameleonDeployableContainerConfiguration> {
 
     private static final String MAVEN_OUTPUT_DIRECTORY = "target";
     private static final String GRADLE_OUTPUT_DIRECTORY = "bin";
@@ -52,8 +52,8 @@ public class ProxyDeployableContainer implements DeployableContainer<ProxyDeploy
     private Instance<Injector> injectorInst;
 
     @Override
-    public Class<ProxyDeployableContainerConfiguration> getConfigurationClass() {
-        return ProxyDeployableContainerConfiguration.class;
+    public Class<ChameleonDeployableContainerConfiguration> getConfigurationClass() {
+        return ChameleonDeployableContainerConfiguration.class;
     }
 
     @Override
@@ -67,7 +67,7 @@ public class ProxyDeployableContainer implements DeployableContainer<ProxyDeploy
     }
 
     @Override
-    public void setup(ProxyDeployableContainerConfiguration configuration) {
+    public void setup(ChameleonDeployableContainerConfiguration configuration) {
 
         Profile profile = configuration.getProfile();
         Target target = profile.getTarget();
@@ -88,7 +88,7 @@ public class ProxyDeployableContainer implements DeployableContainer<ProxyDeploy
     }
 
     private File resolveDistributablePackage(
-        ProxyDeployableContainerConfiguration configuration,
+        ChameleonDeployableContainerConfiguration configuration,
         Profile profile, Type type) {
         MavenCoordinate distributableCoordinate = profile.getDistributableCoordinates();
         if(distributableCoordinate != null) {
@@ -126,7 +126,7 @@ public class ProxyDeployableContainer implements DeployableContainer<ProxyDeploy
         return System.getProperty(systemProperty) == null;
     }
 
-    private String getOutputDirectory(ProxyDeployableContainerConfiguration configuration) {
+    private String getOutputDirectory(ChameleonDeployableContainerConfiguration configuration) {
         if(Files.exists(Paths.get(GRADLE_OUTPUT_DIRECTORY))) {
             return GRADLE_OUTPUT_DIRECTORY;
         } else {
@@ -148,7 +148,7 @@ public class ProxyDeployableContainer implements DeployableContainer<ProxyDeploy
 
             File[] archives = Maven.configureResolver().addDependencies(mavenDependencies).resolve().withTransitivity().asFile();
             System.out.println("Resolved:\n" + join(archives));
-            classloader = new URLClassLoader(toURLs(archives), ProxyDeployableContainer.class.getClassLoader());
+            classloader = new URLClassLoader(toURLs(archives), ChameleonDeployableContainer.class.getClassLoader());
 
             final Class<?> delegateClass = classloader.loadClass(profile.getDeloyableContainerClass());
 
@@ -168,7 +168,7 @@ public class ProxyDeployableContainer implements DeployableContainer<ProxyDeploy
 
         }
         catch (Exception e) {
-            throw new RuntimeException("Could not setup proxy", e);
+            throw new RuntimeException("Could not setup chameleon container", e);
         }
     }
 

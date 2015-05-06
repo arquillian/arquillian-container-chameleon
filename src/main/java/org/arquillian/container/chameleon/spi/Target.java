@@ -1,4 +1,4 @@
-package org.arquillian.container.proxy.spi;
+package org.arquillian.container.chameleon.spi;
 
 import org.jboss.arquillian.container.spi.ConfigurationException;
 

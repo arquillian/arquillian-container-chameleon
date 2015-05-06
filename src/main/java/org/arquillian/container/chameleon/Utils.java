@@ -1,4 +1,4 @@
-package org.arquillian.container.proxy;
+package org.arquillian.container.chameleon;
 
 import java.io.File;
 import java.net.URL;

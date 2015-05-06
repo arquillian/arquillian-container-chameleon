@@ -7,7 +7,7 @@
         <property name="deploymentExportPath">target</property>
     </engine>
 
-    <container qualifier="proxy" default="true">
+    <container qualifier="chameleon" default="true">
         <configuration>
             <property name="target">wildfly:8.1.0.Final:managed</property>
         </configuration>

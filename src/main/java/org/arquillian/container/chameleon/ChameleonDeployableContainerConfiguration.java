@@ -1,11 +1,11 @@
-package org.arquillian.container.proxy;
+package org.arquillian.container.chameleon;
 
-import org.arquillian.container.proxy.spi.Profile;
-import org.arquillian.container.proxy.spi.Target;
+import org.arquillian.container.chameleon.spi.Profile;
+import org.arquillian.container.chameleon.spi.Target;
 import org.jboss.arquillian.container.spi.ConfigurationException;
 import org.jboss.arquillian.container.spi.client.container.ContainerConfiguration;
 
-public class ProxyDeployableContainerConfiguration implements ContainerConfiguration {
+public class ChameleonDeployableContainerConfiguration implements ContainerConfiguration {
 
     private String target = null;
 

@@ -1,4 +1,4 @@
-package org.arquillian.container.proxy;
+package org.arquillian.container.chameleon;
 
 import java.lang.reflect.Field;
 import java.util.Map;
@@ -9,7 +9,7 @@ import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.core.spi.EventContext;
 import org.jboss.shrinkwrap.descriptor.spi.node.Node;
 
-public class ProxySetupObserver {
+public class ChameleonSetupObserver {
 
     // Change the original configuration so we can forward all config options not 'target' to the delegate container
     public void setup(@Observes EventContext<SetupContainer> setup) throws Exception {
@@ -27,7 +27,7 @@ public class ProxySetupObserver {
             node.getSingle("configuration").removeChild("property@name=" + key);
         }
 
-        ((ProxyDeployableContainer)setup.getEvent().getContainer().getDeployableContainer()).setDelegateConfiguration(properties);
+        ((ChameleonDeployableContainer)setup.getEvent().getContainer().getDeployableContainer()).setDelegateConfiguration(properties);
 
         setup.proceed();
     }

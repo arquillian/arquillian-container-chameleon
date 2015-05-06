@@ -1,11 +1,11 @@
-package org.arquillian.container.proxy.spi;
+package org.arquillian.container.chameleon.spi;
 
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.arquillian.container.proxy.spi.Target.Server;
-import org.arquillian.container.proxy.spi.Target.Type;
+import org.arquillian.container.chameleon.spi.Target.Server;
+import org.arquillian.container.chameleon.spi.Target.Type;
 import org.jboss.arquillian.container.spi.ConfigurationException;
 import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenCoordinate;
 import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenCoordinates;
