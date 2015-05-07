@@ -128,7 +128,7 @@ public class Profile {
         }
         if (target.getServer() == Server.WILDFLY
                 && target.getVersion().startsWith("9.")) {
-            return getDependenciesWildFly9("1.0.0.Alpha2", target.getType());
+            return getDependenciesWildFly9("1.0.0.Alpha5", target.getType());
         }
         if (target.getServer() == Server.JBOSS_AS) {
             return getDependenciesJBossAS(target.getVersion(), target.getType());
