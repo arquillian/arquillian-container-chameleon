@@ -74,15 +74,14 @@ public class ChameleonDeployableContainer implements DeployableContainer<Chamele
         Type type = target.getType();
 
         switch(profile.getTarget().getType()) {
-            case Managed: {
+           case Embedded:
+           case Managed: {
                 File serverHome = resolveDistributablePackage(configuration, profile, type);
                 setDefaultConfigurationProperties(profile, serverHome);
                 break;
             }
-            case Embedded: {
-                resolveDistributablePackage(configuration, profile, type);
-                break;
-            }
+           default:
+              break;
         }
         resolveClasspathDependencies(profile);
     }
