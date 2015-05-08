@@ -1,6 +1,5 @@
 package org.arquillian.container.chameleon;
 
-import static org.arquillian.container.chameleon.Utils.join;
 import static org.arquillian.container.chameleon.Utils.toMavenDependencies;
 import static org.arquillian.container.chameleon.Utils.toURLs;
 
@@ -29,14 +28,10 @@ import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.GenericArchive;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.exporter.ExplodedExporter;
-import org.jboss.shrinkwrap.api.importer.ZipImporter;
 import org.jboss.shrinkwrap.descriptor.api.Descriptor;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
-import org.jboss.shrinkwrap.resolver.api.maven.MavenArtifactInfo;
 import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenCoordinate;
-import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenCoordinates;
 import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenDependency;
 
 public class ChameleonDeployableContainer implements DeployableContainer<ChameleonDeployableContainerConfiguration> {
@@ -73,15 +68,17 @@ public class ChameleonDeployableContainer implements DeployableContainer<Chamele
         Target target = profile.getTarget();
         Type type = target.getType();
 
-        switch(profile.getTarget().getType()) {
-           case Embedded:
-           case Managed: {
-                File serverHome = resolveDistributablePackage(configuration, profile, type);
-                setDefaultConfigurationProperties(profile, serverHome);
-                break;
-            }
-           default:
-              break;
+        if(enableDefaultConfigurationProperties(profile)) {
+           switch(profile.getTarget().getType()) {
+              case Embedded:
+              case Managed: {
+                      File serverHome = resolveDistributablePackage(configuration, profile, type);
+                      setDefaultConfigurationProperties(profile, serverHome);
+                   break;
+               }
+              default:
+                 break;
+           }
         }
         resolveClasspathDependencies(profile);
     }
@@ -110,6 +107,18 @@ public class ChameleonDeployableContainer implements DeployableContainer<Chamele
         }
 
     }
+    private boolean enableDefaultConfigurationProperties(Profile profile) {
+       Map<String, String> configuration = profile.getDefaultConfigurationPropertyVariablesValue("DUMMY_VALUE");
+       Set<Entry<String, String>> entrySet = configuration.entrySet();
+       for (Entry<String, String> property : entrySet) {
+           String propertyKey = property.getKey();
+           if(delegateConfiguration.containsKey(propertyKey)) {
+              return false;
+           }
+       }
+       return true;
+    }
+
     private void setDefaultConfigurationProperties(Profile profile, File serverHome) {
         Map<String, String> configuration = profile.getDefaultConfigurationPropertyVariablesValue(serverHome.getAbsolutePath());
         Set<Entry<String, String>> entrySet = configuration.entrySet();
