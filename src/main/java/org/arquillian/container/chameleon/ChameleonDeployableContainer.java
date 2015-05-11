@@ -87,10 +87,23 @@ public class ChameleonDeployableContainer implements DeployableContainer<Chamele
         ChameleonDeployableContainerConfiguration configuration,
         Profile profile, Type type) {
         MavenCoordinate distributableCoordinate = profile.getDistributableCoordinates();
+
         if(distributableCoordinate != null) {
+            File targetDirectory = new File(
+                 new File(
+                       getOutputDirectory(configuration), "server"),
+                       distributableCoordinate.getArtifactId() + "_" + distributableCoordinate.getVersion());
+
+            if(targetDirectory.exists()) {
+               return getServerHome(targetDirectory);
+            }
+            else {
+               targetDirectory.mkdirs();
+            }
+
             File uncompressDirectory = Maven.resolver().resolve(distributableCoordinate.toCanonicalForm()).withoutTransitivity()
                         .asSingle(GenericArchive.class)
-                        .as(ExplodedExporter.class).exportExploded(new File(getOutputDirectory(configuration)), "server");
+                        .as(ExplodedExporter.class).exportExploded(targetDirectory, ".");
             return getServerHome(uncompressDirectory);
         }
         return null;

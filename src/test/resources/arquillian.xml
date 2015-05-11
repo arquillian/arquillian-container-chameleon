@@ -3,10 +3,11 @@
     xmlns="http://jboss.org/schema/arquillian"
     xsi:schemaLocation="http://jboss.org/schema/arquillian http://jboss.org/schema/arquillian/arquillian_1_0.xsd">
 
+<!--
     <engine>
         <property name="deploymentExportPath">target</property>
     </engine>
-
+-->
     <container qualifier="chameleon" default="true">
         <configuration>
             <property name="target">wildfly:9.0.0.CR1:managed</property>
