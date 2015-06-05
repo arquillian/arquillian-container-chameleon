@@ -1,0 +1,80 @@
+- name: JBoss AS
+  versionExpression: 7.*
+  adapters:
+    - type: remote
+      gav: org.jboss.as:jboss-as-arquillian-container-remote:${version}
+      adapterClass: org.jboss.as.arquillian.container.remote.RemoteDeployableContainer
+    - type: managed
+      gav: org.jboss.as:jboss-as-arquillian-container-managed:${version}
+      adapterClass: org.jboss.as.arquillian.container.managed.ManagedDeployableContainer
+      configuration: &AS_CONFIG
+        jbossHome: ${dist}
+    - type: embedded
+      gav: org.jboss.as:jboss-as-arquillian-container-embedded:${version}
+      adapterClass: org.jboss.as.arquillian.container.embedded.EmbeddedDeployableContainer
+      configuration: *AS_CONFIG
+  dist: &AS_DIST
+    gav: org.jboss.as:jboss-as-dist:zip:${version}
+  exclude: &AS_EXCLUDE
+    - org.jboss.arquillian.test:*
+    - org.jboss.arquillian.testenricher:*
+    - org.jboss.arquillian.container:*
+    - org.jboss.arquillian.core:*
+    - org.jboss.arquillian.config:*
+    - org.jboss.arquillian.protocol:*
+    - org.jboss.shrinkwrap.api:*
+    - org.jboss.shrinkwrap:*
+    - org.jboss.shrinkwrap.descriptors:*
+    - org.jboss.shrinkwrap.resolver:*
+    - "*:wildfly-arquillian-testenricher-msc"
+    - "*:wildfly-arquillian-protocol-jmx"
+    - "*:jboss-as-arquillian-testenricher-msc"
+    - "*:jboss-as-arquillian-protocol-jmx"
+- name: WildFly
+  versionExpression: 8.*
+  adapters:
+    - type: remote
+      gav: org.wildfly:wildfly-arquillian-container-remote:${version}
+      adapterClass: org.jboss.as.arquillian.container.remote.RemoteDeployableContainer
+    - type: managed
+      gav: org.wildfly:wildfly-arquillian-container-managed:${version}
+      adapterClass: org.jboss.as.arquillian.container.managed.ManagedDeployableContainer
+      configuration: &WF_CONFIG
+        jbossHome: ${dist}
+    - type: embedded
+      gav: org.wildfly:wildfly-arquillian-container-embedded:${version}
+      adapterClass: org.jboss.as.arquillian.container.embedded.EmbeddedDeployableContainer
+      configuration: *WF_CONFIG
+  dist: &WF_DIST
+    gav: org.wildfly:wildfly-dist:zip:${version}
+  exclude: &WF_EXCLUDE
+    - org.jboss.arquillian.test:*
+    - org.jboss.arquillian.testenricher:*
+    - org.jboss.arquillian.container:*
+    - org.jboss.arquillian.core:*
+    - org.jboss.arquillian.config:*
+    - org.jboss.arquillian.protocol:*
+    - org.jboss.shrinkwrap.api:*
+    - org.jboss.shrinkwrap:*
+    - org.jboss.shrinkwrap.descriptors:*
+    - org.jboss.shrinkwrap.resolver:*
+    - "*:wildfly-arquillian-testenricher-msc"
+    - "*:wildfly-arquillian-protocol-jmx"
+    - "*:jboss-as-arquillian-testenricher-msc"
+    - "*:jboss-as-arquillian-protocol-jmx"
+- name: WildFly
+  versionExpression: 9.*
+  adapters:
+    - type: remote
+      gav: org.wildfly.arquillian:wildfly-arquillian-container-remote:1.0.0.Alpha5
+      adapterClass: org.jboss.as.arquillian.container.remote.RemoteDeployableContainer
+    - type: managed
+      gav: org.wildfly.arquillian:wildfly-arquillian-container-managed:1.0.0.Alpha5
+      adapterClass: org.jboss.as.arquillian.container.managed.ManagedDeployableContainer
+      configuration: *WF_CONFIG
+    - type: embedded
+      gav: org.wildfly.arquillian:wildfly-arquillian-container-embedded:1.0.0.Alpha5
+      adapterClass: org.jboss.as.arquillian.container.embedded.EmbeddedDeployableContainer
+      configuration: *WF_CONFIG
+  dist: *WF_DIST
+  exclude: *WF_EXCLUDE
