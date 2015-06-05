@@ -1,5 +1,6 @@
 package org.arquillian.container.chameleon;
 
+import static org.arquillian.container.chameleon.Utils.toMavenCoordinate;
 import static org.arquillian.container.chameleon.Utils.toMavenDependencies;
 import static org.arquillian.container.chameleon.Utils.toURLs;
 
@@ -13,9 +14,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
-import org.arquillian.container.chameleon.spi.Profile;
-import org.arquillian.container.chameleon.spi.Target;
-import org.arquillian.container.chameleon.spi.Target.Type;
+import org.arquillian.container.chameleon.spi.model.ContainerAdapter;
 import org.jboss.arquillian.container.impl.MapObject;
 import org.jboss.arquillian.container.spi.client.container.ContainerConfiguration;
 import org.jboss.arquillian.container.spi.client.container.DeployableContainer;
@@ -39,9 +38,9 @@ public class ChameleonDeployableContainer implements DeployableContainer<Chamele
     private static final String MAVEN_OUTPUT_DIRECTORY = "target";
     private static final String GRADLE_OUTPUT_DIRECTORY = "bin";
     private ClassLoader classloader;
+    @SuppressWarnings("rawtypes")
     private DeployableContainer delegate;
     private Map<String, String> delegateConfiguration;
-    private Map<String, String> systemProperties = new HashMap<String, String>();
 
     @Inject
     private Instance<Injector> injectorInst;
@@ -64,46 +63,45 @@ public class ChameleonDeployableContainer implements DeployableContainer<Chamele
     @Override
     public void setup(ChameleonDeployableContainerConfiguration configuration) {
 
-        Profile profile = configuration.getProfile();
-        Target target = profile.getTarget();
-        Type type = target.getType();
+        try {
+            ContainerAdapter adapter = configuration.getConfiguredAdapter();
 
-        if(enableDefaultConfigurationProperties(profile)) {
-           switch(profile.getTarget().getType()) {
-              case Embedded:
-              case Managed: {
-                      File serverHome = resolveDistributablePackage(configuration, profile, type);
-                      setDefaultConfigurationProperties(profile, serverHome);
-                   break;
-               }
-              default:
-                 break;
-           }
+            if (enableDefaultConfigurationProperties(adapter) && adapter.requireDistribution()) {
+                switch (adapter.type()) {
+                case Embedded:
+                case Managed: {
+                    File serverHome = resolveDistributablePackage(adapter);
+                    setDefaultConfigurationProperties(adapter, serverHome);
+                    break;
+                }
+                default:
+                    break;
+                }
+            }
+            resolveClasspathDependencies(adapter);
+        } catch (Exception e) {
+            throw new IllegalStateException("Could not setup chameleon container", e);
         }
-        resolveClasspathDependencies(profile);
     }
 
-    private File resolveDistributablePackage(
-        ChameleonDeployableContainerConfiguration configuration,
-        Profile profile, Type type) {
-        MavenCoordinate distributableCoordinate = profile.getDistributableCoordinates();
+    private File resolveDistributablePackage(ContainerAdapter adapter) {
+        MavenCoordinate distributableCoordinate = toMavenCoordinate(adapter.distribution());
 
-        if(distributableCoordinate != null) {
-            File targetDirectory = new File(
-                 new File(
-                       getOutputDirectory(configuration), "server"),
-                       distributableCoordinate.getArtifactId() + "_" + distributableCoordinate.getVersion());
+        if (distributableCoordinate != null) {
+            File targetDirectory = new File(new File(getOutputDirectory(), "server"),
+                    distributableCoordinate.getArtifactId() + "_" + distributableCoordinate.getVersion());
 
-            if(targetDirectory.exists()) {
-               return getServerHome(targetDirectory);
-            }
-            else {
-               targetDirectory.mkdirs();
+            if (targetDirectory.exists()) {
+                return getServerHome(targetDirectory);
+            } else {
+                targetDirectory.mkdirs();
             }
 
-            File uncompressDirectory = Maven.resolver().resolve(distributableCoordinate.toCanonicalForm()).withoutTransitivity()
+            File uncompressDirectory = Maven.resolver().resolve(distributableCoordinate.toCanonicalForm())
+                        .withoutTransitivity()
                         .asSingle(GenericArchive.class)
-                        .as(ExplodedExporter.class).exportExploded(targetDirectory, ".");
+                        .as(ExplodedExporter.class)
+                        .exportExploded(targetDirectory, ".");
             return getServerHome(uncompressDirectory);
         }
         return null;
@@ -111,33 +109,35 @@ public class ChameleonDeployableContainer implements DeployableContainer<Chamele
 
     private File getServerHome(File uncompressDirectory) {
         File[] currentDirectoryContent = uncompressDirectory.listFiles();
-        //only one root directory should be here
-        if(currentDirectoryContent.length == 1 && currentDirectoryContent[0].isDirectory()) {
+        // only one root directory should be here
+        if (currentDirectoryContent.length == 1 && currentDirectoryContent[0].isDirectory()) {
             return currentDirectoryContent[0];
         } else {
-            //means that the server is uncompressed without a root directory
+            // means that the server is uncompressed without a root directory
             return uncompressDirectory;
         }
 
     }
-    private boolean enableDefaultConfigurationProperties(Profile profile) {
-       Map<String, String> configuration = profile.getDefaultConfigurationPropertyVariablesValue("DUMMY_VALUE");
-       Set<Entry<String, String>> entrySet = configuration.entrySet();
-       for (Entry<String, String> property : entrySet) {
-           String propertyKey = property.getKey();
-           if(delegateConfiguration.containsKey(propertyKey)) {
-              return false;
-           }
-       }
-       return true;
+
+    private boolean enableDefaultConfigurationProperties(ContainerAdapter adapter) {
+        String[] configurationKeys = adapter.configurationKeys();
+        for (String key : configurationKeys) {
+            if (delegateConfiguration.containsKey(key)) {
+                return false;
+            }
+        }
+        return true;
     }
 
-    private void setDefaultConfigurationProperties(Profile profile, File serverHome) {
-        Map<String, String> configuration = profile.getDefaultConfigurationPropertyVariablesValue(serverHome.getAbsolutePath());
+    private void setDefaultConfigurationProperties(ContainerAdapter adapter, File serverHome) {
+        Map<String, String> values = new HashMap<String, String>();
+        values.put("dist", serverHome.getAbsolutePath());
+
+        Map<String, String> configuration = adapter.resolveConfiguration(values);
         Set<Entry<String, String>> entrySet = configuration.entrySet();
         for (Entry<String, String> property : entrySet) {
             String propertyKey = property.getKey();
-            if(isSystemPropertyNotSet(propertyKey) && !delegateConfiguration.containsKey(propertyKey)) {
+            if (isSystemPropertyNotSet(propertyKey) && !delegateConfiguration.containsKey(propertyKey)) {
                 delegateConfiguration.put(propertyKey, property.getValue());
             }
         }
@@ -147,37 +147,39 @@ public class ChameleonDeployableContainer implements DeployableContainer<Chamele
         return System.getProperty(systemProperty) == null;
     }
 
-    private String getOutputDirectory(ChameleonDeployableContainerConfiguration configuration) {
-        if(Files.exists(Paths.get(GRADLE_OUTPUT_DIRECTORY))) {
+    private String getOutputDirectory() {
+        if (Files.exists(Paths.get(GRADLE_OUTPUT_DIRECTORY))) {
             return GRADLE_OUTPUT_DIRECTORY;
         } else {
-            if(Files.exists(Paths.get(MAVEN_OUTPUT_DIRECTORY))) {
+            if (Files.exists(Paths.get(MAVEN_OUTPUT_DIRECTORY))) {
                 return MAVEN_OUTPUT_DIRECTORY;
             } else {
-                //we assume by default a Maven layout
+                // we assume by default a Maven layout
                 return MAVEN_OUTPUT_DIRECTORY;
             }
         }
     }
 
-    private void resolveClasspathDependencies(Profile profile) {
-        String[] dependencies = profile.getDependencies();
+    private void resolveClasspathDependencies(ContainerAdapter profile) {
+        String[] dependencies = profile.dependencies();
 
         try {
-            MavenDependency[] mavenDependencies = toMavenDependencies(dependencies, profile.getExclusions());
+            MavenDependency[] mavenDependencies = toMavenDependencies(dependencies, profile.excludes());
 
-            File[] archives = Maven.configureResolver().addDependencies(mavenDependencies).resolve().withTransitivity().asFile();
+            File[] archives = Maven.configureResolver().addDependencies(mavenDependencies).resolve().withTransitivity()
+                    .asFile();
             classloader = new URLClassLoader(toURLs(archives), ChameleonDeployableContainer.class.getClassLoader());
 
-            final Class<?> delegateClass = classloader.loadClass(profile.getDeloyableContainerClass());
-
+            final Class<?> delegateClass = classloader.loadClass(profile.adapterClass());
             lifecycle(new Callable<Void>() {
+                @SuppressWarnings({ "rawtypes", "unchecked" })
                 @Override
                 public Void call() throws Exception {
                     delegate = (DeployableContainer) delegateClass.newInstance();
                     injectorInst.get().inject(delegate);
 
-                    ContainerConfiguration delegateConfig = (ContainerConfiguration)delegate.getConfigurationClass().newInstance();
+                    ContainerConfiguration delegateConfig = (ContainerConfiguration) delegate.getConfigurationClass()
+                            .newInstance();
                     MapObject.populate(delegateConfig, delegateConfiguration);
                     delegateConfig.validate();
                     delegate.setup(delegateConfig);
@@ -185,8 +187,7 @@ public class ChameleonDeployableContainer implements DeployableContainer<Chamele
                 }
             });
 
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new RuntimeException("Could not setup chameleon container", e);
         }
     }
@@ -216,6 +217,7 @@ public class ChameleonDeployableContainer implements DeployableContainer<Chamele
     @Override
     public ProtocolMetaData deploy(final Archive<?> archive) throws DeploymentException {
         return deployment(new Callable<ProtocolMetaData>() {
+            @SuppressWarnings("unchecked")
             @Override
             public ProtocolMetaData call() throws Exception {
                 return delegate.deploy(archive);
@@ -226,6 +228,7 @@ public class ChameleonDeployableContainer implements DeployableContainer<Chamele
     @Override
     public void undeploy(final Archive<?> archive) throws DeploymentException {
         deployment(new Callable<Void>() {
+            @SuppressWarnings("unchecked")
             @Override
             public Void call() throws Exception {
                 delegate.undeploy(archive);
@@ -261,14 +264,11 @@ public class ChameleonDeployableContainer implements DeployableContainer<Chamele
         try {
             Thread.currentThread().setContextClassLoader(classloader);
             return callable.call();
-        }
-        catch(DeploymentException e) {
+        } catch (DeploymentException e) {
             throw e;
-        }
-        catch(Exception e ) {
+        } catch (Exception e) {
             throw new DeploymentException("Could not proxy call", e);
-        }
-        finally {
+        } finally {
             Thread.currentThread().setContextClassLoader(current);
         }
     }
@@ -278,14 +278,11 @@ public class ChameleonDeployableContainer implements DeployableContainer<Chamele
         try {
             Thread.currentThread().setContextClassLoader(classloader);
             return callable.call();
-        }
-        catch(LifecycleException e) {
+        } catch (LifecycleException e) {
             throw e;
-        }
-        catch(Exception e ) {
+        } catch (Exception e) {
             throw new LifecycleException("Could not proxy call", e);
-        }
-        finally {
+        } finally {
             Thread.currentThread().setContextClassLoader(current);
         }
     }

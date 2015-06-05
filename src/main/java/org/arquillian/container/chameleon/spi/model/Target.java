@@ -1,22 +1,14 @@
-package org.arquillian.container.chameleon.spi;
+package org.arquillian.container.chameleon.spi.model;
 
 import org.jboss.arquillian.container.spi.ConfigurationException;
 
 public class Target {
 
-    static enum Server {
-        WILDFLY,
-        JBOSS_AS,
-        JBOSS_EAP
-    }
-
     public static enum Type {
-        Remote,
-        Managed,
-        Embedded
+        Remote, Managed, Embedded
     }
 
-    private Server server;
+    private String server;
     private String version;
     private Type type;
 
@@ -24,7 +16,7 @@ public class Target {
         return type;
     }
 
-    public Server getServer() {
+    public String getServer() {
         return server;
     }
 
@@ -36,21 +28,19 @@ public class Target {
         Target target = new Target();
 
         String[] sections = source.split(":");
-        if(sections.length != 3) {
+        if (sections.length != 3) {
             throw new ConfigurationException("Wrong target format [" + source + "] server:version:type");
         }
-        for(Server server : Server.values()) {
-            if(sections[0].toLowerCase().contains(server.name().toLowerCase().replaceAll("_", " "))) {
-                target.server = server;
-                break;
-            }
-        }
+        target.server = sections[0].toLowerCase();
         target.version = sections[1];
-        for(Type type : Type.values()) {
-            if(sections[2].toLowerCase().contains(type.name().toLowerCase())) {
+        for (Type type : Type.values()) {
+            if (sections[2].toLowerCase().contains(type.name().toLowerCase())) {
                 target.type = type;
                 break;
             }
+        }
+        if(target.type == null) {
+            throw new ConfigurationException("Unknown target type " + sections[2] + ". Supported " + Target.Type.values());
         }
         return target;
     }
