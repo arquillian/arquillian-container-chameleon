@@ -30,7 +30,8 @@
     <properties>
 
         <!-- Versioning -->
-        <version.arquillian_core>1.1.5.Final</version.arquillian_core>
+        <version.arquillian_core>1.1.8.Final</version.arquillian_core>
+        <version.jboss.javaee-6_api>1.0.0.Final</version.jboss.javaee-6_api>
 
         <!-- override from parent -->
         <maven.compiler.argument.target>1.5</maven.compiler.argument.target>
@@ -103,6 +104,14 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.spec</groupId>
+            <artifactId>jboss-javaee-6.0</artifactId>
+            <version>${version.jboss.javaee-6_api}</version>
+            <type>pom</type>
+            <scope>test</scope>
         </dependency>
     </dependencies>
     <build>
@@ -118,4 +127,83 @@
         </plugins>
     </build>
 
+	<profiles>
+		<profile>
+			<id>all</id>
+
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<configuration>
+							<skip>true</skip>
+						</configuration>
+
+						<executions>
+							<execution>
+								<id>wf9</id>
+								<goals><goal>test</goal></goals>
+								<configuration>
+								    <skip>false</skip>
+									<systemPropertyVariables>
+										<arq.container.chameleon.configuration.target>wildfly:9.0.0.CR1:managed</arq.container.chameleon.configuration.target>
+									</systemPropertyVariables>
+								</configuration>
+							</execution>
+							<execution>
+								<id>wf82</id>
+								<goals><goal>test</goal></goals>
+								<configuration>
+								    <skip>false</skip>
+									<systemPropertyVariables>
+										<arq.container.chameleon.configuration.target>wildfly:8.2.0.Final:managed</arq.container.chameleon.configuration.target>
+									</systemPropertyVariables>
+								</configuration>
+							</execution>
+							<execution>
+								<id>wf81</id>
+								<goals><goal>test</goal></goals>
+								<configuration>
+								    <skip>false</skip>
+									<systemPropertyVariables>
+										<arq.container.chameleon.configuration.target>wildfly:8.1.0.Final:managed</arq.container.chameleon.configuration.target>
+									</systemPropertyVariables>
+								</configuration>
+							</execution>
+							<execution>
+								<id>wf8</id>
+								<goals><goal>test</goal></goals>
+								<configuration>
+								    <skip>false</skip>
+									<systemPropertyVariables>
+										<arq.container.chameleon.configuration.target>wildfly:8.0.0.Final:managed</arq.container.chameleon.configuration.target>
+									</systemPropertyVariables>
+								</configuration>
+							</execution>
+							<execution>
+								<id>gf4</id>
+								<goals><goal>test</goal></goals>
+								<configuration>
+								    <skip>false</skip>
+									<systemPropertyVariables>
+										<arq.container.chameleon.configuration.target>glassfish:4.0:managed</arq.container.chameleon.configuration.target>
+									</systemPropertyVariables>
+								</configuration>
+							</execution>
+							<execution>
+								<id>gf41</id>
+								<goals><goal>test</goal></goals>
+								<configuration>
+								    <skip>false</skip>
+									<systemPropertyVariables>
+										<arq.container.chameleon.configuration.target>glassfish:4.1:managed</arq.container.chameleon.configuration.target>
+									</systemPropertyVariables>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>
