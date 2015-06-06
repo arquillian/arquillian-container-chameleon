@@ -12,6 +12,7 @@ public class Adapter {
     private String type;
     private String gav;
     private String adapterClass;
+    private boolean requireDist = true;
     private String[] dependencies;
     private Map<String, String> configuration;
 
@@ -21,6 +22,10 @@ public class Adapter {
 
     public String adapterClass() {
         return adapterClass;
+    }
+
+    public boolean requireDist() {
+        return requireDist;
     }
 
     public String[] dependencies() {

@@ -44,6 +44,10 @@ public class ContainerAdapter {
         return adapter.configuration().keySet().toArray(new String[] {});
     }
 
+    public boolean requireDistribution() {
+        return adapter.requireDist();
+    }
+
     public Map<String, String> resolveConfiguration(Map<String, String> parameters) {
         Map<String, String> configuration = adapter.configuration();
         for (Map.Entry<String, String> entry : configuration.entrySet()) {
@@ -55,6 +59,9 @@ public class ContainerAdapter {
     }
 
     private String[] resolve(String[] values) {
+        if(values == null) {
+            return new String[0];
+        }
         String[] resolved = new String[values.length];
         for (int i = 0; i < values.length; i++) {
             resolved[i] = resolve(values[i]);

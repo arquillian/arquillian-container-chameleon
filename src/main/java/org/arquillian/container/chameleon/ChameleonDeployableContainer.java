@@ -66,7 +66,7 @@ public class ChameleonDeployableContainer implements DeployableContainer<Chamele
         try {
             ContainerAdapter adapter = configuration.getConfiguredAdapter();
 
-            if (enableDefaultConfigurationProperties(adapter)) {
+            if (enableDefaultConfigurationProperties(adapter) && adapter.requireDistribution()) {
                 switch (adapter.type()) {
                 case Embedded:
                 case Managed: {
