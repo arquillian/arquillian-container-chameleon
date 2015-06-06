@@ -39,6 +39,9 @@ public class Target {
                 break;
             }
         }
+        if(target.type == null) {
+            throw new ConfigurationException("Unknown target type " + sections[2] + ". Supported " + Target.Type.values());
+        }
         return target;
     }
 

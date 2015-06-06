@@ -16,6 +16,11 @@ public class ChameleonDeployableContainerConfiguration implements ContainerConfi
         if (target == null) {
             throw new ConfigurationException("target must be provided in format server:version:type");
         }
+        if(getClass().getResource(getContainerConfigurationFile()) == null) {
+            throw new ConfigurationException("containerConfigurationFile must be provided in. Classloader resource " + getContainerConfigurationFile() + " not found");
+        }
+        // Try to parse to 'trigger' ConfigurationException
+        getParsedTarget();
     }
 
     public String getTarget() {
@@ -36,7 +41,7 @@ public class ChameleonDeployableContainerConfiguration implements ContainerConfi
 
     public ContainerAdapter getConfiguredAdapter() throws Exception {
         Target target = getParsedTarget();
-        Container[] containers = new ServerLoader().load(getContainerConfigurationFile());
+        Container[] containers = new ContainerLoader().load(getContainerConfigurationFile());
         for (Container container : containers) {
             ContainerAdapter adapter = container.matches(target);
             if (adapter != null) {
