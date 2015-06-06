@@ -1,3 +1,51 @@
+- name: JBoss EAP
+  versionExpression: 6.0.*
+  adapters:
+    - type: remote
+      gav: org.jboss.as:jboss-as-arquillian-container-remote:7.1.2.Final
+      adapterClass: org.jboss.as.arquillian.container.remote.RemoteDeployableContainer
+    - type: managed
+      gav: org.jboss.as:jboss-as-arquillian-container-managed:7.1.2.Final
+      adapterClass: org.jboss.as.arquillian.container.managed.ManagedDeployableContainer
+      configuration: &EAP_CONFIG
+        jbossHome: ${dist}
+    - type: embedded
+      gav: org.jboss.as:jboss-as-arquillian-container-embedded:7.1.2.Final
+      adapterClass: org.jboss.as.arquillian.container.embedded.EmbeddedDeployableContainer
+      configuration: *EAP_CONFIG
+  dist: &EAP_DIST
+    gav: org.jboss.as:jboss-as-dist:zip:${version}
+  exclude: &EAP_EXCLUDE
+    - org.jboss.arquillian.test:*
+    - org.jboss.arquillian.testenricher:*
+    - org.jboss.arquillian.container:*
+    - org.jboss.arquillian.core:*
+    - org.jboss.arquillian.config:*
+    - org.jboss.arquillian.protocol:*
+    - org.jboss.shrinkwrap.api:*
+    - org.jboss.shrinkwrap:*
+    - org.jboss.shrinkwrap.descriptors:*
+    - org.jboss.shrinkwrap.resolver:*
+    - "*:wildfly-arquillian-testenricher-msc"
+    - "*:wildfly-arquillian-protocol-jmx"
+    - "*:jboss-as-arquillian-testenricher-msc"
+    - "*:jboss-as-arquillian-protocol-jmx"
+- name: JBoss EAP
+  versionExpression: 6.*
+  adapters:
+    - type: remote
+      gav: org.jboss.as:jboss-as-arquillian-container-remote:7.1.3.Final
+      adapterClass: org.jboss.as.arquillian.container.remote.RemoteDeployableContainer
+    - type: managed
+      gav: org.jboss.as:jboss-as-arquillian-container-managed:7.1.3.Final
+      adapterClass: org.jboss.as.arquillian.container.managed.ManagedDeployableContainer
+      configuration: *EAP_CONFIG
+    - type: embedded
+      gav: org.jboss.as:jboss-as-arquillian-container-embedded:7.1.3.Final
+      adapterClass: org.jboss.as.arquillian.container.embedded.EmbeddedDeployableContainer
+      configuration: *EAP_CONFIG
+  dist: *EAP_DIST
+  exclude: *EAP_EXCLUDE
 - name: JBoss AS
   versionExpression: 7.*
   adapters:
