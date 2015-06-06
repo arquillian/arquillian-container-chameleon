@@ -78,3 +78,38 @@
       configuration: *WF_CONFIG
   dist: *WF_DIST
   exclude: *WF_EXCLUDE
+
+
+- name: GlassFish
+  versionExpression: 3.*
+  adapters:
+    - &GF_REMOTE
+      type: remote
+      gav: org.jboss.arquillian.container:arquillian-glassfish-remote-3.1:1.0.0.CR4
+      adapterClass: org.jboss.arquillian.container.glassfish.remote_3_1.GlassFishRestDeployableContainer
+    - &GF_MANAGED
+      type: managed
+      gav: org.jboss.arquillian.container:arquillian-glassfish-managed-3.1:1.0.0.CR4
+      adapterClass: org.jboss.arquillian.container.glassfish.managed_3_1.GlassFishManagedDeployableContainer
+      configuration:
+        glassFishHome: ${dist}
+    - type: embedded
+      gav: org.jboss.arquillian.container:arquillian-glassfish-embedded-3.1:1.0.0.CR4
+      adapterClass: org.jboss.arquillian.container.glassfish.embedded_3_1.GlassFishContainer
+      requireDist: false
+      dependencies:
+        - org.glassfish.extras:glassfish-embedded-all:${version}
+  dist: &GF_DIST
+    gav: org.glassfish.main.distributions:glassfish:zip:${version}
+- name: GlassFish
+  versionExpression: 4.*
+  adapters:
+    - *GF_REMOTE
+    - *GF_MANAGED
+    - type: embedded
+      gav: org.jboss.arquillian.container:arquillian-glassfish-embedded-3.1:1.0.0.CR4
+      adapterClass: org.jboss.arquillian.container.glassfish.embedded_3_1.GlassFishContainer
+      requireDist: false
+      dependencies:
+        - org.glassfish.main.extras:glassfish-embedded-all:${version}
+  dist: *GF_DIST
