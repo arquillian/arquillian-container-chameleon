@@ -9,7 +9,7 @@ public class ConfigurationTestCase {
 
     @Test
     public void shouldLoadSimpleAdapterConfiguration() throws Exception {
-        ChameleonDeployableContainerConfiguration configuration = new ChameleonDeployableContainerConfiguration();
+        ChameleonConfiguration configuration = new ChameleonConfiguration();
         configuration.setTarget("wildfly:8.2.0.Final:managed");
         configuration.validate();
 
@@ -19,13 +19,13 @@ public class ConfigurationTestCase {
 
     @Test
     public void shouldResolveBuildSystemOutputFolderIfDownloadNotSet() throws Exception {
-        ChameleonDeployableContainerConfiguration configuration = new ChameleonDeployableContainerConfiguration();
+        ChameleonConfiguration configuration = new ChameleonConfiguration();
         Assert.assertEquals("target", configuration.getDistributionDownloadFolder());
     }
 
     @Test
     public void shouldUseSetDownloadFolder() throws Exception {
-        ChameleonDeployableContainerConfiguration configuration = new ChameleonDeployableContainerConfiguration();
+        ChameleonConfiguration configuration = new ChameleonConfiguration();
         configuration.setDistributionDownloadFolder("TEST");
         Assert.assertEquals("TEST", configuration.getDistributionDownloadFolder());
     }
@@ -34,14 +34,14 @@ public class ConfigurationTestCase {
     public void shouldSetTempDownloadFolder() throws Exception {
         String tempFolder = "/tmp/";
         System.setProperty("java.io.tmpdir", tempFolder);
-        ChameleonDeployableContainerConfiguration configuration = new ChameleonDeployableContainerConfiguration();
+        ChameleonConfiguration configuration = new ChameleonConfiguration();
         configuration.setDistributionDownloadFolder("TMP");
         Assert.assertTrue(configuration.getDistributionDownloadFolder().contains(tempFolder + "/arquillian_chameleon"));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldFailOnMissingContainerName() throws Exception {
-        ChameleonDeployableContainerConfiguration configuration = new ChameleonDeployableContainerConfiguration();
+        ChameleonConfiguration configuration = new ChameleonConfiguration();
         configuration.setTarget("MISSING_TARGET:8.2.0.Final:managed");
         configuration.validate();
 
@@ -50,14 +50,14 @@ public class ConfigurationTestCase {
 
     @Test(expected = ConfigurationException.class)
     public void shouldFailOnMissingContainerType() throws Exception {
-        ChameleonDeployableContainerConfiguration configuration = new ChameleonDeployableContainerConfiguration();
+        ChameleonConfiguration configuration = new ChameleonConfiguration();
         configuration.setTarget("wildfly:8.2.0.Final:UNKNOWN");
         configuration.validate();
     }
 
     @Test(expected = ConfigurationException.class)
     public void shouldFailOnMissingContainerFile() throws Exception {
-        ChameleonDeployableContainerConfiguration configuration = new ChameleonDeployableContainerConfiguration();
+        ChameleonConfiguration configuration = new ChameleonConfiguration();
         configuration.setContainerConfigurationFile("MISSING");
         configuration.setTarget("wildfly:8.2.0.Final:managed");
         configuration.validate();

@@ -7,8 +7,8 @@ public class ChameleonExtension implements LoadableExtension {
 
     @Override
     public void register(ExtensionBuilder builder) {
-        builder.service(DeployableContainer.class, ChameleonDeployableContainer.class);
-        builder.observer(ChameleonSetupObserver.class);
+        builder.service(DeployableContainer.class, ChameleonContainer.class);
+        builder.observer(FilterTargetConfiguration.class);
     }
 
 }

@@ -9,7 +9,7 @@ import org.arquillian.container.chameleon.spi.model.Target;
 import org.jboss.arquillian.container.spi.ConfigurationException;
 import org.jboss.arquillian.container.spi.client.container.ContainerConfiguration;
 
-public class ChameleonDeployableContainerConfiguration implements ContainerConfiguration {
+public class ChameleonConfiguration implements ContainerConfiguration {
 
     private static final String MAVEN_OUTPUT_DIRECTORY = "target";
     private static final String GRADLE_OUTPUT_DIRECTORY = "bin";

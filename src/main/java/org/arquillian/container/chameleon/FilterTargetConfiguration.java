@@ -9,7 +9,7 @@ import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.core.spi.EventContext;
 import org.jboss.shrinkwrap.descriptor.spi.node.Node;
 
-public class ChameleonSetupObserver {
+public class FilterTargetConfiguration {
 
     // Change the original configuration so we can forward all config options
     // not 'target' to the delegate container
@@ -32,7 +32,7 @@ public class ChameleonSetupObserver {
             node.getSingle("configuration").removeChild("property@name=" + key);
         }
 
-        ((ChameleonDeployableContainer) setup.getEvent().getContainer().getDeployableContainer())
+        ((ChameleonContainer) setup.getEvent().getContainer().getDeployableContainer())
                 .setDelegateConfiguration(properties);
 
         setup.proceed();

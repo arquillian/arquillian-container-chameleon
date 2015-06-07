@@ -31,7 +31,7 @@ import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenCoordinate;
 import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenDependency;
 
-public class ChameleonDeployableContainer implements DeployableContainer<ChameleonDeployableContainerConfiguration> {
+public class ChameleonContainer implements DeployableContainer<ChameleonConfiguration> {
 
     private ClassLoader classloader;
     @SuppressWarnings("rawtypes")
@@ -42,8 +42,8 @@ public class ChameleonDeployableContainer implements DeployableContainer<Chamele
     private Instance<Injector> injectorInst;
 
     @Override
-    public Class<ChameleonDeployableContainerConfiguration> getConfigurationClass() {
-        return ChameleonDeployableContainerConfiguration.class;
+    public Class<ChameleonConfiguration> getConfigurationClass() {
+        return ChameleonConfiguration.class;
     }
 
     @Override
@@ -57,7 +57,7 @@ public class ChameleonDeployableContainer implements DeployableContainer<Chamele
     }
 
     @Override
-    public void setup(ChameleonDeployableContainerConfiguration configuration) {
+    public void setup(ChameleonConfiguration configuration) {
 
         try {
             ContainerAdapter adapter = configuration.getConfiguredAdapter();
@@ -80,7 +80,7 @@ public class ChameleonDeployableContainer implements DeployableContainer<Chamele
         }
     }
 
-    private File resolveDistributablePackage(ContainerAdapter adapter, ChameleonDeployableContainerConfiguration configuration) {
+    private File resolveDistributablePackage(ContainerAdapter adapter, ChameleonConfiguration configuration) {
         MavenCoordinate distributableCoordinate = toMavenCoordinate(adapter.distribution());
 
         if (distributableCoordinate != null) {
@@ -151,7 +151,7 @@ public class ChameleonDeployableContainer implements DeployableContainer<Chamele
 
             File[] archives = Maven.configureResolver().addDependencies(mavenDependencies).resolve().withTransitivity()
                     .asFile();
-            classloader = new URLClassLoader(toURLs(archives), ChameleonDeployableContainer.class.getClassLoader());
+            classloader = new URLClassLoader(toURLs(archives), ChameleonContainer.class.getClassLoader());
 
             final Class<?> delegateClass = classloader.loadClass(profile.adapterClass());
             lifecycle(new Callable<Void>() {
