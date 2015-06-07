@@ -30,6 +30,15 @@ public class ConfigurationTestCase {
         Assert.assertEquals("TEST", configuration.getDistributionDownloadFolder());
     }
 
+    @Test
+    public void shouldSetTempDownloadFolder() throws Exception {
+        String tempFolder = "/tmp/";
+        System.setProperty("java.io.tmpdir", tempFolder);
+        ChameleonDeployableContainerConfiguration configuration = new ChameleonDeployableContainerConfiguration();
+        configuration.setDistributionDownloadFolder("TMP");
+        Assert.assertTrue(configuration.getDistributionDownloadFolder().contains(tempFolder + "/arquillian_chameleon"));
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void shouldFailOnMissingContainerName() throws Exception {
         ChameleonDeployableContainerConfiguration configuration = new ChameleonDeployableContainerConfiguration();

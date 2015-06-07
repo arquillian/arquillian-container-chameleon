@@ -13,6 +13,7 @@ public class ChameleonDeployableContainerConfiguration implements ContainerConfi
 
     private static final String MAVEN_OUTPUT_DIRECTORY = "target";
     private static final String GRADLE_OUTPUT_DIRECTORY = "bin";
+    private static final String TMP_FOLDER_EXPRESSION = "TMP";
 
     private String target = null;
     private String containerConfigurationFile = "/chameleon/default/containers.yaml";
@@ -65,6 +66,9 @@ public class ChameleonDeployableContainerConfiguration implements ContainerConfi
 
     public String getDistributionDownloadFolder() {
         if(distributionDownloadFolder != null) {
+            if(TMP_FOLDER_EXPRESSION.equalsIgnoreCase(distributionDownloadFolder)) {
+                distributionDownloadFolder = System.getProperty("java.io.tmpdir") + "/arquillian_chameleon";
+            }
             return distributionDownloadFolder;
         }
         return getOutputDirectory();
