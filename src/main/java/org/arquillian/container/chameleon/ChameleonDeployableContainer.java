@@ -6,8 +6,6 @@ import static org.arquillian.container.chameleon.Utils.toURLs;
 
 import java.io.File;
 import java.net.URLClassLoader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -35,8 +33,6 @@ import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenDependency;
 
 public class ChameleonDeployableContainer implements DeployableContainer<ChameleonDeployableContainerConfiguration> {
 
-    private static final String MAVEN_OUTPUT_DIRECTORY = "target";
-    private static final String GRADLE_OUTPUT_DIRECTORY = "bin";
     private ClassLoader classloader;
     @SuppressWarnings("rawtypes")
     private DeployableContainer delegate;
@@ -70,7 +66,7 @@ public class ChameleonDeployableContainer implements DeployableContainer<Chamele
                 switch (adapter.type()) {
                 case Embedded:
                 case Managed: {
-                    File serverHome = resolveDistributablePackage(adapter);
+                    File serverHome = resolveDistributablePackage(adapter, configuration);
                     setDefaultConfigurationProperties(adapter, serverHome);
                     break;
                 }
@@ -84,11 +80,11 @@ public class ChameleonDeployableContainer implements DeployableContainer<Chamele
         }
     }
 
-    private File resolveDistributablePackage(ContainerAdapter adapter) {
+    private File resolveDistributablePackage(ContainerAdapter adapter, ChameleonDeployableContainerConfiguration configuration) {
         MavenCoordinate distributableCoordinate = toMavenCoordinate(adapter.distribution());
 
         if (distributableCoordinate != null) {
-            File targetDirectory = new File(new File(getOutputDirectory(), "server"),
+            File targetDirectory = new File(new File(configuration.getDistributionDownloadFolder(), "server"),
                     distributableCoordinate.getArtifactId() + "_" + distributableCoordinate.getVersion());
 
             if (targetDirectory.exists()) {
@@ -145,19 +141,6 @@ public class ChameleonDeployableContainer implements DeployableContainer<Chamele
 
     private boolean isSystemPropertyNotSet(String systemProperty) {
         return System.getProperty(systemProperty) == null;
-    }
-
-    private String getOutputDirectory() {
-        if (Files.exists(Paths.get(GRADLE_OUTPUT_DIRECTORY))) {
-            return GRADLE_OUTPUT_DIRECTORY;
-        } else {
-            if (Files.exists(Paths.get(MAVEN_OUTPUT_DIRECTORY))) {
-                return MAVEN_OUTPUT_DIRECTORY;
-            } else {
-                // we assume by default a Maven layout
-                return MAVEN_OUTPUT_DIRECTORY;
-            }
-        }
     }
 
     private void resolveClasspathDependencies(ContainerAdapter profile) {

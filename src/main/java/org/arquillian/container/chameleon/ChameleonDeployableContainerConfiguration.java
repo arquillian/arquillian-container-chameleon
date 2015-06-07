@@ -1,5 +1,8 @@
 package org.arquillian.container.chameleon;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import org.arquillian.container.chameleon.spi.model.Container;
 import org.arquillian.container.chameleon.spi.model.ContainerAdapter;
 import org.arquillian.container.chameleon.spi.model.Target;
@@ -8,8 +11,12 @@ import org.jboss.arquillian.container.spi.client.container.ContainerConfiguratio
 
 public class ChameleonDeployableContainerConfiguration implements ContainerConfiguration {
 
+    private static final String MAVEN_OUTPUT_DIRECTORY = "target";
+    private static final String GRADLE_OUTPUT_DIRECTORY = "bin";
+
     private String target = null;
     private String containerConfigurationFile = "/chameleon/default/containers.yaml";
+    private String distributionDownloadFolder  = null;
 
     @Override
     public void validate() throws ConfigurationException {
@@ -39,6 +46,10 @@ public class ChameleonDeployableContainerConfiguration implements ContainerConfi
         this.containerConfigurationFile = containerConfigurationFile;
     }
 
+    public void setDistributionDownloadFolder(String distributionDownloadFolder) {
+        this.distributionDownloadFolder = distributionDownloadFolder;
+    }
+
     public ContainerAdapter getConfiguredAdapter() throws Exception {
         Target target = getParsedTarget();
         Container[] containers = new ContainerLoader().load(getContainerConfigurationFile());
@@ -52,7 +63,27 @@ public class ChameleonDeployableContainerConfiguration implements ContainerConfi
                 + " for target " + getTarget());
     }
 
+    public String getDistributionDownloadFolder() {
+        if(distributionDownloadFolder != null) {
+            return distributionDownloadFolder;
+        }
+        return getOutputDirectory();
+    }
+
     private Target getParsedTarget() {
         return Target.from(getTarget());
+    }
+
+    private String getOutputDirectory() {
+        if (Files.exists(Paths.get(GRADLE_OUTPUT_DIRECTORY))) {
+            return GRADLE_OUTPUT_DIRECTORY;
+        } else {
+            if (Files.exists(Paths.get(MAVEN_OUTPUT_DIRECTORY))) {
+                return MAVEN_OUTPUT_DIRECTORY;
+            } else {
+                // we assume by default a Maven layout
+                return MAVEN_OUTPUT_DIRECTORY;
+            }
+        }
     }
 }

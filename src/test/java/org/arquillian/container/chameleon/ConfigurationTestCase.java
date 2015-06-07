@@ -17,6 +17,19 @@ public class ConfigurationTestCase {
         Assert.assertEquals("org.wildfly:wildfly-dist:zip:8.2.0.Final", adapter.distribution());
     }
 
+    @Test
+    public void shouldResolveBuildSystemOutputFolderIfDownloadNotSet() throws Exception {
+        ChameleonDeployableContainerConfiguration configuration = new ChameleonDeployableContainerConfiguration();
+        Assert.assertEquals("target", configuration.getDistributionDownloadFolder());
+    }
+
+    @Test
+    public void shouldUseSetDownloadFolder() throws Exception {
+        ChameleonDeployableContainerConfiguration configuration = new ChameleonDeployableContainerConfiguration();
+        configuration.setDistributionDownloadFolder("TEST");
+        Assert.assertEquals("TEST", configuration.getDistributionDownloadFolder());
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void shouldFailOnMissingContainerName() throws Exception {
         ChameleonDeployableContainerConfiguration configuration = new ChameleonDeployableContainerConfiguration();

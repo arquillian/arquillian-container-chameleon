@@ -27,6 +27,7 @@ public class ChameleonSetupObserver {
         Map<String, String> properties = containerDef.getContainerProperties();
         properties.remove("target");
         properties.remove("containerConfigurationFile");
+        properties.remove("distributionDownloadFolder");
         for (String key : properties.keySet()) {
             node.getSingle("configuration").removeChild("property@name=" + key);
         }
