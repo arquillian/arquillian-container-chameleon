@@ -13,7 +13,7 @@ import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenDependencyExclusi
 public final class Utils {
 
     @SuppressWarnings("deprecation")
-    static URL[] toURLs(File[] archives) throws Exception {
+    public static URL[] toURLs(File[] archives) throws Exception {
         URL[] urls = new URL[archives.length];
         for (int i = 0; i < archives.length; i++) {
             urls[i] = archives[i].toURL();
@@ -32,11 +32,11 @@ public final class Utils {
         return sb.toString();
     }
 
-    static MavenCoordinate toMavenCoordinate(String dep) {
+    public static MavenCoordinate toMavenCoordinate(String dep) {
         return MavenCoordinates.createCoordinate(dep);
     }
 
-    static MavenDependency[] toMavenDependencies(String[] dependencies, String[] exclusions) {
+    public static MavenDependency[] toMavenDependencies(String[] dependencies, String[] exclusions) {
         MavenDependencyExclusion[] mavenExclusions = toMavenExclusions(exclusions);
         MavenDependency[] mavenDependencies = new MavenDependency[dependencies.length];
         for (int i = 0; i < dependencies.length; i++) {

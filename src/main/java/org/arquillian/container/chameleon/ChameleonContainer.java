@@ -1,19 +1,9 @@
 package org.arquillian.container.chameleon;
 
-import static org.arquillian.container.chameleon.Utils.toMavenCoordinate;
-import static org.arquillian.container.chameleon.Utils.toMavenDependencies;
-import static org.arquillian.container.chameleon.Utils.toURLs;
-
-import java.io.File;
-import java.net.URLClassLoader;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.concurrent.Callable;
-
+import org.arquillian.container.chameleon.controller.DistributionController;
+import org.arquillian.container.chameleon.controller.TargetController;
 import org.arquillian.container.chameleon.spi.model.ContainerAdapter;
-import org.jboss.arquillian.container.impl.MapObject;
+import org.jboss.arquillian.config.descriptor.api.ContainerDef;
 import org.jboss.arquillian.container.spi.client.container.ContainerConfiguration;
 import org.jboss.arquillian.container.spi.client.container.DeployableContainer;
 import org.jboss.arquillian.container.spi.client.container.DeploymentException;
@@ -24,26 +14,20 @@ import org.jboss.arquillian.core.api.Injector;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.shrinkwrap.api.Archive;
-import org.jboss.shrinkwrap.api.GenericArchive;
-import org.jboss.shrinkwrap.api.exporter.ExplodedExporter;
 import org.jboss.shrinkwrap.descriptor.api.Descriptor;
-import org.jboss.shrinkwrap.resolver.api.maven.Maven;
-import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenCoordinate;
-import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenDependency;
 
-public class ChameleonContainer implements DeployableContainer<ChameleonConfiguration> {
+public class ChameleonContainer implements DeployableContainer<ContainerConfiguration> {
 
-    private ClassLoader classloader;
-    @SuppressWarnings("rawtypes")
-    private DeployableContainer delegate;
-    private Map<String, String> delegateConfiguration;
+    private TargetController target;
+    private DistributionController distribution;
+    private ChameleonConfiguration configuration;
 
     @Inject
     private Instance<Injector> injectorInst;
 
     @Override
-    public Class<ChameleonConfiguration> getConfigurationClass() {
-        return ChameleonConfiguration.class;
+    public Class<ContainerConfiguration> getConfigurationClass() {
+        return target.getConfigurationClass();
     }
 
     @Override
@@ -51,222 +35,59 @@ public class ChameleonContainer implements DeployableContainer<ChameleonConfigur
         return new ProtocolDescription("Servlet 3.0");
     }
 
-    // Called from ProxySetupObserver
-    public void setDelegateConfiguration(Map<String, String> delegateConfiguration) {
-        this.delegateConfiguration = delegateConfiguration;
-    }
-
-    @Override
-    public void setup(ChameleonConfiguration configuration) {
-
+    public void init(ChameleonConfiguration configuration, ContainerDef targetConfiguration) {
+        this.configuration = configuration;
         try {
             ContainerAdapter adapter = configuration.getConfiguredAdapter();
+            this.target = new TargetController(
+                    adapter,
+                    injectorInst.get());
+            this.distribution = new DistributionController(
+                    adapter,
+                    configuration.getDistributionDownloadFolder());
 
-            if (enableDefaultConfigurationProperties(adapter) && adapter.requireDistribution()) {
-                switch (adapter.type()) {
-                case Embedded:
-                case Managed: {
-                    File serverHome = resolveDistributablePackage(adapter, configuration);
-                    setDefaultConfigurationProperties(adapter, serverHome);
-                    break;
-                }
-                default:
-                    break;
-                }
-            }
-            resolveClasspathDependencies(adapter);
+            distribution.setup(targetConfiguration);
         } catch (Exception e) {
             throw new IllegalStateException("Could not setup chameleon container", e);
         }
     }
 
-    private File resolveDistributablePackage(ContainerAdapter adapter, ChameleonConfiguration configuration) {
-        MavenCoordinate distributableCoordinate = toMavenCoordinate(adapter.distribution());
-
-        if (distributableCoordinate != null) {
-            File targetDirectory = new File(new File(configuration.getDistributionDownloadFolder(), "server"),
-                    distributableCoordinate.getArtifactId() + "_" + distributableCoordinate.getVersion());
-
-            if (targetDirectory.exists()) {
-                return getServerHome(targetDirectory);
-            } else {
-                targetDirectory.mkdirs();
-            }
-
-            File uncompressDirectory = Maven.resolver().resolve(distributableCoordinate.toCanonicalForm())
-                        .withoutTransitivity()
-                        .asSingle(GenericArchive.class)
-                        .as(ExplodedExporter.class)
-                        .exportExploded(targetDirectory, ".");
-            return getServerHome(uncompressDirectory);
-        }
-        return null;
-    }
-
-    private File getServerHome(File uncompressDirectory) {
-        File[] currentDirectoryContent = uncompressDirectory.listFiles();
-        // only one root directory should be here
-        if (currentDirectoryContent.length == 1 && currentDirectoryContent[0].isDirectory()) {
-            return currentDirectoryContent[0];
-        } else {
-            // means that the server is uncompressed without a root directory
-            return uncompressDirectory;
-        }
-
-    }
-
-    private boolean enableDefaultConfigurationProperties(ContainerAdapter adapter) {
-        String[] configurationKeys = adapter.configurationKeys();
-        for (String key : configurationKeys) {
-            if (delegateConfiguration.containsKey(key)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private void setDefaultConfigurationProperties(ContainerAdapter adapter, File serverHome) {
-        Map<String, String> values = new HashMap<String, String>();
-        values.put("dist", serverHome.getAbsolutePath());
-
-        Map<String, String> configuration = adapter.resolveConfiguration(values);
-        Set<Entry<String, String>> entrySet = configuration.entrySet();
-        for (Entry<String, String> property : entrySet) {
-            String propertyKey = property.getKey();
-            if (isSystemPropertyNotSet(propertyKey) && !delegateConfiguration.containsKey(propertyKey)) {
-                delegateConfiguration.put(propertyKey, property.getValue());
-            }
-        }
-    }
-
-    private boolean isSystemPropertyNotSet(String systemProperty) {
-        return System.getProperty(systemProperty) == null;
-    }
-
-    private void resolveClasspathDependencies(ContainerAdapter profile) {
-        String[] dependencies = profile.dependencies();
-
+    @Override
+    public void setup(final ContainerConfiguration targetConfiguration) {
         try {
-            MavenDependency[] mavenDependencies = toMavenDependencies(dependencies, profile.excludes());
-
-            File[] archives = Maven.configureResolver().addDependencies(mavenDependencies).resolve().withTransitivity()
-                    .asFile();
-            classloader = new URLClassLoader(toURLs(archives), ChameleonContainer.class.getClassLoader());
-
-            final Class<?> delegateClass = classloader.loadClass(profile.adapterClass());
-            lifecycle(new Callable<Void>() {
-                @SuppressWarnings({ "rawtypes", "unchecked" })
-                @Override
-                public Void call() throws Exception {
-                    delegate = (DeployableContainer) delegateClass.newInstance();
-                    injectorInst.get().inject(delegate);
-
-                    ContainerConfiguration delegateConfig = (ContainerConfiguration) delegate.getConfigurationClass()
-                            .newInstance();
-                    MapObject.populate(delegateConfig, delegateConfiguration);
-                    delegateConfig.validate();
-                    delegate.setup(delegateConfig);
-                    return null;
-                }
-            });
-
+            target.setup(targetConfiguration);
         } catch (Exception e) {
-            throw new RuntimeException("Could not setup chameleon container", e);
+            throw new RuntimeException("Could not setup Chameleon container for " + configuration.getTarget(), e);
         }
     }
 
     @Override
     public void start() throws LifecycleException {
-        lifecycle(new Callable<Void>() {
-            @Override
-            public Void call() throws Exception {
-                delegate.start();
-                return null;
-            }
-        });
+        target.start();
     }
 
     @Override
     public void stop() throws LifecycleException {
-        lifecycle(new Callable<Void>() {
-            @Override
-            public Void call() throws Exception {
-                delegate.stop();
-                return null;
-            }
-        });
+        target.stop();
     }
 
     @Override
     public ProtocolMetaData deploy(final Archive<?> archive) throws DeploymentException {
-        return deployment(new Callable<ProtocolMetaData>() {
-            @SuppressWarnings("unchecked")
-            @Override
-            public ProtocolMetaData call() throws Exception {
-                return delegate.deploy(archive);
-            }
-        });
+        return target.deploy(archive);
     }
 
     @Override
     public void undeploy(final Archive<?> archive) throws DeploymentException {
-        deployment(new Callable<Void>() {
-            @SuppressWarnings("unchecked")
-            @Override
-            public Void call() throws Exception {
-                delegate.undeploy(archive);
-                return null;
-            }
-        });
+        target.undeploy(archive);
     }
 
     @Override
     public void deploy(final Descriptor descriptor) throws DeploymentException {
-        deployment(new Callable<Void>() {
-            @Override
-            public Void call() throws Exception {
-                delegate.deploy(descriptor);
-                return null;
-            }
-        });
+        target.deploy(descriptor);
     }
 
     @Override
     public void undeploy(final Descriptor descriptor) throws DeploymentException {
-        deployment(new Callable<Void>() {
-            @Override
-            public Void call() throws Exception {
-                delegate.undeploy(descriptor);
-                return null;
-            }
-        });
-    }
-
-    private <T> T deployment(Callable<T> callable) throws DeploymentException {
-        ClassLoader current = Thread.currentThread().getContextClassLoader();
-        try {
-            Thread.currentThread().setContextClassLoader(classloader);
-            return callable.call();
-        } catch (DeploymentException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new DeploymentException("Could not proxy call", e);
-        } finally {
-            Thread.currentThread().setContextClassLoader(current);
-        }
-    }
-
-    private <T> T lifecycle(Callable<T> callable) throws LifecycleException {
-        ClassLoader current = Thread.currentThread().getContextClassLoader();
-        try {
-            Thread.currentThread().setContextClassLoader(classloader);
-            return callable.call();
-        } catch (LifecycleException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new LifecycleException("Could not proxy call", e);
-        } finally {
-            Thread.currentThread().setContextClassLoader(current);
-        }
+        target.undeploy(descriptor);
     }
 }
