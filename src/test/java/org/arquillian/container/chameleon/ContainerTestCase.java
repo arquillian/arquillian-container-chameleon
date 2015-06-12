@@ -48,7 +48,7 @@ public class ContainerTestCase {
 
     private ContainerAdapter load(String target) throws Exception {
         ChameleonConfiguration c = new ChameleonConfiguration();
-        c.setTarget(target);
+        c.setChameleonTarget(target);
         return c.getConfiguredAdapter();
     }
 }

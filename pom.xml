@@ -153,7 +153,7 @@
 								    <skip>false</skip>
 								    <test>SimpleDeploymentTestCase</test>
 									<systemPropertyVariables>
-										<arq.container.chameleon.configuration.target>wildfly:9.0.0.CR1:managed</arq.container.chameleon.configuration.target>
+										<arq.container.chameleon.configuration.chameleonTarget>wildfly:9.0.0.CR1:managed</arq.container.chameleon.configuration.chameleonTarget>
 									</systemPropertyVariables>
 								</configuration>
 							</execution>
@@ -164,7 +164,7 @@
 								    <skip>false</skip>
 								    <test>SimpleDeploymentTestCase</test>
 									<systemPropertyVariables>
-										<arq.container.chameleon.configuration.target>wildfly:8.2.0.Final:managed</arq.container.chameleon.configuration.target>
+										<arq.container.chameleon.configuration.chameleonTarget>wildfly:8.2.0.Final:managed</arq.container.chameleon.configuration.chameleonTarget>
 									</systemPropertyVariables>
 								</configuration>
 							</execution>
@@ -175,7 +175,7 @@
 								    <skip>false</skip>
 								    <test>SimpleDeploymentTestCase</test>
 									<systemPropertyVariables>
-										<arq.container.chameleon.configuration.target>wildfly:8.1.0.Final:managed</arq.container.chameleon.configuration.target>
+										<arq.container.chameleon.configuration.chameleonTarget>wildfly:8.1.0.Final:managed</arq.container.chameleon.configuration.chameleonTarget>
 									</systemPropertyVariables>
 								</configuration>
 							</execution>
@@ -186,7 +186,7 @@
 								    <skip>false</skip>
 								    <test>SimpleDeploymentTestCase</test>
 									<systemPropertyVariables>
-										<arq.container.chameleon.configuration.target>wildfly:8.0.0.Final:managed</arq.container.chameleon.configuration.target>
+										<arq.container.chameleon.configuration.chameleonTarget>wildfly:8.0.0.Final:managed</arq.container.chameleon.configuration.chameleonTarget>
 									</systemPropertyVariables>
 								</configuration>
 							</execution>
@@ -197,7 +197,7 @@
 								    <skip>false</skip>
 								    <test>SimpleDeploymentTestCase</test>
 									<systemPropertyVariables>
-										<arq.container.chameleon.configuration.target>glassfish:4.0:managed</arq.container.chameleon.configuration.target>
+										<arq.container.chameleon.configuration.chameleonTarget>glassfish:4.0:managed</arq.container.chameleon.configuration.chameleonTarget>
 									</systemPropertyVariables>
 								</configuration>
 							</execution>
@@ -208,7 +208,7 @@
 								    <skip>false</skip>
 								    <test>SimpleDeploymentTestCase</test>
 									<systemPropertyVariables>
-										<arq.container.chameleon.configuration.target>glassfish:4.1:managed</arq.container.chameleon.configuration.target>
+										<arq.container.chameleon.configuration.chameleonTarget>glassfish:4.1:managed</arq.container.chameleon.configuration.chameleonTarget>
 									</systemPropertyVariables>
 								</configuration>
 							</execution>

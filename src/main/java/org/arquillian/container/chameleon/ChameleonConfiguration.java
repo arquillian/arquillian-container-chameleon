@@ -15,67 +15,67 @@ public class ChameleonConfiguration implements ContainerConfiguration {
     private static final String GRADLE_OUTPUT_DIRECTORY = "bin";
     private static final String TMP_FOLDER_EXPRESSION = "TMP";
 
-    private String target = null;
-    private String containerConfigurationFile = "/chameleon/default/containers.yaml";
-    private String distributionDownloadFolder  = null;
+    private String chameleonTarget = null;
+    private String chameleonContainerConfigurationFile = "/chameleon/default/containers.yaml";
+    private String chameleonDistributionDownloadFolder  = null;
 
     @Override
     public void validate() throws ConfigurationException {
-        if (target == null) {
+        if (chameleonTarget == null) {
             throw new ConfigurationException("target must be provided in format server:version:type");
         }
-        if(getClass().getResource(getContainerConfigurationFile()) == null) {
-            throw new ConfigurationException("containerConfigurationFile must be provided in. Classloader resource " + getContainerConfigurationFile() + " not found");
+        if(getClass().getResource(getChameleonContainerConfigurationFile()) == null) {
+            throw new ConfigurationException("containerConfigurationFile must be provided in. Classloader resource " + getChameleonContainerConfigurationFile() + " not found");
         }
         // Try to parse to 'trigger' ConfigurationException
         getParsedTarget();
     }
 
-    public String getTarget() {
-        return target;
+    public String getChameleonTarget() {
+        return chameleonTarget;
     }
 
-    public void setTarget(String target) {
-        this.target = target;
+    public void setChameleonTarget(String target) {
+        this.chameleonTarget = target;
     }
 
-    public String getContainerConfigurationFile() {
-        return containerConfigurationFile;
+    public String getChameleonContainerConfigurationFile() {
+        return chameleonContainerConfigurationFile;
     }
 
-    public void setContainerConfigurationFile(String containerConfigurationFile) {
-        this.containerConfigurationFile = containerConfigurationFile;
+    public void setChameleonContainerConfigurationFile(String containerConfigurationFile) {
+        this.chameleonContainerConfigurationFile = containerConfigurationFile;
     }
 
-    public void setDistributionDownloadFolder(String distributionDownloadFolder) {
-        this.distributionDownloadFolder = distributionDownloadFolder;
+    public void setChameleonDistributionDownloadFolder(String distributionDownloadFolder) {
+        this.chameleonDistributionDownloadFolder = distributionDownloadFolder;
     }
 
     public ContainerAdapter getConfiguredAdapter() throws Exception {
         Target target = getParsedTarget();
-        Container[] containers = new ContainerLoader().load(getContainerConfigurationFile());
+        Container[] containers = new ContainerLoader().load(getChameleonContainerConfigurationFile());
         for (Container container : containers) {
             ContainerAdapter adapter = container.matches(target);
             if (adapter != null) {
                 return adapter;
             }
         }
-        throw new IllegalArgumentException("No container configuration found in " + getContainerConfigurationFile()
-                + " for target " + getTarget());
+        throw new IllegalArgumentException("No container configuration found in " + getChameleonContainerConfigurationFile()
+                + " for target " + getChameleonTarget());
     }
 
-    public String getDistributionDownloadFolder() {
-        if(distributionDownloadFolder != null) {
-            if(TMP_FOLDER_EXPRESSION.equalsIgnoreCase(distributionDownloadFolder)) {
-                distributionDownloadFolder = System.getProperty("java.io.tmpdir") + "/arquillian_chameleon";
+    public String getChameleonDistributionDownloadFolder() {
+        if(chameleonDistributionDownloadFolder != null) {
+            if(TMP_FOLDER_EXPRESSION.equalsIgnoreCase(chameleonDistributionDownloadFolder)) {
+                chameleonDistributionDownloadFolder = System.getProperty("java.io.tmpdir") + "/arquillian_chameleon";
             }
-            return distributionDownloadFolder;
+            return chameleonDistributionDownloadFolder;
         }
         return getOutputDirectory();
     }
 
     private Target getParsedTarget() {
-        return Target.from(getTarget());
+        return Target.from(getChameleonTarget());
     }
 
     private String getOutputDirectory() {

@@ -10,7 +10,7 @@
 -->
     <container qualifier="chameleon" default="true">
         <configuration>
-            <property name="target">wildfly:9.0.0.CR1:managed</property>
+            <property name="chameleonTarget">wildfly:9.0.0.CR1:managed</property>
         </configuration>
     </container>
 </arquillian>

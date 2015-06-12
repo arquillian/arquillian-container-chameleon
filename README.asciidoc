@@ -44,17 +44,17 @@ Add this configuration to `arquillian.xml`:
 ----
 <container qualifier="chameleon" default="true">
     <configuration>
-        <property name="target">wildfly:8.0.0.Final:managed</property>
+        <property name="chameleonTarget">wildfly:8.0.0.Final:managed</property>
         <property name="serverConfig">standalone-full.xml</property>
     </configuration>
 </container>
 ----
 
-Now, you can switch container implementation as simple as changing the target configuration option(e.g. `wildfly:8.0.0.Final:remote` or `wildfly:9.0.0.CR1:managed`).
+Now, you can switch container implementation as simple as changing the chameleonTarget configuration option(e.g. `wildfly:8.0.0.Final:remote` or `wildfly:9.0.0.CR1:managed`).
 
 And off course, you can still configure the underlying container by its specific configuration (e.g. change `serverConfig`).
 
-Example target values:
+Example chameleonTarget values:
 
 * jboss eap:6.2:remote
 * jboss as:7.1.1.Final:managed
@@ -78,16 +78,16 @@ Chameleon will download and extract the target container if no distribution home
 
 === Configuration options
 
-==== target
+==== chameleonTarget
 
 Define the underlying target in the format name:version:type
 
-==== distributionDownloadFolder
+==== chameleonDistributionDownloadFolder
 
 Override the default download folder for container distributions. Could be defined as 'TMP' to create a custom folder under 'java.io.tmpdir', else
 it will be read as a directory. Defaults to detect current build system, either target/ for Maven or bin/ for Gradle.
 
-==== containerConfigurationFile
+==== chameleonContainerConfigurationFile
 
 Define the container configuration file to use. Defaults to the containers.yaml file provided by Chameleon.
 

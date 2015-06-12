@@ -44,7 +44,7 @@ public class ChameleonContainer implements DeployableContainer<ContainerConfigur
                     injectorInst.get());
             this.distribution = new DistributionController(
                     adapter,
-                    configuration.getDistributionDownloadFolder());
+                    configuration.getChameleonDistributionDownloadFolder());
 
             distribution.setup(targetConfiguration);
         } catch (Exception e) {
@@ -57,7 +57,7 @@ public class ChameleonContainer implements DeployableContainer<ContainerConfigur
         try {
             target.setup(targetConfiguration);
         } catch (Exception e) {
-            throw new RuntimeException("Could not setup Chameleon container for " + configuration.getTarget(), e);
+            throw new RuntimeException("Could not setup Chameleon container for " + configuration.getChameleonTarget(), e);
         }
     }
 
