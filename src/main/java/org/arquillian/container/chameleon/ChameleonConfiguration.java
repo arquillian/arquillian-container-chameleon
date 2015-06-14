@@ -27,7 +27,7 @@ public class ChameleonConfiguration implements ContainerConfiguration {
     @Override
     public void validate() throws ConfigurationException {
         if (chameleonTarget == null) {
-            throw new ConfigurationException("target must be provided in format server:version:type");
+            throw new ConfigurationException("chameleonTarget must be provided in format server:version:type");
         }
 
         // Trigger possible Exception case during File/Resource load

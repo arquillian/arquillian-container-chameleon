@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Map;
 
+import org.jboss.arquillian.config.descriptor.api.ContainerDef;
 import org.jboss.arquillian.config.descriptor.impl.ContainerDefImpl;
 import org.jboss.arquillian.container.spi.event.SetupContainer;
 import org.jboss.arquillian.core.api.annotation.Observes;
@@ -28,10 +29,6 @@ public class InitiateContainer {
 
     private void initiateChameleon(SetupContainer setup) throws NoSuchFieldException, IllegalAccessException {
         ChameleonContainer container = (ChameleonContainer) setup.getContainer().getDeployableContainer();
-        if(container.isInitiated()) {
-            return;
-        }
-
         ContainerDefImpl containerDef = (ContainerDefImpl) setup.getContainer().getContainerConfiguration();
         Field containerNodeField = ContainerDefImpl.class.getDeclaredField("container");
         if (!containerNodeField.isAccessible()) {
@@ -39,18 +36,38 @@ public class InitiateContainer {
         }
 
         Node node = (Node) containerNodeField.get(containerDef);
-        Map<String, String> properties = containerDef.getContainerProperties();
+        Map<String, String> properties = removeAndMerge(container, node, containerDef);
+        if(container.isInitiated() && !properties.containsKey("chameleonTarget")) {
+            return;
+        }
 
-        // Remove the Chameleon container properties from configuration
         ChameleonConfiguration configuration = new ChameleonConfiguration();
         try {
+            // Remove the Chameleon container properties from configuration
             setAndRemoveProperties(node, properties, configuration);
             configuration.validate();
         } catch (Exception e) {
             throw new RuntimeException("Could not configure Chameleon container " + setup.getContainerName(), e);
         }
-
         container.init(configuration, containerDef);
+    }
+
+    private Map<String, String> removeAndMerge(ChameleonContainer container, Node node, ContainerDef containerDef) {
+        Map<String, String> current = containerDef.getContainerProperties();
+        if(!container.isInitiated() || !current.containsKey("chameleonTarget")) {
+            return current;
+        }
+
+        Map<String, String> original = container.getOriginalContainerConfiguration();
+        Map<String, String> currentConfigured = container.getCurrentContainerConfiguration();
+
+        for(Map.Entry<String, String> currentConfiguredEntry : currentConfigured.entrySet()) {
+            if(!original.containsKey(currentConfiguredEntry.getKey())) {
+                node.getSingle("configuration").removeChild("property@name=" + currentConfiguredEntry.getKey());
+            }
+        }
+
+        return containerDef.getContainerProperties();
     }
 
     private void setAndRemoveProperties(Node node, Map<String, String> properties, ChameleonConfiguration configuration) throws Exception {

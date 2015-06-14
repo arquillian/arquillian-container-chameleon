@@ -1,5 +1,8 @@
 package org.arquillian.container.chameleon;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.arquillian.container.chameleon.controller.DistributionController;
 import org.arquillian.container.chameleon.controller.TargetController;
 import org.arquillian.container.chameleon.spi.model.ContainerAdapter;
@@ -22,6 +25,8 @@ public class ChameleonContainer implements DeployableContainer<ContainerConfigur
     private TargetController target;
     private DistributionController distribution;
     private ChameleonConfiguration configuration;
+    private Map<String, String> originalContainerConfiguration;
+    private Map<String, String> currentContainerConfiguration;
 
     @Inject
     private Instance<Injector> injectorInst;
@@ -43,8 +48,19 @@ public class ChameleonContainer implements DeployableContainer<ContainerConfigur
         return this.configuration != null;
     }
 
+    Map<String, String> getOriginalContainerConfiguration() {
+        return originalContainerConfiguration;
+    }
+
+    Map<String, String> getCurrentContainerConfiguration() {
+        return currentContainerConfiguration;
+    }
+
     public void init(ChameleonConfiguration configuration, ContainerDef targetConfiguration) {
         this.configuration = configuration;
+        if(this.originalContainerConfiguration == null) {
+            this.originalContainerConfiguration = new HashMap<String, String>(targetConfiguration.getContainerProperties());
+        }
         try {
             ContainerAdapter adapter = configuration.getConfiguredAdapter();
             this.target = new TargetController(
@@ -59,6 +75,7 @@ public class ChameleonContainer implements DeployableContainer<ContainerConfigur
         } catch (Exception e) {
             throw new IllegalStateException("Could not setup chameleon container", e);
         }
+        this.currentContainerConfiguration = targetConfiguration.getContainerProperties();
     }
 
     @Override

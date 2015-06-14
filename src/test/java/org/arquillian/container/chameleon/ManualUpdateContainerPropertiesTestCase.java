@@ -13,13 +13,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(Arquillian.class)
-public class ManualContainerTestCase {
+public class ManualUpdateContainerPropertiesTestCase {
 
     @ArquillianResource
     private ContainerController cc;
 
     @Test
     public void shouldBeAbleToStartTargetContainerWithNewArguments() throws Exception {
+        // Update configuration from arquillian.xml to bind to a new port
         cc.start("manual",
                 new Config()
                     .add("javaVmArguments", "-Djboss.socket.binding.port-offset=1000")
