@@ -35,6 +35,10 @@ public class ChameleonContainer implements DeployableContainer<ContainerConfigur
         return new ProtocolDescription("Servlet 3.0");
     }
 
+    public boolean isInitiated() {
+        return this.configuration != null;
+    }
+
     public void init(ChameleonConfiguration configuration, ContainerDef targetConfiguration) {
         this.configuration = configuration;
         try {

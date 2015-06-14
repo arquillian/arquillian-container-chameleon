@@ -129,6 +129,28 @@
                 <configuration>
                     <forkMode>always</forkMode>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>default-test</id>
+                        <configuration>
+                            <excludes>
+                                <include>**/*Manual*</include>
+                            </excludes>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>manual</id>
+                        <goals><goal>test</goal></goals>
+                        <configuration>
+                            <systemPropertyVariables>
+                                <arquillian.launch>manual</arquillian.launch>
+                            </systemPropertyVariables>
+                            <includes>
+                                <include>**/*Manual*</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

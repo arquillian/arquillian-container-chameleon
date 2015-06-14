@@ -27,6 +27,11 @@ public class InitiateContainer {
     }
 
     private void initiateChameleon(SetupContainer setup) throws NoSuchFieldException, IllegalAccessException {
+        ChameleonContainer container = (ChameleonContainer) setup.getContainer().getDeployableContainer();
+        if(container.isInitiated()) {
+            return;
+        }
+
         ContainerDefImpl containerDef = (ContainerDefImpl) setup.getContainer().getContainerConfiguration();
         Field containerNodeField = ContainerDefImpl.class.getDeclaredField("container");
         if (!containerNodeField.isAccessible()) {
@@ -44,7 +49,6 @@ public class InitiateContainer {
             throw new RuntimeException("Could not configure Chameleon container " + setup.getContainerName(), e);
         }
 
-        ChameleonContainer container = (ChameleonContainer) setup.getContainer().getDeployableContainer();
         container.init(configuration, containerDef);
     }
 
