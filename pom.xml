@@ -212,6 +212,18 @@
 									</systemPropertyVariables>
 								</configuration>
 							</execution>
+                            <execution>
+                                <id>wf-custom</id>
+                                <goals><goal>test</goal></goals>
+                                <configuration>
+                                    <skip>false</skip>
+                                    <test>SimpleDeploymentTestCase</test>
+                                    <systemPropertyVariables>
+                                        <arq.container.chameleon.configuration.chameleonTarget>wildfly-custom:9.0.0.CR1:managed</arq.container.chameleon.configuration.chameleonTarget>
+                                        <arq.container.chameleon.configuration.chameleonContainerConfigurationFile>/containers.yaml</arq.container.chameleon.configuration.chameleonContainerConfigurationFile>
+                                    </systemPropertyVariables>
+                                </configuration>
+                            </execution>
 							<execution>
 								<id>gf4</id>
 								<goals><goal>test</goal></goals>
