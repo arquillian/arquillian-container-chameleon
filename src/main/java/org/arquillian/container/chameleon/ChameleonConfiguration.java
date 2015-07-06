@@ -1,5 +1,6 @@
 package org.arquillian.container.chameleon;
 
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -18,6 +19,7 @@ public class ChameleonConfiguration implements ContainerConfiguration {
     private String chameleonTarget = null;
     private String chameleonContainerConfigurationFile = "/chameleon/default/containers.yaml";
     private String chameleonDistributionDownloadFolder  = null;
+    private String chameleonResolveCacheFolder  = null;
 
     @Override
     public void validate() throws ConfigurationException {
@@ -27,6 +29,14 @@ public class ChameleonConfiguration implements ContainerConfiguration {
         if(getClass().getResource(getChameleonContainerConfigurationFile()) == null) {
             throw new ConfigurationException("containerConfigurationFile must be provided in. Classloader resource " + getChameleonContainerConfigurationFile() + " not found");
         }
+
+        File resolveCache = getChameleonResolveCacheFolder();
+        if(!resolveCache.exists()) {
+            if(!resolveCache.mkdirs()) {
+                throw new ConfigurationException("Could not create all resolve cache folders: " + resolveCache);
+            }
+        }
+
         // Try to parse to 'trigger' ConfigurationException
         getParsedTarget();
     }
@@ -51,17 +61,8 @@ public class ChameleonConfiguration implements ContainerConfiguration {
         this.chameleonDistributionDownloadFolder = distributionDownloadFolder;
     }
 
-    public ContainerAdapter getConfiguredAdapter() throws Exception {
-        Target target = getParsedTarget();
-        Container[] containers = new ContainerLoader().load(getChameleonContainerConfigurationFile());
-        for (Container container : containers) {
-            ContainerAdapter adapter = container.matches(target);
-            if (adapter != null) {
-                return adapter;
-            }
-        }
-        throw new IllegalArgumentException("No container configuration found in " + getChameleonContainerConfigurationFile()
-                + " for target " + getChameleonTarget());
+    public void setChameleonResolveCacheFolder(String chameleonResolveCacheFolder) {
+        this.chameleonResolveCacheFolder = chameleonResolveCacheFolder;
     }
 
     public String getChameleonDistributionDownloadFolder() {
@@ -72,6 +73,26 @@ public class ChameleonConfiguration implements ContainerConfiguration {
             return chameleonDistributionDownloadFolder;
         }
         return getOutputDirectory();
+    }
+
+    public File getChameleonResolveCacheFolder() {
+        if(chameleonResolveCacheFolder != null) {
+            return new File(chameleonResolveCacheFolder);
+        }
+        return new File(new File(getChameleonDistributionDownloadFolder(), "server"), "cache");
+    }
+
+    public ContainerAdapter getConfiguredAdapter() throws Exception {
+        Target target = getParsedTarget();
+        Container[] containers = new ContainerLoader().load(getChameleonContainerConfigurationFile(), getChameleonResolveCacheFolder());
+        for (Container container : containers) {
+            ContainerAdapter adapter = container.matches(target);
+            if (adapter != null) {
+                return adapter;
+            }
+        }
+        throw new IllegalArgumentException("No container configuration found in " + getChameleonContainerConfigurationFile()
+                + " for target " + getChameleonTarget());
     }
 
     private Target getParsedTarget() {

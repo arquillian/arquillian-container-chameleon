@@ -91,6 +91,10 @@ it will be read as a directory. Defaults to detect current build system, either 
 
 Define the container configuration file to use. Defaults to the containers.yaml file provided by Chameleon.
 
+==== chameleonResolveCacheFolder
+
+Define where Chameleon should store the resolver cache files. By default it will use 'chameleonDistributionDownloadFolder'/cache.
+
 Community
 ---------
 

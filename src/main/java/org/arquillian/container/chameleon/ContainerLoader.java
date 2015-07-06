@@ -9,24 +9,20 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.net.URLClassLoader;
 
+import org.arquillian.container.chameleon.controller.Resolver;
 import org.arquillian.container.chameleon.spi.model.Container;
-import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenDependency;
 
 public class ContainerLoader {
 
-    public Container[] load(String resource) throws Exception {
+    public Container[] load(String resource, File cacheFolder) throws Exception {
         InputStream containers = ContainerLoader.class.getResourceAsStream(resource);
 
         MavenDependency[] mavenDependencies = toMavenDependencies(
                 new String[] { "org.yaml:snakeyaml:1.15" },
                 new String[] {});
 
-        File[] archives = Maven.configureResolver()
-                .addDependencies(mavenDependencies)
-                .resolve()
-                .withTransitivity()
-                .asFile();
+        File[] archives = Resolver.resolve(cacheFolder, mavenDependencies);
 
         ClassLoader classloader = new URLClassLoader(toURLs(archives), null);
         return loadContainers(classloader, containers);

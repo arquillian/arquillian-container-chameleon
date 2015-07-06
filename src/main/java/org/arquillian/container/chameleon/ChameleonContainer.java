@@ -45,7 +45,8 @@ public class ChameleonContainer implements DeployableContainer<ContainerConfigur
             ContainerAdapter adapter = configuration.getConfiguredAdapter();
             this.target = new TargetController(
                     adapter,
-                    injectorInst.get());
+                    injectorInst.get(),
+                    configuration.getChameleonResolveCacheFolder());
             this.distribution = new DistributionController(
                     adapter,
                     configuration.getChameleonDistributionDownloadFolder());

@@ -45,6 +45,7 @@ public class InitiateContainer {
         ChameleonConfiguration configuration = new ChameleonConfiguration();
         try {
             setAndRemoveProperties(node, properties, configuration);
+            configuration.validate();
         } catch (Exception e) {
             throw new RuntimeException("Could not configure Chameleon container " + setup.getContainerName(), e);
         }

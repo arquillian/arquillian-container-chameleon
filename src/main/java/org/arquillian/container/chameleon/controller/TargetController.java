@@ -18,7 +18,6 @@ import org.jboss.arquillian.container.spi.client.protocol.metadata.ProtocolMetaD
 import org.jboss.arquillian.core.api.Injector;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.descriptor.api.Descriptor;
-import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenDependency;
 
 public class TargetController {
@@ -28,9 +27,9 @@ public class TargetController {
     private DeployableContainer delegate;
 
     @SuppressWarnings("rawtypes")
-    public TargetController(ContainerAdapter adapter, Injector injector) throws Exception {
+    public TargetController(ContainerAdapter adapter, Injector injector, File resolverCacheFolder) throws Exception {
         // init
-        classloader = resolveClasspathDependencies(adapter);
+        classloader = resolveClasspathDependencies(adapter, resolverCacheFolder);
         final Class<?> delegateClass = classloader.loadClass(adapter.adapterClass());
         delegate = (DeployableContainer) delegateClass.newInstance();
         injector.inject(delegate);
@@ -141,14 +140,13 @@ public class TargetController {
         }
     }
 
-    private ClassLoader resolveClasspathDependencies(ContainerAdapter targetAdapter) {
+    private ClassLoader resolveClasspathDependencies(ContainerAdapter targetAdapter, File resolverCacheFolder) {
         String[] dependencies = targetAdapter.dependencies();
 
         try {
             MavenDependency[] mavenDependencies = toMavenDependencies(dependencies, targetAdapter.excludes());
 
-            File[] archives = Maven.configureResolver().addDependencies(mavenDependencies).resolve().withTransitivity()
-                    .asFile();
+            File[] archives = Resolver.resolve(resolverCacheFolder, mavenDependencies);
             return new URLClassLoader(toURLs(archives), ChameleonContainer.class.getClassLoader());
 
         } catch (Exception e) {
