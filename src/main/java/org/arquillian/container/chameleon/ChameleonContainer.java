@@ -13,6 +13,7 @@ import org.jboss.arquillian.container.spi.client.protocol.metadata.ProtocolMetaD
 import org.jboss.arquillian.core.api.Injector;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
+import org.jboss.arquillian.core.api.threading.ExecutorService;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.descriptor.api.Descriptor;
 
@@ -24,6 +25,9 @@ public class ChameleonContainer implements DeployableContainer<ContainerConfigur
 
     @Inject
     private Instance<Injector> injectorInst;
+
+    @Inject
+    private Instance<ExecutorService> executorServiceInst;
 
     @Override
     public Class<ContainerConfiguration> getConfigurationClass() {
@@ -51,7 +55,7 @@ public class ChameleonContainer implements DeployableContainer<ContainerConfigur
                     adapter,
                     configuration.getChameleonDistributionDownloadFolder());
 
-            distribution.setup(targetConfiguration);
+            distribution.setup(targetConfiguration, executorServiceInst.get());
         } catch (Exception e) {
             throw new IllegalStateException("Could not setup chameleon container", e);
         }

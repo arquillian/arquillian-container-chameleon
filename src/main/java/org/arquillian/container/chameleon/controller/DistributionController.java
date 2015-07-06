@@ -5,10 +5,14 @@ import static org.arquillian.container.chameleon.Utils.toMavenCoordinate;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 import org.arquillian.container.chameleon.spi.model.ContainerAdapter;
 import org.arquillian.container.chameleon.spi.model.Target.Type;
 import org.jboss.arquillian.config.descriptor.api.ContainerDef;
+import org.jboss.arquillian.core.api.threading.ExecutorService;
 import org.jboss.shrinkwrap.api.GenericArchive;
 import org.jboss.shrinkwrap.api.exporter.ExplodedExporter;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
@@ -24,9 +28,9 @@ public class DistributionController {
         this.distributionDownloadFolder = distributionDownloadFolder;
     }
 
-    public void setup(ContainerDef targetConfiguration) throws Exception {
+    public void setup(ContainerDef targetConfiguration, ExecutorService executor) throws Exception {
         if(requireDistribution(targetConfiguration)) {
-            updateTargetConfiguration(targetConfiguration, resolveDistribution());
+            updateTargetConfiguration(targetConfiguration, resolveDistribution(executor));
         }
     }
 
@@ -39,11 +43,11 @@ public class DistributionController {
         return false;
     }
 
-    private File resolveDistribution() {
-        MavenCoordinate distributableCoordinate = toMavenCoordinate(targetAdapter.distribution());
+    private File resolveDistribution(ExecutorService executor) {
+        final MavenCoordinate distributableCoordinate = toMavenCoordinate(targetAdapter.distribution());
 
         if (distributableCoordinate != null) {
-            File targetDirectory = new File(new File(distributionDownloadFolder, "server"),
+            final File targetDirectory = new File(new File(distributionDownloadFolder, "server"),
                     distributableCoordinate.getArtifactId() + "_" + distributableCoordinate.getVersion());
 
             if (targetDirectory.exists()) {
@@ -52,12 +56,28 @@ public class DistributionController {
                 targetDirectory.mkdirs();
             }
 
-            File uncompressDirectory = Maven.resolver().resolve(distributableCoordinate.toCanonicalForm())
-                        .withoutTransitivity()
-                        .asSingle(GenericArchive.class)
-                        .as(ExplodedExporter.class)
-                        .exportExploded(targetDirectory, ".");
-            return getDistributionHome(uncompressDirectory);
+            System.out.println("chameleon: preparing distribution " + distributableCoordinate.toCanonicalForm());
+            Future<File> uncompressDirectory = executor.submit(new Callable<File>() {
+                @Override
+                public File call() throws Exception {
+                    return Maven.resolver().resolve(distributableCoordinate.toCanonicalForm())
+                            .withoutTransitivity()
+                            .asSingle(GenericArchive.class)
+                            .as(ExplodedExporter.class)
+                            .exportExploded(targetDirectory, ".");
+                }
+            });
+
+            try {
+                while(!uncompressDirectory.isDone() ) {
+                    System.out.print(".");
+                    Thread.sleep(500);
+                }
+                System.out.println();
+                return getDistributionHome(uncompressDirectory.get());
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
         return null;
     }
