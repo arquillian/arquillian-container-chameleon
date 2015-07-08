@@ -1,8 +1,11 @@
 package org.arquillian.container.chameleon;
 
+import static org.arquillian.container.chameleon.Utils.isClientInDebugMode;
+
 import org.arquillian.container.chameleon.controller.DistributionController;
 import org.arquillian.container.chameleon.controller.TargetController;
 import org.arquillian.container.chameleon.spi.model.ContainerAdapter;
+import org.arquillian.container.chameleon.spi.model.Target;
 import org.jboss.arquillian.config.descriptor.api.ContainerDef;
 import org.jboss.arquillian.container.spi.client.container.ContainerConfiguration;
 import org.jboss.arquillian.container.spi.client.container.DeployableContainer;
@@ -56,6 +59,16 @@ public class ChameleonContainer implements DeployableContainer<ContainerConfigur
                     configuration.getChameleonDistributionDownloadFolder());
 
             distribution.setup(targetConfiguration, executorServiceInst.get());
+            
+            if(configuration.isChameleonEnableAutoChildDebugging()) {
+                if(Target.Type.Managed == adapter.type() && isClientInDebugMode()) {
+                    if(adapter.hasJVMDebugOption()) {
+                        targetConfiguration.overrideProperty(
+                                adapter.getJVMDebugOption(),
+                                "-agentlib:jdwp=transport=dt_socket,address=8787,server=y,suspend=y");
+                    }
+                }
+            }
         } catch (Exception e) {
             throw new IllegalStateException("Could not setup chameleon container", e);
         }

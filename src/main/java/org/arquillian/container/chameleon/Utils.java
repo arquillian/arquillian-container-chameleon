@@ -12,6 +12,13 @@ import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenDependencyExclusi
 
 public final class Utils {
 
+    private Utils() {}
+
+    public static boolean isClientInDebugMode() {
+        return java.lang.management.ManagementFactory.getRuntimeMXBean().
+                getInputArguments().toString().indexOf("jdwp") >= 0;
+    }
+
     @SuppressWarnings("deprecation")
     public static URL[] toURLs(File[] archives) throws Exception {
         URL[] urls = new URL[archives.length];

@@ -58,6 +58,14 @@ public class ContainerAdapter {
         return configuration;
     }
 
+    public boolean hasJVMDebugOption() {
+        return adapter.debug().containsKey("jvm");
+    }
+
+    public String getJVMDebugOption() {
+        return adapter.debug().get("jvm");
+    }
+
     private String[] resolve(String[] values) {
         if(values == null) {
             return new String[0];

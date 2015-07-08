@@ -20,6 +20,7 @@ public class ChameleonConfiguration implements ContainerConfiguration {
     private String chameleonContainerConfigurationFile = "/chameleon/default/containers.yaml";
     private String chameleonDistributionDownloadFolder  = null;
     private String chameleonResolveCacheFolder  = null;
+    private boolean chameleonEnableAutoChildDebugging = true;
 
     @Override
     public void validate() throws ConfigurationException {
@@ -63,6 +64,14 @@ public class ChameleonConfiguration implements ContainerConfiguration {
 
     public void setChameleonResolveCacheFolder(String chameleonResolveCacheFolder) {
         this.chameleonResolveCacheFolder = chameleonResolveCacheFolder;
+    }
+
+    public void setChameleonEnableAutoChildDebugging(boolean chameleonEnableAutoChildDebugging) {
+        this.chameleonEnableAutoChildDebugging = chameleonEnableAutoChildDebugging;
+    }
+
+    public boolean isChameleonEnableAutoChildDebugging() {
+        return chameleonEnableAutoChildDebugging;
     }
 
     public String getChameleonDistributionDownloadFolder() {

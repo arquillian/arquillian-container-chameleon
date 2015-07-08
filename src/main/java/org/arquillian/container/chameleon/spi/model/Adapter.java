@@ -15,6 +15,7 @@ public class Adapter {
     private boolean requireDist = true;
     private String[] dependencies;
     private Map<String, String> configuration;
+    private Map<String, String> debug;
 
     public boolean isType(Target.Type targetType) {
         return targetType.name().toLowerCase().equalsIgnoreCase(type);
@@ -42,5 +43,9 @@ public class Adapter {
             return new HashMap<String, String>(configuration);
         }
         return Collections.emptyMap();
+    }
+
+    public Map<String, String> debug() {
+        return debug;
     }
 }
