@@ -1,6 +1,7 @@
 package org.arquillian.container.chameleon;
 
 import java.io.File;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -16,8 +17,10 @@ public class ChameleonConfiguration implements ContainerConfiguration {
     private static final String GRADLE_OUTPUT_DIRECTORY = "bin";
     private static final String TMP_FOLDER_EXPRESSION = "TMP";
 
+    private static final String DEFAULT_CONTAINER_MAPPING = "chameleon/default/containers.yaml";
+
     private String chameleonTarget = null;
-    private String chameleonContainerConfigurationFile = "/chameleon/default/containers.yaml";
+    private String chameleonContainerConfigurationFile = null;
     private String chameleonDistributionDownloadFolder  = null;
     private String chameleonResolveCacheFolder  = null;
 
@@ -26,9 +29,9 @@ public class ChameleonConfiguration implements ContainerConfiguration {
         if (chameleonTarget == null) {
             throw new ConfigurationException("target must be provided in format server:version:type");
         }
-        if(getClass().getResource(getChameleonContainerConfigurationFile()) == null) {
-            throw new ConfigurationException("containerConfigurationFile must be provided in. Classloader resource " + getChameleonContainerConfigurationFile() + " not found");
-        }
+
+        // Trigger possible Exception case during File/Resource load
+        getChameleonContainerConfigurationFileStream();
 
         File resolveCache = getChameleonResolveCacheFolder();
         if(!resolveCache.exists()) {
@@ -51,6 +54,16 @@ public class ChameleonConfiguration implements ContainerConfiguration {
 
     public String getChameleonContainerConfigurationFile() {
         return chameleonContainerConfigurationFile;
+    }
+
+    public InputStream getChameleonContainerConfigurationFileStream() {
+        boolean isDefault = false;
+        String resource = getChameleonContainerConfigurationFile();
+        if(resource == null) {
+            resource = DEFAULT_CONTAINER_MAPPING;
+            isDefault = true;
+        }
+        return FileUtils.loadConfiguration(resource, isDefault);
     }
 
     public void setChameleonContainerConfigurationFile(String containerConfigurationFile) {
@@ -84,7 +97,7 @@ public class ChameleonConfiguration implements ContainerConfiguration {
 
     public ContainerAdapter getConfiguredAdapter() throws Exception {
         Target target = getParsedTarget();
-        Container[] containers = new ContainerLoader().load(getChameleonContainerConfigurationFile(), getChameleonResolveCacheFolder());
+        Container[] containers = new ContainerLoader().load(getChameleonContainerConfigurationFileStream(), getChameleonResolveCacheFolder());
         for (Container container : containers) {
             ContainerAdapter adapter = container.matches(target);
             if (adapter != null) {

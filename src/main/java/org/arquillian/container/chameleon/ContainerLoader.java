@@ -15,8 +15,7 @@ import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenDependency;
 
 public class ContainerLoader {
 
-    public Container[] load(String resource, File cacheFolder) throws Exception {
-        InputStream containers = ContainerLoader.class.getResourceAsStream(resource);
+    public Container[] load(InputStream containers, File cacheFolder) throws Exception {
 
         MavenDependency[] mavenDependencies = toMavenDependencies(
                 new String[] { "org.yaml:snakeyaml:1.15" },
