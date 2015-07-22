@@ -114,14 +114,14 @@
   versionExpression: 9.*
   adapters:
     - type: remote
-      gav: org.wildfly.arquillian:wildfly-arquillian-container-remote:1.0.0.Alpha5
+      gav: org.wildfly.arquillian:wildfly-arquillian-container-remote:1.0.0.Final
       adapterClass: org.jboss.as.arquillian.container.remote.RemoteDeployableContainer
     - type: managed
-      gav: org.wildfly.arquillian:wildfly-arquillian-container-managed:1.0.0.Alpha5
+      gav: org.wildfly.arquillian:wildfly-arquillian-container-managed:1.0.0.Final
       adapterClass: org.jboss.as.arquillian.container.managed.ManagedDeployableContainer
       configuration: *WF_CONFIG
     - type: embedded
-      gav: org.wildfly.arquillian:wildfly-arquillian-container-embedded:1.0.0.Alpha5
+      gav: org.wildfly.arquillian:wildfly-arquillian-container-embedded:1.0.0.Final
       adapterClass: org.jboss.as.arquillian.container.embedded.EmbeddedDeployableContainer
       configuration: *WF_CONFIG
   dist: *WF_DIST

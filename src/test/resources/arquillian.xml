@@ -10,12 +10,12 @@
 -->
     <container qualifier="chameleon" default="true">
         <configuration>
-            <property name="chameleonTarget">wildfly:9.0.0.CR1:managed</property>
+            <property name="chameleonTarget">wildfly:9.0.0.Final:managed</property>
         </configuration>
     </container>
 	<container qualifier="manual" mode="manual">
 		<configuration>
-			<property name="chameleonTarget">wildfly:9.0.0.CR1:managed</property>
+			<property name="chameleonTarget">wildfly:9.0.0.Final:managed</property>
 		</configuration>
 	</container>
 </arquillian>
