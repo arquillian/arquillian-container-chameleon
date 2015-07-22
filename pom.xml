@@ -15,7 +15,7 @@
     <!-- Artifact Configuration -->
     <groupId>org.arquillian.container</groupId>
     <artifactId>arquillian-container-chameleon</artifactId>
-    <version>1.0.0.Alpha3</version>
+    <version>1.0.0.Final-SNAPSHOT</version>
     <name>Arquillian Container Chameleon</name>
     <description>Chameleon container that dynamically loads correct container adapter versions</description>
 
@@ -23,7 +23,7 @@
         <connection>scm:git:git://git@github.com:arquillian/arquillian-container-chameleon.git</connection>
         <developerConnection>scm:git:ssh://github.com/arquillian/arquillian-container-chameleon.git</developerConnection>
         <url>git://github.com/arquillian/arquillian-container-chameleon.git</url>
-      <tag>1.0.0.Alpha3</tag>
+      <tag>HEAD</tag>
   </scm>
 
     <!-- Properties -->
