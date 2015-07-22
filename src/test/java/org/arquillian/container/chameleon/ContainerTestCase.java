@@ -1,5 +1,8 @@
 package org.arquillian.container.chameleon;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.arquillian.container.chameleon.spi.model.ContainerAdapter;
 import org.junit.Assert;
 import org.junit.Test;
@@ -44,6 +47,18 @@ public class ContainerTestCase {
         Assert.assertEquals(
                 "org.wildfly.arquillian:wildfly-arquillian-container-managed:1.0.0.Alpha5",
                 adapter.dependencies()[0]);
+    }
+
+    @Test
+    public void resolveWindowsFilePathSlash() throws Exception {
+        ContainerAdapter adapter = load("wildfly:9.0.0.Final:managed");
+        Map<String, String> config = new HashMap<String, String>();
+        config.put("dist", "c:\\test");
+        Map<String, String> resolvedConfig = adapter.resolveConfiguration(config);
+
+        Assert.assertEquals(
+                "c:\\test",
+                resolvedConfig.get("jbossHome"));
     }
 
     private ContainerAdapter load(String target) throws Exception {

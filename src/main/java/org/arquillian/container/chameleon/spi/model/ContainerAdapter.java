@@ -1,6 +1,7 @@
 package org.arquillian.container.chameleon.spi.model;
 
 import java.util.Map;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ContainerAdapter {
@@ -74,6 +75,6 @@ public class ContainerAdapter {
     }
 
     private String resolve(String parameter, String value, String target) {
-        return target.replaceAll(Pattern.quote("${" + parameter + "}"), value);
+        return target.replaceAll(Pattern.quote("${" + parameter + "}"), Matcher.quoteReplacement(value));
     }
 }
