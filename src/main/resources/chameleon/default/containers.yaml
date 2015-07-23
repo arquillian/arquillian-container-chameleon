@@ -125,8 +125,18 @@
       adapterClass: org.jboss.as.arquillian.container.embedded.EmbeddedDeployableContainer
       configuration: *WF_CONFIG
   dist: *WF_DIST
-  exclude: *WF_EXCLUDE
-
+  exclude: &WF9_EXCLUDE
+    - org.jboss.arquillian.test:*
+    - org.jboss.arquillian.testenricher:*
+    - org.jboss.arquillian.container:*
+    - org.jboss.arquillian.core:*
+    - org.jboss.arquillian.config:*
+    - org.jboss.arquillian.protocol:*
+    - org.jboss.shrinkwrap.api:*
+    - org.jboss.shrinkwrap:*
+    - org.jboss.shrinkwrap.descriptors:*
+    - org.jboss.shrinkwrap.resolver:*
+    - "*:wildfly-arquillian-testenricher-msc"
 
 - name: GlassFish
   versionExpression: 3.*

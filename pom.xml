@@ -175,7 +175,7 @@
 								    <skip>false</skip>
 								    <test>SimpleDeploymentTestCase</test>
 									<systemPropertyVariables>
-										<arq.container.chameleon.configuration.chameleonTarget>wildfly:9.0.0.CR1:managed</arq.container.chameleon.configuration.chameleonTarget>
+										<arq.container.chameleon.configuration.chameleonTarget>wildfly:9.0.0.Final:managed</arq.container.chameleon.configuration.chameleonTarget>
 									</systemPropertyVariables>
 								</configuration>
 							</execution>
@@ -221,6 +221,19 @@
                                     <systemPropertyVariables>
                                         <arq.container.chameleon.configuration.chameleonTarget>wildfly-custom:9.0.0.CR1:managed</arq.container.chameleon.configuration.chameleonTarget>
                                         <arq.container.chameleon.configuration.chameleonContainerConfigurationFile>custom/containers.yaml</arq.container.chameleon.configuration.chameleonContainerConfigurationFile>
+                                    </systemPropertyVariables>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>wf9-remote</id>
+                                <goals><goal>test</goal></goals>
+                                <configuration>
+                                    <skip>false</skip>
+                                    <test>SimpleDeploymentTestCase</test>
+                                    <systemPropertyVariables>
+                                        <arquillian.launch>remoteTest</arquillian.launch>
+                                        <arq.container.managed.configuration.chameleonTarget>wildfly:9.0.0.Final:managed</arq.container.managed.configuration.chameleonTarget>
+                                        <arq.container.remote.configuration.chameleonTarget>wildfly:9.0.0.Final:remote</arq.container.remote.configuration.chameleonTarget>
                                     </systemPropertyVariables>
                                 </configuration>
                             </execution>

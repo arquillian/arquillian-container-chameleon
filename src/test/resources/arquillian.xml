@@ -18,4 +18,16 @@
 			<property name="chameleonTarget">wildfly:9.0.0.Final:managed</property>
 		</configuration>
 	</container>
+    <group qualifier="remoteTest">
+        <container qualifier="managed">
+            <configuration>
+                <property name="chameleonTarget">wildfly:9.0.0.Final:managed</property>
+            </configuration>
+        </container>
+        <container qualifier="remote" default="true">
+             <configuration>
+                 <property name="chameleonTarget">wildfly:9.0.0.Final:remote</property>
+             </configuration>
+        </container>
+    </group>
 </arquillian>
