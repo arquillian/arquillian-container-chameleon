@@ -40,6 +40,10 @@ public class TargetController {
         return delegate.getConfigurationClass();
     }
 
+    public ClassLoader getClassLoader() {
+        return this.classloader;
+    }
+
     public void setup(final ContainerConfiguration configuration) throws LifecycleException {
         lifecycle(new Callable<Void>() {
             @SuppressWarnings("unchecked")

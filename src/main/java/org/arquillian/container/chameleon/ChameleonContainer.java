@@ -78,6 +78,13 @@ public class ChameleonContainer implements DeployableContainer<ContainerConfigur
         this.currentContainerConfiguration = targetConfiguration.getContainerProperties();
     }
 
+    public Class<?> resolveTargetClass(String className) throws ClassNotFoundException {
+        if(isInitiated()) {
+            return this.target.getClassLoader().loadClass(className);
+        }
+        throw new RuntimeException("Chameleon container is not yet initialized. No Classloader to load from");
+    }
+
     @Override
     public void setup(final ContainerConfiguration targetConfiguration) {
         try {
