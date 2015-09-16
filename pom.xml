@@ -30,7 +30,7 @@
     <properties>
 
         <!-- Versioning -->
-        <version.arquillian_core>1.1.8.Final</version.arquillian_core>
+        <version.arquillian_core>1.1.9.Final</version.arquillian_core>
         <version.jboss.javaee-6_api>1.0.0.Final</version.jboss.javaee-6_api>
 
         <!-- override from parent -->
