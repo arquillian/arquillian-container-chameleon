@@ -168,6 +168,17 @@
 						</configuration>
 
 						<executions>
+                            <execution>
+                               <id>wf10</id>
+                               <goals><goal>test</goal></goals>
+                               <configuration>
+                                    <skip>false</skip>
+                                    <test>SimpleDeploymentTestCase</test>
+                                    <systemPropertyVariables>
+                                        <arq.container.chameleon.configuration.chameleonTarget>wildfly:10.0.0.Beta2:managed</arq.container.chameleon.configuration.chameleonTarget>
+                                    </systemPropertyVariables>
+                                </configuration>
+                            </execution>
 							<execution>
 								<id>wf9</id>
 								<goals><goal>test</goal></goals>
@@ -234,6 +245,19 @@
                                         <arquillian.launch>remoteTest</arquillian.launch>
                                         <arq.container.managed.configuration.chameleonTarget>wildfly:9.0.0.Final:managed</arq.container.managed.configuration.chameleonTarget>
                                         <arq.container.remote.configuration.chameleonTarget>wildfly:9.0.0.Final:remote</arq.container.remote.configuration.chameleonTarget>
+                                    </systemPropertyVariables>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>wf10-remote</id>
+                                <goals><goal>test</goal></goals>
+                                <configuration>
+                                    <skip>false</skip>
+                                    <test>SimpleDeploymentTestCase</test>
+                                    <systemPropertyVariables>
+                                        <arquillian.launch>remoteTest</arquillian.launch>
+                                        <arq.container.managed.configuration.chameleonTarget>wildfly:10.0.0.Beta2:managed</arq.container.managed.configuration.chameleonTarget>
+                                        <arq.container.remote.configuration.chameleonTarget>wildfly:10.0.0.Beta2:remote</arq.container.remote.configuration.chameleonTarget>
                                     </systemPropertyVariables>
                                 </configuration>
                             </execution>

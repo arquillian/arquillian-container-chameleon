@@ -50,6 +50,14 @@ public class ContainerTestCase {
     }
 
     @Test
+    public void resolveWildFly10() throws Exception {
+        ContainerAdapter adapter = load("wildfly:10.0.0.Beta2:managed");
+        Assert.assertEquals(
+                "org.wildfly.arquillian:wildfly-arquillian-container-managed:1.0.0.Final",
+                adapter.dependencies()[0]);
+    }
+
+    @Test
     public void resolveWindowsFilePathSlash() throws Exception {
         ContainerAdapter adapter = load("wildfly:9.0.0.Final:managed");
         Map<String, String> config = new HashMap<String, String>();
