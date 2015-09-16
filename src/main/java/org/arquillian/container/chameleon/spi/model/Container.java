@@ -4,6 +4,7 @@ public class Container {
 
     private String name;
     private String versionExpression;
+    private String defaultProtocol;
 
     private Adapter[] adapters;
 
@@ -21,7 +22,8 @@ public class Container {
                                 target.getType(),
                                 adapter,
                                 dist,
-                                exclude);
+                                exclude,
+                                defaultProtocol);
                     }
                 }
             }

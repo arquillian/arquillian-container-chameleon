@@ -41,7 +41,7 @@ public class ChameleonContainer implements DeployableContainer<ContainerConfigur
 
     @Override
     public ProtocolDescription getDefaultProtocol() {
-        return new ProtocolDescription("Servlet 3.0");
+        return target.getDefaultProtocol();
     }
 
     public boolean isInitiated() {

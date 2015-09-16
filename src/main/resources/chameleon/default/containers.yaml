@@ -15,6 +15,7 @@
       configuration: *EAP_CONFIG
   dist: &EAP_DIST
     gav: org.jboss.as:jboss-as-dist:zip:${version}
+  defaultProtocol: Servlet 3.0
   exclude: &EAP_EXCLUDE
     - org.jboss.arquillian.test:*
     - org.jboss.arquillian.testenricher:*
@@ -45,6 +46,7 @@
       adapterClass: org.jboss.as.arquillian.container.embedded.EmbeddedDeployableContainer
       configuration: *EAP_CONFIG
   dist: *EAP_DIST
+  defaultProtocol: Servlet 3.0
   exclude: *EAP_EXCLUDE
 - name: JBoss AS
   versionExpression: 7.*
@@ -63,6 +65,7 @@
       configuration: *AS_CONFIG
   dist: &AS_DIST
     gav: org.jboss.as:jboss-as-dist:zip:${version}
+  defaultProtocol: Servlet 3.0
   exclude: &AS_EXCLUDE
     - org.jboss.arquillian.test:*
     - org.jboss.arquillian.testenricher:*
@@ -95,6 +98,7 @@
       configuration: *WF_CONFIG
   dist: &WF_DIST
     gav: org.wildfly:wildfly-dist:zip:${version}
+  defaultProtocol: Servlet 3.0
   exclude: &WF_EXCLUDE
     - org.jboss.arquillian.test:*
     - org.jboss.arquillian.testenricher:*

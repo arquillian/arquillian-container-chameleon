@@ -14,6 +14,7 @@ import org.jboss.arquillian.container.spi.client.container.ContainerConfiguratio
 import org.jboss.arquillian.container.spi.client.container.DeployableContainer;
 import org.jboss.arquillian.container.spi.client.container.DeploymentException;
 import org.jboss.arquillian.container.spi.client.container.LifecycleException;
+import org.jboss.arquillian.container.spi.client.protocol.ProtocolDescription;
 import org.jboss.arquillian.container.spi.client.protocol.metadata.ProtocolMetaData;
 import org.jboss.arquillian.core.api.Injector;
 import org.jboss.shrinkwrap.api.Archive;
@@ -26,13 +27,15 @@ public class TargetController {
     @SuppressWarnings("rawtypes")
     private DeployableContainer delegate;
 
+    private ContainerAdapter adapter;
+
     @SuppressWarnings("rawtypes")
     public TargetController(ContainerAdapter adapter, Injector injector, File resolverCacheFolder) throws Exception {
         // init
-        classloader = resolveClasspathDependencies(adapter, resolverCacheFolder);
+        this.classloader = resolveClasspathDependencies(adapter, resolverCacheFolder);
         final Class<?> delegateClass = classloader.loadClass(adapter.adapterClass());
-        delegate = (DeployableContainer) delegateClass.newInstance();
-        injector.inject(delegate);
+        this.delegate = injector.inject((DeployableContainer) delegateClass.newInstance());
+        this.adapter = adapter;
     }
 
     @SuppressWarnings("unchecked")
@@ -42,6 +45,11 @@ public class TargetController {
 
     public ClassLoader getClassLoader() {
         return this.classloader;
+    }
+
+    public ProtocolDescription getDefaultProtocol() {
+        return this.adapter.overrideDefaultProtocol() ?
+                new ProtocolDescription(adapter.getDefaultProtocol()):delegate.getDefaultProtocol();
     }
 
     public void setup(final ContainerConfiguration configuration) throws LifecycleException {

@@ -11,18 +11,28 @@ public class ContainerAdapter {
     private Adapter adapter;
     private Dist dist;
     private String[] gavExcludeExpression;
+    private String defaultProtocol;
 
     public ContainerAdapter(String version, Target.Type targetType, Adapter adapter, Dist dist,
-            String[] gavExcludeExpression) {
+            String[] gavExcludeExpression, String defaultProtocol) {
         this.version = version;
         this.targetType = targetType;
         this.adapter = adapter;
         this.dist = dist;
         this.gavExcludeExpression = gavExcludeExpression;
+        this.defaultProtocol = defaultProtocol;
     }
 
     public Target.Type type() {
         return targetType;
+    }
+
+    public boolean overrideDefaultProtocol() {
+        return this.defaultProtocol != null;
+    }
+
+    public String getDefaultProtocol() {
+        return defaultProtocol;
     }
 
     public String adapterClass() {
