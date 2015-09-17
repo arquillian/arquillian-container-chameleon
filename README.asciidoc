@@ -11,15 +11,14 @@ Testing against several containers (JBoss AS / JBoss EAP / WildFly) or even swit
 
 Chameleon Containers are able to quickly adopt to your needs without too much hassle.
 
-=== Story
 
+==== Story
 
 [quote]
 Chameleons are a tall, lizard-looking alien race that has (same as their earthling friends) ability to change colours when adopting to various environments. They are usually transported in spaceships called Containers.
 
 
 === Get Started
-
 
 Do whatever you http://arquillian.org/guides/getting_started/[would do normally] and add Chameleon Container instead of any application-server specific artifact:
 
@@ -95,8 +94,63 @@ Define the container configuration file to use. Defaults to the containers.yaml 
 
 Define where Chameleon should store the resolver cache files. By default it will use 'chameleonDistributionDownloadFolder'/cache.
 
-Community
----------
+== Development
+
+If you want to add your own container configurations or contribute to the ones shipped as default with Chameleon you can
+use the following format to describe them:
+
+[source,yaml]
+.chameleon/default/containers.yaml
+----
+- name: WildFly <1>
+  versionExpression: 10.*  <2>
+  adapters: <3>
+    - type: remote <4>
+      gav: org.wildfly.arquillian:wildfly-arquillian-container-remote:1.0.0.Final <5>
+      adapterClass: org.jboss.as.arquillian.container.remote.RemoteDeployableContainer <6>
+    - type: managed
+      gav: org.wildfly.arquillian:wildfly-arquillian-container-managed:1.0.0.Final
+      adapterClass: org.jboss.as.arquillian.container.managed.ManagedDeployableContainer
+      configuration: <8>
+        jbossHome: ${dist} <9>
+    - type: embedded <10>
+      gav: org.wildfly.arquillian:wildfly-arquillian-container-embedded:${version} <11>
+      adapterClass: org.jboss.as.arquillian.container.embedded.EmbeddedDeployableContainer
+      requireDist: false <12>
+      dependencies: <13>
+        - org.glassfish.extras:glassfish-embedded-all:${version} <14>
+  dist: <15>
+    gav: org.wildfly:wildfly-dist:zip:${version} <16>
+  defaultProtocol: Servlet 3.0 <17>
+  exclude: <18>
+    - org.jboss.arquillian.test:* <19>
+    - org.jboss.arquillian.testenricher:*
+    - "*:wildfly-arquillian-testenricher-msc"
+----
+<1> *required* The _name_ section of the _chameleonTarget_.
+<2> *required* A Regular Expression to match against the _version_ section of the _chamleonTarget_ to activate this configuration.
+<3> *required* A list of Adapters supported by this _name_ and _version_ combination.
+<4> *required* The Adapter that match the _type_ section of the _chameleonTarget_.
+<5> *required* The Adapter artifacts _GAV_ so it can be downloaded from a repository.
+<6> *required* The Adapter _DeployableContainer_ implementation class to invoke.
+<7> The Adapter that match the _type_ section of the _chameleonTarget_.
+<8> *optional* List of Adapter configuration option that will be automatically activated if not present from user.
+<9> ${dist} special variable that is replaced with the location of the downloaded/extracted distribution if applicable.
+<10> The Adapter that match the _type_ section of the _chameleonTarget_.
+<11> ${version} special variable that is replaced with the _version_ section of the _chameleonTarget_ as provided by the user.
+<12> *optional* Flag to turn off default automatic download of distribution if not required by the Adapter. e.g. GlassFish Embedded requires no extracted distribution to run.
+<13> *optional* List of additional dependencies required by the Adapter.
+<14> The dependency _GAV_.
+<15> *optional* Section to describe how to download the distribution.
+<16> The distribution artifact _GAV_ so it can be downloaded from a repository.
+<17> *optional* Override the Adapters _defaultProtocol_ as described by the _DeployableContainer_ implementation.
+<18> *optional* List of dependencies to exclude when resolving the adapter _GAV_.
+<19> The dependency _GAV_ expression to exclude.
+
+NOTE: If you want to help improve the configurations, you can find issues related to this configuration labeled as https://github.com/arquillian/arquillian-container-chameleon/labels/container[container]
+in the https://github.com/arquillian/arquillian-container-chameleon/issues[issue tracker].
+
+== Community
 
 * Chat: #arquillian channel @ http://webchat.freenode.net/[irc.freenode.net]
 * http://arquillian.org/blog/[Blogs]
