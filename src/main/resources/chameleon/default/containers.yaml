@@ -202,3 +202,18 @@
       dependencies:
         - org.glassfish.main.extras:glassfish-embedded-all:${version}
   dist: *GF_DIST
+
+- name: TomEE
+  versionExpression: .*
+  adapters:
+    - type: remote
+      gav: org.apache.openejb:arquillian-tomee-remote:${version}
+      adapterClass: org.apache.tomee.arquillian.remote.RemoteTomEEContainer
+    - type: managed
+      gav: org.apache.openejb:arquillian-tomee-remote:${version}
+      adapterClass: org.apache.tomee.arquillian.remote.RemoteTomEEContainer
+      requireDist: false
+    - type: embedded
+      gav: org.apache.openejb:arquillian-tomee-embedded:${version}
+      adapterClass: org.apache.openejb.arquillian.embedded.EmbeddedTomEEContainer
+      requireDist: false
