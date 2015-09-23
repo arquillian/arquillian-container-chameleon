@@ -31,6 +31,7 @@
 
         <!-- Versioning -->
         <version.arquillian_core>1.1.9.Final</version.arquillian_core>
+        <version.arquillian_tck>1.0.0.Alpha1</version.arquillian_tck>
         <version.jboss.javaee-6_api>1.0.0.Final</version.jboss.javaee-6_api>
 
         <!-- override from parent -->
@@ -288,5 +289,43 @@
 				</plugins>
 			</build>
 		</profile>
+        <profile>
+            <id>tck</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.arquillian.tck.container</groupId>
+                    <artifactId>arquillian-tck-container</artifactId>
+                    <version>${version.arquillian_tck}</version>
+                    <classifier>tests</classifier>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <skip>true</skip>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>tck</id>
+                                <goals><goal>test</goal></goals>
+                                <configuration>
+                                    <excludes>
+                                        <exclude>org/arquillian/container/*/**</exclude>
+                                    </excludes>
+                                    <forkMode>once</forkMode>
+                                    <skip>false</skip>
+                                    <dependenciesToScan>
+                                        <dependency>org.arquillian.tck.container:arquillian-tck-container</dependency>
+                                    </dependenciesToScan>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
 	</profiles>
 </project>
