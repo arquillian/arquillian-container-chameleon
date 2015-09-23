@@ -80,7 +80,8 @@ Chameleon will download and extract the target container if no distribution home
 
 ==== chameleonTarget
 
-Define the underlying target in the format name:version:type
+Define the underlying target in the format name:version[:type]. If no _type_ is defined, the adapter type used depend on the underlying
+container configuration. Use no type if you just want 'something' up and running with as little extra configuration as possible.
 
 ==== chameleonDistributionDownloadFolder
 
@@ -120,11 +121,12 @@ use the following format to describe them:
       requireDist: false <12>
       dependencies: <13>
         - org.glassfish.extras:glassfish-embedded-all:${version} <14>
-  dist: <15>
-    gav: org.wildfly:wildfly-dist:zip:${version} <16>
-  defaultProtocol: Servlet 3.0 <17>
-  exclude: <18>
-    - org.jboss.arquillian.test:* <19>
+  defaultType: managed <15>
+  dist: <16>
+    gav: org.wildfly:wildfly-dist:zip:${version} <17>
+  defaultProtocol: Servlet 3.0 <18>
+  exclude: <19>
+    - org.jboss.arquillian.test:* <20>
     - org.jboss.arquillian.testenricher:*
     - "*:wildfly-arquillian-testenricher-msc"
 ----
@@ -142,11 +144,12 @@ use the following format to describe them:
 <12> *optional* Flag to turn off default automatic download of distribution if not required by the Adapter. e.g. GlassFish Embedded requires no extracted distribution to run.
 <13> *optional* List of additional dependencies required by the Adapter.
 <14> The dependency _GAV_.
-<15> *optional* Section to describe how to download the distribution.
-<16> The distribution artifact _GAV_ so it can be downloaded from a repository.
-<17> *optional* Override the Adapters _defaultProtocol_ as described by the _DeployableContainer_ implementation.
-<18> *optional* List of dependencies to exclude when resolving the adapter _GAV_.
-<19> The dependency _GAV_ expression to exclude.
+<15> *optional* Describes which adapter to select if no _type_ section is defined in the _chameleonTarget_.
+<16> *optional* Section to describe how to download the distribution.
+<17> The distribution artifact _GAV_ so it can be downloaded from a repository.
+<18> *optional* Override the Adapters _defaultProtocol_ as described by the _DeployableContainer_ implementation.
+<19> *optional* List of dependencies to exclude when resolving the adapter _GAV_.
+<20> The dependency _GAV_ expression to exclude.
 
 NOTE: If you want to help improve the configurations, you can find issues related to this configuration labeled as https://github.com/arquillian/arquillian-container-chameleon/labels/container[container]
 in the https://github.com/arquillian/arquillian-container-chameleon/issues[issue tracker].

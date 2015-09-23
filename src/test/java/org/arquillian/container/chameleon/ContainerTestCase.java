@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.arquillian.container.chameleon.spi.model.ContainerAdapter;
+import org.arquillian.container.chameleon.spi.model.Target.Type;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -28,6 +29,12 @@ public class ContainerTestCase {
     }
 
     @Test
+    public void resolveJBossAS7DefaultType() throws Exception {
+        ContainerAdapter adapter = load("jboss as:7.1.1.Final");
+        Assert.assertEquals(Type.Managed, adapter.type());
+    }
+
+    @Test
     public void resolveJBossEAP60() throws Exception {
         ContainerAdapter adapter = load("jboss eap:6.0.0.GA:managed");
         Assert.assertEquals(
@@ -43,6 +50,12 @@ public class ContainerTestCase {
         Assert.assertEquals(
                 "Servlet 3.0",
                 adapter.getDefaultProtocol());
+    }
+
+    @Test
+    public void resolveJBossEAP60DefaultType() throws Exception {
+        ContainerAdapter adapter = load("jboss eap:6.0.0.GA");
+        Assert.assertEquals(Type.Managed, adapter.type());
     }
 
     @Test
@@ -64,6 +77,12 @@ public class ContainerTestCase {
     }
 
     @Test
+    public void resolveJBossEAP61DefaultType() throws Exception {
+        ContainerAdapter adapter = load("jboss eap:6.1.0.GA");
+        Assert.assertEquals(Type.Managed, adapter.type());
+    }
+
+    @Test
     public void resolveWildFly8() throws Exception {
         ContainerAdapter adapter = load("wildfly:8.0.0.Final:managed");
         Assert.assertEquals(
@@ -79,6 +98,12 @@ public class ContainerTestCase {
         Assert.assertEquals(
                 "Servlet 3.0",
                 adapter.getDefaultProtocol());
+    }
+
+    @Test
+    public void resolveWildFly8DefaultType() throws Exception {
+        ContainerAdapter adapter = load("wildfly:8.0.0.Final");
+        Assert.assertEquals(Type.Managed, adapter.type());
     }
 
     @Test
@@ -106,6 +131,12 @@ public class ContainerTestCase {
     }
 
     @Test
+    public void resolveWildFly9DefaultType() throws Exception {
+        ContainerAdapter adapter = load("wildfly:9.0.0.Final");
+        Assert.assertEquals(Type.Managed, adapter.type());
+    }
+
+    @Test
     public void resolveWildFly10() throws Exception {
         ContainerAdapter adapter = load("wildfly:10.0.0.Beta2:managed");
         Assert.assertEquals(
@@ -119,6 +150,12 @@ public class ContainerTestCase {
         Assert.assertFalse(
                 adapter.overrideDefaultProtocol());
         Assert.assertNull(adapter.getDefaultProtocol());
+    }
+
+    @Test
+    public void resolveWildFly10DefaultType() throws Exception {
+        ContainerAdapter adapter = load("wildfly:10.0.0.Beta2");
+        Assert.assertEquals(Type.Managed, adapter.type());
     }
 
     @Test

@@ -5,7 +5,16 @@ import org.jboss.arquillian.container.spi.ConfigurationException;
 public class Target {
 
     public static enum Type {
-        Remote, Managed, Embedded
+        Remote, Managed, Embedded, Default;
+
+        public static Type from(String name) {
+            for(Type type : Type.values()) {
+                if(type.name().equalsIgnoreCase(name)) {
+                    return type;
+                }
+            }
+            return null;
+        }
     }
 
     private String server;
@@ -28,19 +37,23 @@ public class Target {
         Target target = new Target();
 
         String[] sections = source.split(":");
-        if (sections.length != 3) {
+        if (sections.length < 2 || sections.length > 3) {
             throw new ConfigurationException("Wrong target format [" + source + "] server:version:type");
         }
         target.server = sections[0].toLowerCase();
         target.version = sections[1];
-        for (Type type : Type.values()) {
-            if (sections[2].toLowerCase().contains(type.name().toLowerCase())) {
-                target.type = type;
-                break;
+        if(sections.length > 2) {
+            for (Type type : Type.values()) {
+                if (sections[2].toLowerCase().contains(type.name().toLowerCase())) {
+                    target.type = type;
+                    break;
+                }
             }
-        }
-        if(target.type == null) {
-            throw new ConfigurationException("Unknown target type " + sections[2] + ". Supported " + Target.Type.values());
+            if(target.type == null) {
+                throw new ConfigurationException("Unknown target type " + sections[2] + ". Supported " + Target.Type.values());
+            }
+        } else {
+            target.type = Type.Default;
         }
         return target;
     }
