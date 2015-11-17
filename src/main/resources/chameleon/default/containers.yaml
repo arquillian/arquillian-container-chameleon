@@ -1,4 +1,33 @@
 - name: JBoss EAP
+  versionExpression: 7.*
+  adapters:
+    - type: remote
+      gav: org.wildfly.arquillian:wildfly-arquillian-container-remote:1.1.0.Alpha1
+      adapterClass: org.jboss.as.arquillian.container.remote.RemoteDeployableContainer
+    - type: managed
+      gav: org.wildfly.arquillian:wildfly-arquillian-container-managed:1.1.0.Alpha1
+      adapterClass: org.jboss.as.arquillian.container.managed.ManagedDeployableContainer
+      configuration: &EAP7_CONFIG
+        jbossHome: ${dist}
+    - type: embedded
+      gav: org.wildfly.arquillian:wildfly-arquillian-container-embedded:1.1.0.Alpha1
+      adapterClass: org.jboss.as.arquillian.container.embedded.EmbeddedDeployableContainer
+      configuration: *EAP7_CONFIG
+  defaultType: managed
+  dist: &EAP7_DIST
+    gav: org.jboss.as:jboss-as-dist:zip:${version}
+  exclude: &EAP7_EXCLUDE
+    - org.jboss.arquillian.test:*
+    - org.jboss.arquillian.testenricher:*
+    - org.jboss.arquillian.container:*
+    - org.jboss.arquillian.core:*
+    - org.jboss.arquillian.config:*
+    - org.jboss.arquillian.protocol:*
+    - org.jboss.shrinkwrap.api:*
+    - org.jboss.shrinkwrap:*
+    - org.jboss.shrinkwrap.descriptors:*
+    - org.jboss.shrinkwrap.resolver:*
+- name: JBoss EAP
   versionExpression: 6.0.*
   adapters:
     - type: remote

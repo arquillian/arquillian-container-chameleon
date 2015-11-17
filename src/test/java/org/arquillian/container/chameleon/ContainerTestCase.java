@@ -83,6 +83,27 @@ public class ContainerTestCase {
     }
 
     @Test
+    public void resolveJBossEAP7() throws Exception {
+        ContainerAdapter adapter = load("jboss eap:7.0.0.GA:managed");
+        Assert.assertEquals(
+                "org.wildfly.arquillian:wildfly-arquillian-container-managed:1.1.0.Alpha1",
+                adapter.dependencies()[0]);
+    }
+
+    @Test
+    public void overrideDefaultProtocolJBossEAP7() throws Exception {
+        ContainerAdapter adapter = load("jboss eap:7.0.0.GA:managed");
+        Assert.assertFalse(
+                adapter.overrideDefaultProtocol());
+    }
+
+    @Test
+    public void resolveJBossEAP7DefaultType() throws Exception {
+        ContainerAdapter adapter = load("jboss eap:7.0.0.GA");
+        Assert.assertEquals(Type.Managed, adapter.type());
+    }
+
+    @Test
     public void resolveWildFly8() throws Exception {
         ContainerAdapter adapter = load("wildfly:8.0.0.Final:managed");
         Assert.assertEquals(

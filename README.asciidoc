@@ -63,6 +63,7 @@ Example chameleonTarget values:
 
 * JBoss EAP
 ** 6.x
+** 7.x
 * WildFly
 ** 10.x
 ** 9.x
