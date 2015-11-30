@@ -127,7 +127,9 @@
     - type: embedded
       gav: org.wildfly:wildfly-arquillian-container-embedded:${version}
       adapterClass: org.jboss.as.arquillian.container.embedded.EmbeddedDeployableContainer
-      configuration: *WF_CONFIG
+      configuration: &WF_EMBEDD_CONFIG
+        jbossHome: ${dist}
+        modulePath: ${dist}/modules
   defaultType: managed
   dist: &WF_DIST
     gav: org.wildfly:wildfly-dist:zip:${version}
@@ -160,7 +162,7 @@
     - type: embedded
       gav: org.wildfly.arquillian:wildfly-arquillian-container-embedded:1.0.0.Final
       adapterClass: org.jboss.as.arquillian.container.embedded.EmbeddedDeployableContainer
-      configuration: *WF_CONFIG
+      configuration: *WF_EMBEDD_CONFIG
   defaultType: managed
   dist: *WF_DIST
   exclude: &WF9_EXCLUDE
