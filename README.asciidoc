@@ -97,6 +97,30 @@ Define the container configuration file to use. Defaults to the containers.yaml 
 
 Define where Chameleon should store the resolver cache files. By default it will use 'chameleonDistributionDownloadFolder'/cache.
 
+==== chameleonGav
+
+Define adapter maven coordinates. By using this property you can use a container adapter with a different distribution:
+
+[source, xml]
+----
+<container qualifier="chameleon" default="true">
+    <configuration>
+        <property name="chameleonTarget">wildfly:8.0.0.Final:managed</property>
+        <property name="chameleonGav">org.wildfly:wildfly-dist:zip:8.2.0.Final</property>
+    </configuration>
+</container>
+---- 
+
+With the above configuration chameleon will use wildfly adapter 8.0.0 on top wildfly 8.2.0 distribution. 
+
+IMPORTANT: Make sure adapter is compatible with the provided distribution.
+
+The main use case for 'chameleonGav' is when user customizes a container distribution (e.g by adding custom modules or libraries) and provide it as a maven artifact to use as arquillian custom container.
+
+
+
+
+
 == Development
 
 If you want to add your own container configurations or contribute to the ones shipped as default with Chameleon you can
