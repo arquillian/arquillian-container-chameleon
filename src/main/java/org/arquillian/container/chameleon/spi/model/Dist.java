@@ -7,4 +7,9 @@ public class Dist {
     public String gav() {
         return gav;
     }
+    
+    public Dist ofGav(String gav) {
+         this.gav = gav;
+         return this;
+    }
 }

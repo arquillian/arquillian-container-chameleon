@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 
 import org.arquillian.container.chameleon.spi.model.Container;
 import org.arquillian.container.chameleon.spi.model.ContainerAdapter;
+import org.arquillian.container.chameleon.spi.model.Dist;
 import org.arquillian.container.chameleon.spi.model.Target;
 import org.jboss.arquillian.container.spi.ConfigurationException;
 import org.jboss.arquillian.container.spi.client.container.ContainerConfiguration;
@@ -23,6 +24,7 @@ public class ChameleonConfiguration implements ContainerConfiguration {
     private String chameleonContainerConfigurationFile = null;
     private String chameleonDistributionDownloadFolder  = null;
     private String chameleonResolveCacheFolder  = null;
+    private String chameleonGav = null;
 
     @Override
     public void validate() throws ConfigurationException {
@@ -50,6 +52,15 @@ public class ChameleonConfiguration implements ContainerConfiguration {
 
     public void setChameleonTarget(String target) {
         this.chameleonTarget = target;
+    }
+    
+
+    public String getChameleonGav() {
+        return chameleonGav;
+    }
+
+    public void setChameleonGav(String chameleonGav) {
+        this.chameleonGav = chameleonGav;
     }
 
     public String getChameleonContainerConfigurationFile() {
@@ -101,6 +112,9 @@ public class ChameleonConfiguration implements ContainerConfiguration {
         for (Container container : containers) {
             ContainerAdapter adapter = container.matches(target);
             if (adapter != null) {
+                if(chameleonGav != null && !"".equals(chameleonGav)){
+                    adapter.setDistribution(new Dist().ofGav(chameleonGav));
+                }
                 return adapter;
             }
         }

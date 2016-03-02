@@ -202,6 +202,18 @@
 									</systemPropertyVariables>
 								</configuration>
 							</execution>
+						  	<execution>
+								<id>wf82-gav-81</id>
+								<goals><goal>test</goal></goals>
+								<configuration>
+								    <skip>false</skip>
+								    <test>SimpleDeploymentTestCase</test>
+									<systemPropertyVariables>
+										<arq.container.chameleon.configuration.chameleonTarget>wildfly:8.2.0.Final:managed</arq.container.chameleon.configuration.chameleonTarget>
+										<arq.container.chameleon.configuration.chameleonGav>org.wildfly:wildfly-dist:zip:8.1.0.Final</arq.container.chameleon.configuration.chameleonGav>
+									</systemPropertyVariables>
+								</configuration>
+							</execution> 
 							<execution>
 								<id>wf81</id>
 								<goals><goal>test</goal></goals>

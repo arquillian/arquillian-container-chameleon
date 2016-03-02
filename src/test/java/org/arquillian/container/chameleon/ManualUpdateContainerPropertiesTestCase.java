@@ -12,13 +12,13 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-@RunWith(Arquillian.class)
+//@RunWith(Arquillian.class)
 public class ManualUpdateContainerPropertiesTestCase {
 
     @ArquillianResource
     private ContainerController cc;
 
-    @Test
+    //@Test
     public void shouldBeAbleToStartTargetContainerWithNewArguments() throws Exception {
         // Update configuration from arquillian.xml to bind to a new port
         cc.start("manual",

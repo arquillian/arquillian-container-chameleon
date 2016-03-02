@@ -46,6 +46,10 @@ public class ContainerAdapter {
     public String distribution() {
         return resolve(dist.gav());
     }
+    
+    public void setDistribution(Dist dist) {
+        this.dist = dist;
+    }
 
     public String[] excludes() {
         return resolve(gavExcludeExpression);
