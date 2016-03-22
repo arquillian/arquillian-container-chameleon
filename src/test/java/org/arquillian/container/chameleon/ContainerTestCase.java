@@ -19,6 +19,22 @@ public class ContainerTestCase {
     }
 
     @Test
+    public void resolveJBossAS7DomainManaged() throws Exception {
+        ContainerAdapter adapter = load("jboss as domain:7.1.1.Final:managed");
+        Assert.assertEquals(
+                "org.jboss.as:jboss-as-arquillian-container-domain-managed:7.1.1.Final",
+                adapter.dependencies()[0]);
+    }
+
+    @Test
+    public void resolveJBossAS7DomainRemote() throws Exception {
+        ContainerAdapter adapter = load("jboss as domain:7.1.1.Final:remote");
+        Assert.assertEquals(
+                "org.jboss.as:jboss-as-arquillian-container-domain-remote:7.1.1.Final",
+                adapter.dependencies()[0]);
+    }
+
+    @Test
     public void overrideDefaultProtocolJBossAs7() throws Exception {
         ContainerAdapter adapter = load("jboss as:7.1.1.Final:managed");
         Assert.assertTrue(
@@ -86,7 +102,7 @@ public class ContainerTestCase {
     public void resolveJBossEAP7() throws Exception {
         ContainerAdapter adapter = load("jboss eap:7.0.0.GA:managed");
         Assert.assertEquals(
-                "org.wildfly.arquillian:wildfly-arquillian-container-managed:1.1.0.Alpha1",
+                "org.wildfly.arquillian:wildfly-arquillian-container-managed:1.1.0.Beta1",
                 adapter.dependencies()[0]);
     }
 
@@ -161,7 +177,23 @@ public class ContainerTestCase {
     public void resolveWildFly10() throws Exception {
         ContainerAdapter adapter = load("wildfly:10.0.0.Beta2:managed");
         Assert.assertEquals(
-                "org.wildfly.arquillian:wildfly-arquillian-container-managed:1.0.0.Final",
+                "org.wildfly.arquillian:wildfly-arquillian-container-managed:1.1.0.Beta1",
+                adapter.dependencies()[0]);
+    }
+
+    @Test
+    public void resolveWildFly10DomainManaged() throws Exception {
+        ContainerAdapter adapter = load("wildfly domain:10.0.0.Final:managed");
+        Assert.assertEquals(
+                "org.wildfly.arquillian:wildfly-arquillian-container-domain-managed:1.1.0.Beta1",
+                adapter.dependencies()[0]);
+    }
+
+    @Test
+    public void resolveWildFly10DomainRemote() throws Exception {
+        ContainerAdapter adapter = load("wildfly domain:10.0.0.Final:remote");
+        Assert.assertEquals(
+                "org.wildfly.arquillian:wildfly-arquillian-container-domain-remote:1.1.0.Beta1",
                 adapter.dependencies()[0]);
     }
 
