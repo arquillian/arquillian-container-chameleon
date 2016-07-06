@@ -101,7 +101,6 @@ public class ChameleonContainer implements DeployableContainer<ContainerConfigur
         throw new RuntimeException("Chameleon container is not yet initialized. No Classloader to load from");
     }
 
-    @Override
     public void setup(final ContainerConfiguration targetConfiguration) {
         try {
             target.setup(targetConfiguration);
@@ -110,17 +109,14 @@ public class ChameleonContainer implements DeployableContainer<ContainerConfigur
         }
     }
 
-    @Override
     public void start() throws LifecycleException {
         target.start();
     }
 
-    @Override
     public void stop() throws LifecycleException {
         target.stop();
     }
 
-    @Override
     public ProtocolMetaData deploy(final Archive<?> archive) throws DeploymentException {
         return target.deploy(archive);
     }

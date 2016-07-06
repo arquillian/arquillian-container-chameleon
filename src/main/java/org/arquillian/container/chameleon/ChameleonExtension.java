@@ -23,7 +23,6 @@ import org.jboss.arquillian.core.spi.LoadableExtension;
 
 public class ChameleonExtension implements LoadableExtension {
 
-    @Override
     public void register(ExtensionBuilder builder) {
         builder.service(DeployableContainer.class, ChameleonContainer.class);
         builder.observer(InitiateContainer.class);
