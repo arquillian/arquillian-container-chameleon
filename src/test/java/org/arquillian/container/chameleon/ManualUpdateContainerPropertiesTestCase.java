@@ -2,6 +2,7 @@ package org.arquillian.container.chameleon;
 
 import org.jboss.arquillian.container.test.api.Config;
 import org.jboss.arquillian.container.test.api.ContainerController;
+import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.junit.Assert;
@@ -14,6 +15,7 @@ import java.net.Socket;
 import java.util.Map;
 
 @RunWith(Arquillian.class)
+@RunAsClient
 public class ManualUpdateContainerPropertiesTestCase {
 
     @ArquillianResource
@@ -26,6 +28,7 @@ public class ManualUpdateContainerPropertiesTestCase {
         final Integer newPort = 10990;
         final String jvmArguments = String.format("-Djboss.socket.binding.port-offset=1000 -Djboss.bind.address=%1$s -Djboss.bind.address.management=%1$s", localHost.getHostAddress());
         final Map<String, String> newContainerConfiguration = new Config()
+                .add("chameleonTarget", "wildfly:9.0.0.Final:managed")
                 .add("javaVmArguments", jvmArguments)
                 .add("managementPort", newPort.toString())
                 .add("managementAddress", localHost.getHostAddress())

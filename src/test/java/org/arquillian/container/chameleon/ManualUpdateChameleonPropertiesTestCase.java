@@ -1,18 +1,20 @@
 package org.arquillian.container.chameleon;
 
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.Socket;
-
 import org.jboss.arquillian.container.test.api.Config;
 import org.jboss.arquillian.container.test.api.ContainerController;
+import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.Socket;
+
 @RunWith(Arquillian.class)
+@RunAsClient
 public class ManualUpdateChameleonPropertiesTestCase {
 
     @ArquillianResource
@@ -38,4 +40,5 @@ public class ManualUpdateChameleonPropertiesTestCase {
             }
         }
     }
+
 }
