@@ -263,6 +263,3 @@
   defaultType: managed
   dist:
     gav: fish.payara.distributions:payara:zip:${version}
-  exclude:
-      - org.apache.xalan:*
-      - org.apache.xerces:*
