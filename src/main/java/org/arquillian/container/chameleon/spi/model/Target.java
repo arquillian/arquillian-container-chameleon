@@ -8,8 +8,8 @@ public class Target {
         Remote, Managed, Embedded, Default;
 
         public static Type from(String name) {
-            for(Type type : Type.values()) {
-                if(type.name().equalsIgnoreCase(name)) {
+            for (Type type : Type.values()) {
+                if (type.name().equalsIgnoreCase(name)) {
                     return type;
                 }
             }
@@ -42,14 +42,14 @@ public class Target {
         }
         target.server = sections[0].toLowerCase();
         target.version = sections[1];
-        if(sections.length > 2) {
+        if (sections.length > 2) {
             for (Type type : Type.values()) {
                 if (sections[2].toLowerCase().contains(type.name().toLowerCase())) {
                     target.type = type;
                     break;
                 }
             }
-            if(target.type == null) {
+            if (target.type == null) {
                 throw new ConfigurationException("Unknown target type " + sections[2] + ". Supported " + Target.Type.values());
             }
         } else {

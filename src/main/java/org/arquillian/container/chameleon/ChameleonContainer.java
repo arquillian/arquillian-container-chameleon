@@ -1,8 +1,5 @@
 package org.arquillian.container.chameleon;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.arquillian.container.chameleon.controller.DistributionController;
 import org.arquillian.container.chameleon.controller.TargetController;
 import org.arquillian.container.chameleon.spi.model.ContainerAdapter;
@@ -20,6 +17,9 @@ import org.jboss.arquillian.core.api.threading.ExecutorService;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.descriptor.api.Descriptor;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ChameleonContainer implements DeployableContainer<ContainerConfiguration> {
 
     private TargetController target;
@@ -34,12 +34,10 @@ public class ChameleonContainer implements DeployableContainer<ContainerConfigur
     @Inject
     private Instance<ExecutorService> executorServiceInst;
 
-    @Override
     public Class<ContainerConfiguration> getConfigurationClass() {
         return target.getConfigurationClass();
     }
 
-    @Override
     public ProtocolDescription getDefaultProtocol() {
         return target.getDefaultProtocol();
     }
@@ -58,7 +56,7 @@ public class ChameleonContainer implements DeployableContainer<ContainerConfigur
 
     public void init(ChameleonConfiguration configuration, ContainerDef targetConfiguration) {
         this.configuration = configuration;
-        if(this.originalContainerConfiguration == null) {
+        if (this.originalContainerConfiguration == null) {
             this.originalContainerConfiguration = new HashMap<String, String>(targetConfiguration.getContainerProperties());
         }
         try {
@@ -79,13 +77,12 @@ public class ChameleonContainer implements DeployableContainer<ContainerConfigur
     }
 
     public Class<?> resolveTargetClass(String className) throws ClassNotFoundException {
-        if(isInitiated()) {
+        if (isInitiated()) {
             return this.target.getClassLoader().loadClass(className);
         }
         throw new RuntimeException("Chameleon container is not yet initialized. No Classloader to load from");
     }
 
-    @Override
     public void setup(final ContainerConfiguration targetConfiguration) {
         try {
             target.setup(targetConfiguration);
@@ -94,17 +91,14 @@ public class ChameleonContainer implements DeployableContainer<ContainerConfigur
         }
     }
 
-    @Override
     public void start() throws LifecycleException {
         target.start();
     }
 
-    @Override
     public void stop() throws LifecycleException {
         target.stop();
     }
 
-    @Override
     public ProtocolMetaData deploy(final Archive<?> archive) throws DeploymentException {
         return target.deploy(archive);
     }

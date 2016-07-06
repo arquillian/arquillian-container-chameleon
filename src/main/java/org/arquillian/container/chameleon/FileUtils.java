@@ -17,12 +17,12 @@
  */
 package org.arquillian.container.chameleon;
 
+import org.jboss.arquillian.container.spi.ConfigurationException;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-
-import org.jboss.arquillian.container.spi.ConfigurationException;
 
 /**
  * FileUtils
@@ -34,15 +34,15 @@ class FileUtils {
 
     static InputStream loadConfiguration(String resourceName, boolean isDefault) {
         InputStream stream = loadResource(resourceName);
-        if(stream == null) {
-            if(isDefault) {
+        if (stream == null) {
+            if (isDefault) {
                 throw new IllegalStateException(
                         "Could not find built-in configuration as file nor classloader resource: " + resourceName + ". " +
-                        "Something is terrible wrong with the Classpath.");
+                                "Something is terrible wrong with the Classpath.");
             } else {
                 throw new ConfigurationException(
                         "Could not locate configured containerConfigurationFile as file" +
-                        " nor classloader resource: " + resourceName);
+                                " nor classloader resource: " + resourceName);
             }
         }
 

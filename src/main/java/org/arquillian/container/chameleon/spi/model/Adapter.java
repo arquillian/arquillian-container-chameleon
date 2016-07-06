@@ -31,10 +31,10 @@ public class Adapter {
     public String[] dependencies() {
         List<String> deps = new ArrayList<String>();
         deps.add(gav);
-        if(dependencies != null) {
+        if (dependencies != null) {
             deps.addAll(Arrays.asList(dependencies));
         }
-        return deps.toArray(new String[] {});
+        return deps.toArray(new String[]{});
     }
 
     public Map<String, String> configuration() {

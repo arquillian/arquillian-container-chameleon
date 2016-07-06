@@ -19,8 +19,8 @@ public class Container {
         if (target.getServer().equalsIgnoreCase(name)) {
             if (target.getVersion().matches(versionExpression)) {
                 Type definedType = target.getType();
-                if(target.getType() == Type.Default) {
-                    if(defaultType != null) {
+                if (target.getType() == Type.Default) {
+                    if (defaultType != null) {
                         definedType = Type.from(defaultType);
                     }
                 }

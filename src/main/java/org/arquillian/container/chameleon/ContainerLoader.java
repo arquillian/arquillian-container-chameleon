@@ -1,7 +1,8 @@
 package org.arquillian.container.chameleon;
 
-import static org.arquillian.container.chameleon.Utils.toMavenDependencies;
-import static org.arquillian.container.chameleon.Utils.toURLs;
+import org.arquillian.container.chameleon.controller.Resolver;
+import org.arquillian.container.chameleon.spi.model.Container;
+import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenDependency;
 
 import java.io.File;
 import java.io.InputStream;
@@ -9,24 +10,23 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.net.URLClassLoader;
 
-import org.arquillian.container.chameleon.controller.Resolver;
-import org.arquillian.container.chameleon.spi.model.Container;
-import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenDependency;
+import static org.arquillian.container.chameleon.Utils.toMavenDependencies;
+import static org.arquillian.container.chameleon.Utils.toURLs;
 
 public class ContainerLoader {
 
     public Container[] load(InputStream containers, File cacheFolder) throws Exception {
 
         MavenDependency[] mavenDependencies = toMavenDependencies(
-                new String[] { "org.yaml:snakeyaml:1.15" },
-                new String[] {});
+                new String[]{"org.yaml:snakeyaml:1.15"},
+                new String[]{});
 
         File[] archives = Resolver.resolve(cacheFolder, mavenDependencies);
 
         ClassLoader classloader = new URLClassLoader(toURLs(archives), null);
         return loadContainers(classloader, containers);
     }
- 
+
     /*
     Constructor constructor = new Constructor();
     constructor.addTypeDescription(new TypeDescription(Container[].class, "tag:yaml.org,2002:" + Container[].class.getName()));
@@ -45,10 +45,10 @@ public class ContainerLoader {
         Class<?> beanAccessClass = classloader.loadClass("org.yaml.snakeyaml.introspector.BeanAccess");
         Constructor<?> typeDescriptionConst = typeDescriptionClass.getConstructor(new Class[]{Class.class, String.class});
 
-        Method addTypeDescription = constructorClass.getMethod("addTypeDescription", new Class<?>[] {typeDescriptionClass});
+        Method addTypeDescription = constructorClass.getMethod("addTypeDescription", new Class<?>[]{typeDescriptionClass});
 
         Method setBeanAccess = yamlClass.getDeclaredMethod("setBeanAccess", new Class<?>[]{beanAccessClass});
-        Method loadAs = yamlClass.getDeclaredMethod("loadAs", new Class<?>[] {InputStream.class, Class.class});
+        Method loadAs = yamlClass.getDeclaredMethod("loadAs", new Class<?>[]{InputStream.class, Class.class});
 
         Object constructor = constructorClass.newInstance();
 
@@ -58,7 +58,7 @@ public class ContainerLoader {
         Object yaml = yamlClass.getConstructor(new Class[]{baseConstructorClass}).newInstance(new Object[]{constructor});
 
         Object fieldBeanAccess = null;
-        for(Object beanAccess : beanAccessClass.getEnumConstants()) {
+        for (Object beanAccess : beanAccessClass.getEnumConstants()) {
             if ("FIELD".equals(beanAccess.toString())) {
                 fieldBeanAccess = beanAccess;
                 break;
@@ -67,6 +67,6 @@ public class ContainerLoader {
 
         setBeanAccess.invoke(yaml, fieldBeanAccess);
 
-        return (Container[]) loadAs.invoke(yaml, new Object[] {containers, Container[].class});
+        return (Container[]) loadAs.invoke(yaml, new Object[]{containers, Container[].class});
     }
 }

@@ -1,5 +1,8 @@
 package org.arquillian.container.chameleon.controller;
 
+import org.jboss.shrinkwrap.resolver.api.maven.Maven;
+import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenDependency;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -9,9 +12,6 @@ import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jboss.shrinkwrap.resolver.api.maven.Maven;
-import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenDependency;
-
 public final class Resolver {
 
     public static File[] resolve(File cacheFolder, MavenDependency[] dependencies) {
@@ -19,7 +19,7 @@ public final class Resolver {
         File[] files = null;
 
         File cacheFile = getCacheFile(cacheFolder, hash);
-        if(cacheFile.exists()) {
+        if (cacheFile.exists()) {
             files = readCache(cacheFile);
         } else {
             files = Maven.configureResolver()
@@ -37,16 +37,19 @@ public final class Resolver {
         BufferedWriter bw = null;
         try {
             bw = new BufferedWriter(new FileWriter(cacheFile));
-            for(File file : files) {
+            for (File file : files) {
                 bw.write(file.getAbsolutePath());
                 bw.newLine();
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             throw new RuntimeException("Could not write cache file " + cacheFile, e);
         } finally {
-            if(bw != null) {
-                try { bw.close(); }
-                catch(Exception e) { throw new RuntimeException("Could not close written cache file " + cacheFile, e); }
+            if (bw != null) {
+                try {
+                    bw.close();
+                } catch (Exception e) {
+                    throw new RuntimeException("Could not close written cache file " + cacheFile, e);
+                }
             }
         }
     }
@@ -57,15 +60,16 @@ public final class Resolver {
         try {
             br = new BufferedReader(new FileReader(cacheFile));
             String line;
-            while( (line = br.readLine()) != null) {
+            while ((line = br.readLine()) != null) {
                 files.add(new File(line));
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             throw new RuntimeException("Could not read cache file " + cacheFile + ". Please remove the file and rerun", e);
         } finally {
-            if(br != null) {
-                try { br.close(); }
-                catch(Exception e) {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (Exception e) {
                     throw new RuntimeException("Could not close read cache file " + cacheFile, e);
                 }
             }
@@ -81,7 +85,7 @@ public final class Resolver {
         try {
             StringBuilder sb = new StringBuilder();
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            for(MavenDependency dependency : dependencies) {
+            for (MavenDependency dependency : dependencies) {
                 sb.append(dependency.toString());
             }
 
@@ -90,7 +94,7 @@ public final class Resolver {
 
             for (int i = 0; i < hash.length; i++) {
                 String hex = Integer.toHexString(0xff & hash[i]);
-                if(hex.length() == 1) hexString.append('0');
+                if (hex.length() == 1) hexString.append('0');
                 hexString.append(hex);
             }
 

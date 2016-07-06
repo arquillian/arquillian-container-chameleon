@@ -1,15 +1,15 @@
 package org.arquillian.container.chameleon;
 
-import java.io.File;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-
 import org.arquillian.container.chameleon.spi.model.Container;
 import org.arquillian.container.chameleon.spi.model.ContainerAdapter;
 import org.arquillian.container.chameleon.spi.model.Target;
 import org.jboss.arquillian.container.spi.ConfigurationException;
 import org.jboss.arquillian.container.spi.client.container.ContainerConfiguration;
+
+import java.io.File;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class ChameleonConfiguration implements ContainerConfiguration {
 
@@ -21,10 +21,9 @@ public class ChameleonConfiguration implements ContainerConfiguration {
 
     private String chameleonTarget = null;
     private String chameleonContainerConfigurationFile = null;
-    private String chameleonDistributionDownloadFolder  = null;
-    private String chameleonResolveCacheFolder  = null;
+    private String chameleonDistributionDownloadFolder = null;
+    private String chameleonResolveCacheFolder = null;
 
-    @Override
     public void validate() throws ConfigurationException {
         if (chameleonTarget == null) {
             throw new ConfigurationException("chameleonTarget must be provided in format server:version:type");
@@ -34,8 +33,8 @@ public class ChameleonConfiguration implements ContainerConfiguration {
         getChameleonContainerConfigurationFileStream();
 
         File resolveCache = getChameleonResolveCacheFolder();
-        if(!resolveCache.exists()) {
-            if(!resolveCache.mkdirs()) {
+        if (!resolveCache.exists()) {
+            if (!resolveCache.mkdirs()) {
                 throw new ConfigurationException("Could not create all resolve cache folders: " + resolveCache);
             }
         }
@@ -59,7 +58,7 @@ public class ChameleonConfiguration implements ContainerConfiguration {
     public InputStream getChameleonContainerConfigurationFileStream() {
         boolean isDefault = false;
         String resource = getChameleonContainerConfigurationFile();
-        if(resource == null) {
+        if (resource == null) {
             resource = DEFAULT_CONTAINER_MAPPING;
             isDefault = true;
         }
@@ -79,8 +78,8 @@ public class ChameleonConfiguration implements ContainerConfiguration {
     }
 
     public String getChameleonDistributionDownloadFolder() {
-        if(chameleonDistributionDownloadFolder != null) {
-            if(TMP_FOLDER_EXPRESSION.equalsIgnoreCase(chameleonDistributionDownloadFolder)) {
+        if (chameleonDistributionDownloadFolder != null) {
+            if (TMP_FOLDER_EXPRESSION.equalsIgnoreCase(chameleonDistributionDownloadFolder)) {
                 chameleonDistributionDownloadFolder = System.getProperty("java.io.tmpdir") + "/arquillian_chameleon";
             }
             return chameleonDistributionDownloadFolder;
@@ -89,7 +88,7 @@ public class ChameleonConfiguration implements ContainerConfiguration {
     }
 
     public File getChameleonResolveCacheFolder() {
-        if(chameleonResolveCacheFolder != null) {
+        if (chameleonResolveCacheFolder != null) {
             return new File(chameleonResolveCacheFolder);
         }
         return new File(new File(getChameleonDistributionDownloadFolder(), "server"), "cache");
