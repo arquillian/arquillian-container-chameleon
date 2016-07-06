@@ -129,7 +129,8 @@
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
-          <forkMode>never</forkMode>
+          <forkCount>1</forkCount>
+          <reuseForks>false</reuseForks>
         </configuration>
         <executions>
           <execution>
@@ -353,7 +354,8 @@
                   <excludes>
                     <exclude>org/arquillian/container/*/**</exclude>
                   </excludes>
-                  <forkMode>once</forkMode>
+                  <forkCount>1</forkCount>
+                  <reuseForks>true</reuseForks>
                   <skip>false</skip>
                   <dependenciesToScan>
                     <dependency>org.arquillian.tck.container:arquillian-tck-container</dependency>
