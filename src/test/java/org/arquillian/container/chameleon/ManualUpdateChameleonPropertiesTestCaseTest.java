@@ -18,12 +18,20 @@
 
 package org.arquillian.container.chameleon;
 
-import javax.enterprise.context.RequestScoped;
+import org.jboss.arquillian.container.test.api.Config;
+import org.junit.Test;
 
-@RequestScoped
-public class SimpleBean {
+import java.net.InetAddress;
 
-    public String getName() {
-        return "Proxy";
+public class ManualUpdateChameleonPropertiesTestCaseTest extends ManualContainerControlTestTemplate {
+
+    @Test
+    public void shouldBeAbleToStartTargetContainerWithNewArguments() throws Exception {
+        containerController.start("manual",
+                new Config()
+                    .add("chameleonTarget", "glassfish:4.1:managed").map());
+
+        assertConnectionPossible(InetAddress.getLocalHost(), 4848);
     }
+
 }

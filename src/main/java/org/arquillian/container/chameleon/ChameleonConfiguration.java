@@ -1,15 +1,33 @@
-package org.arquillian.container.chameleon;
+/*
+ * JBoss, Home of Professional Open Source
+ * Copyright 2016 Red Hat Inc. and/or its affiliates and other contributors
+ * as indicated by the @authors tag. All rights reserved.
+ * See the copyright.txt in the distribution for a
+ * full listing of individual contributors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-import java.io.File;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+package org.arquillian.container.chameleon;
 
 import org.arquillian.container.chameleon.spi.model.Container;
 import org.arquillian.container.chameleon.spi.model.ContainerAdapter;
 import org.arquillian.container.chameleon.spi.model.Target;
 import org.jboss.arquillian.container.spi.ConfigurationException;
 import org.jboss.arquillian.container.spi.client.container.ContainerConfiguration;
+
+import java.io.File;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class ChameleonConfiguration implements ContainerConfiguration {
 
@@ -21,10 +39,9 @@ public class ChameleonConfiguration implements ContainerConfiguration {
 
     private String chameleonTarget = null;
     private String chameleonContainerConfigurationFile = null;
-    private String chameleonDistributionDownloadFolder  = null;
-    private String chameleonResolveCacheFolder  = null;
+    private String chameleonDistributionDownloadFolder = null;
+    private String chameleonResolveCacheFolder = null;
 
-    @Override
     public void validate() throws ConfigurationException {
         if (chameleonTarget == null) {
             throw new ConfigurationException("chameleonTarget must be provided in format server:version:type");
@@ -34,8 +51,8 @@ public class ChameleonConfiguration implements ContainerConfiguration {
         getChameleonContainerConfigurationFileStream();
 
         File resolveCache = getChameleonResolveCacheFolder();
-        if(!resolveCache.exists()) {
-            if(!resolveCache.mkdirs()) {
+        if (!resolveCache.exists()) {
+            if (!resolveCache.mkdirs()) {
                 throw new ConfigurationException("Could not create all resolve cache folders: " + resolveCache);
             }
         }
@@ -59,7 +76,7 @@ public class ChameleonConfiguration implements ContainerConfiguration {
     public InputStream getChameleonContainerConfigurationFileStream() {
         boolean isDefault = false;
         String resource = getChameleonContainerConfigurationFile();
-        if(resource == null) {
+        if (resource == null) {
             resource = DEFAULT_CONTAINER_MAPPING;
             isDefault = true;
         }
@@ -79,8 +96,8 @@ public class ChameleonConfiguration implements ContainerConfiguration {
     }
 
     public String getChameleonDistributionDownloadFolder() {
-        if(chameleonDistributionDownloadFolder != null) {
-            if(TMP_FOLDER_EXPRESSION.equalsIgnoreCase(chameleonDistributionDownloadFolder)) {
+        if (chameleonDistributionDownloadFolder != null) {
+            if (TMP_FOLDER_EXPRESSION.equalsIgnoreCase(chameleonDistributionDownloadFolder)) {
                 chameleonDistributionDownloadFolder = System.getProperty("java.io.tmpdir") + "/arquillian_chameleon";
             }
             return chameleonDistributionDownloadFolder;
@@ -89,7 +106,7 @@ public class ChameleonConfiguration implements ContainerConfiguration {
     }
 
     public File getChameleonResolveCacheFolder() {
-        if(chameleonResolveCacheFolder != null) {
+        if (chameleonResolveCacheFolder != null) {
             return new File(chameleonResolveCacheFolder);
         }
         return new File(new File(getChameleonDistributionDownloadFolder(), "server"), "cache");

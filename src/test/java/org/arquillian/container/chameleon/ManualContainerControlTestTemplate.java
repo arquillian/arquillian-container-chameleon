@@ -18,37 +18,38 @@
 
 package org.arquillian.container.chameleon;
 
-import javax.inject.Inject;
-
-import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.container.test.api.ContainerController;
+import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jboss.arquillian.test.api.ArquillianResource;
 import org.junit.Assert;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.Socket;
+
 @RunWith(Arquillian.class)
-public class SimpleDeploymentTestCase {
+@RunAsClient
+public abstract class ManualContainerControlTestTemplate {
 
-    @Deployment
-    public static WebArchive deploy() {
-        return ShrinkWrap.create(WebArchive.class)
-                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
-                .addClass(SimpleBean.class);
+
+    @ArquillianResource
+    protected ContainerController containerController;
+
+    protected void assertConnectionPossible(InetAddress localHost, Integer newPort) throws IOException {
+        Socket socket = null;
+        try {
+            socket = new Socket(localHost, newPort);
+            Assert.assertTrue(socket.isConnected());
+        } finally {
+            if (socket != null) {
+                try {
+                    socket.close();
+                } catch (IOException ie) {
+                }
+            }
+        }
     }
 
-    @Inject
-    private SimpleBean bean;
-
-    @Test
-    public void shouldNotBeNull() {
-        Assert.assertNotNull(bean);
-    }
-
-    @Test
-    public void shouldReturnName() {
-        Assert.assertEquals("Proxy", bean.getName());
-    }
 }

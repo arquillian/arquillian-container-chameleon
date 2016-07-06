@@ -1,3 +1,21 @@
+/*
+ * JBoss, Home of Professional Open Source
+ * Copyright 2016 Red Hat Inc. and/or its affiliates and other contributors
+ * as indicated by the @authors tag. All rights reserved.
+ * See the copyright.txt in the distribution for a
+ * full listing of individual contributors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.arquillian.container.chameleon.spi.model;
 
 import org.jboss.arquillian.container.spi.ConfigurationException;
@@ -8,8 +26,8 @@ public class Target {
         Remote, Managed, Embedded, Default;
 
         public static Type from(String name) {
-            for(Type type : Type.values()) {
-                if(type.name().equalsIgnoreCase(name)) {
+            for (Type type : Type.values()) {
+                if (type.name().equalsIgnoreCase(name)) {
                     return type;
                 }
             }
@@ -42,14 +60,14 @@ public class Target {
         }
         target.server = sections[0].toLowerCase();
         target.version = sections[1];
-        if(sections.length > 2) {
+        if (sections.length > 2) {
             for (Type type : Type.values()) {
                 if (sections[2].toLowerCase().contains(type.name().toLowerCase())) {
                     target.type = type;
                     break;
                 }
             }
-            if(target.type == null) {
+            if (target.type == null) {
                 throw new ConfigurationException("Unknown target type " + sections[2] + ". Supported " + Target.Type.values());
             }
         } else {

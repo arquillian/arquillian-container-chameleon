@@ -1,3 +1,21 @@
+/*
+ * JBoss, Home of Professional Open Source
+ * Copyright 2016 Red Hat Inc. and/or its affiliates and other contributors
+ * as indicated by the @authors tag. All rights reserved.
+ * See the copyright.txt in the distribution for a
+ * full listing of individual contributors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.arquillian.container.chameleon.spi.model;
 
 import java.util.Map;
@@ -14,7 +32,7 @@ public class ContainerAdapter {
     private String defaultProtocol;
 
     public ContainerAdapter(String version, Target.Type targetType, Adapter adapter, Dist dist,
-            String[] gavExcludeExpression, String defaultProtocol) {
+                            String[] gavExcludeExpression, String defaultProtocol) {
         this.version = version;
         this.targetType = targetType;
         this.adapter = adapter;
@@ -52,7 +70,7 @@ public class ContainerAdapter {
     }
 
     public String[] configurationKeys() {
-        return adapter.configuration().keySet().toArray(new String[] {});
+        return adapter.configuration().keySet().toArray(new String[]{});
     }
 
     public boolean requireDistribution() {
@@ -70,7 +88,7 @@ public class ContainerAdapter {
     }
 
     private String[] resolve(String[] values) {
-        if(values == null) {
+        if (values == null) {
             return new String[0];
         }
         String[] resolved = new String[values.length];
