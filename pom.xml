@@ -173,7 +173,7 @@
             </configuration>
 
             <executions>
-              <execution>
+            <execution>
                 <id>wf10</id>
                 <goals>
                   <goal>test</goal>
@@ -308,7 +308,7 @@
                 </configuration>
               </execution>
               <execution>
-                <id>gf41</id>
+                <id>gf41-managed</id>
                 <goals>
                   <goal>test</goal>
                 </goals>
@@ -317,6 +317,20 @@
                   <test>SimpleDeploymentTestCase</test>
                   <systemPropertyVariables>
                     <arq.container.chameleon.configuration.chameleonTarget>glassfish:4.1:managed
+                    </arq.container.chameleon.configuration.chameleonTarget>
+                  </systemPropertyVariables>
+                </configuration>
+              </execution>
+              <execution>
+                <id>payara41-managed</id>
+                <goals>
+                  <goal>test</goal>
+                </goals>
+                <configuration>
+                  <skip>false</skip>
+                  <test>SimpleDeploymentTestCase</test>
+                  <systemPropertyVariables>
+                    <arq.container.chameleon.configuration.chameleonTarget>payara:4.1.1.162:managed
                     </arq.container.chameleon.configuration.chameleonTarget>
                   </systemPropertyVariables>
                 </configuration>

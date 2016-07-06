@@ -73,6 +73,8 @@ Example chameleonTarget values:
 * GlassFish
 ** 3.x
 ** 4.x
+* Payara
+** 4.1.x
 
 [NOTE]
 Chameleon will download and extract the target container if no distribution home is configured and target type is either embedded or managed.
