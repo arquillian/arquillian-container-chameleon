@@ -241,3 +241,25 @@
         - org.glassfish.main.extras:glassfish-embedded-all:${version}
   defaultType: managed
   dist: *GF_DIST
+
+- name: Payara
+  versionExpression: 4.*
+  adapters:
+    - type: remote
+      gav: org.jboss.arquillian.container:arquillian-glassfish-remote-3.1:1.0.0.CR4
+      adapterClass: org.jboss.arquillian.container.glassfish.remote_3_1.GlassFishRestDeployableContainer
+    - type: managed
+      gav: org.jboss.arquillian.container:arquillian-glassfish-managed-3.1:1.0.0.CR4
+      adapterClass: org.jboss.arquillian.container.glassfish.managed_3_1.GlassFishManagedDeployableContainer
+      configuration:
+        glassFishHome: ${dist}
+        debug: true
+    - type: embedded
+      gav: org.jboss.arquillian.container:arquillian-glassfish-embedded-3.1:1.0.0.CR4
+      adapterClass: org.jboss.arquillian.container.glassfish.embedded_3_1.GlassFishContainer
+      requireDist: false
+      dependencies:
+        - fish.payara.extras:payara-embedded-all:${version}
+  defaultType: managed
+  dist:
+    gav: fish.payara.distributions:payara:zip:${version}
