@@ -19,25 +19,15 @@
 package org.arquillian.container.chameleon;
 
 import org.jboss.arquillian.container.test.api.Config;
-import org.jboss.arquillian.container.test.api.ContainerController;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.io.IOException;
 import java.net.InetAddress;
-import java.net.Socket;
 import java.util.Map;
 
-@RunWith(Arquillian.class)
-@RunAsClient
-public class ManualUpdateContainerPropertiesTestCase {
-
-    @ArquillianResource
-    private ContainerController cc;
+public class ManualUpdateContainerPropertiesTestCase extends ManualContainerControlTestTemplate {
 
     @Test
     public void shouldBeAbleToStartTargetContainerWithNewArguments() throws Exception {
@@ -53,24 +43,10 @@ public class ManualUpdateContainerPropertiesTestCase {
                 .map();
 
         // when
-        cc.start("manual", newContainerConfiguration);
+        containerController.start("manual", newContainerConfiguration);
 
         // then
-        assertConnectionToManagementConsole(localHost, newPort);
+        assertConnectionPossible(localHost, newPort);
     }
 
-    private void assertConnectionToManagementConsole(InetAddress localHost, Integer newPort) throws IOException {
-        Socket socket = null;
-        try {
-            socket = new Socket(localHost, newPort);
-            Assert.assertTrue(socket.isConnected());
-        } finally {
-            if (socket != null) {
-                try {
-                    socket.close();
-                } catch (IOException ie) {
-                }
-            }
-        }
-    }
 }
