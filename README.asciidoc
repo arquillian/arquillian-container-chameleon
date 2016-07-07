@@ -71,13 +71,16 @@ Example chameleonTarget values:
 * JBoss AS
 ** 7.x
 * GlassFish
-** 3.x
+** 3.1.2.*
 ** 4.x
 * Payara
-** 4.1.x
+** 4.x
 
 [NOTE]
 Chameleon will download and extract the target container if no distribution home is configured and target type is either embedded or managed.
+
+[IMPORTANT]
+Glassfish versions prior to 3.1.2 are no longer supported due to issues with dependencies of the distribution
 
 === Configuration options
 

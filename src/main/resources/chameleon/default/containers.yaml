@@ -206,54 +206,46 @@
     - org.jboss.shrinkwrap.resolver:*
     - "*:wildfly-arquillian-testenricher-msc"
 
+# Older versions of Glassfish (before 3.1.2) are no longer supported
 - name: GlassFish
-  versionExpression: 3.*
+  versionExpression: ^3\.1\.[2-9]{1}(\.[0-9])*$
   adapters:
     - &GF_REMOTE
-      type: remote
-      gav: org.jboss.arquillian.container:arquillian-glassfish-remote-3.1:1.0.0.CR4
-      adapterClass: org.jboss.arquillian.container.glassfish.remote_3_1.GlassFishRestDeployableContainer
+          type: remote
+          gav: org.jboss.arquillian.container:arquillian-glassfish-remote-3.1:1.0.0.CR4
+          adapterClass: org.jboss.arquillian.container.glassfish.remote_3_1.GlassFishRestDeployableContainer
     - &GF_MANAGED
       type: managed
       gav: org.jboss.arquillian.container:arquillian-glassfish-managed-3.1:1.0.0.CR4
       adapterClass: org.jboss.arquillian.container.glassfish.managed_3_1.GlassFishManagedDeployableContainer
       configuration:
         glassFishHome: ${dist}
-    - type: embedded
-      gav: org.jboss.arquillian.container:arquillian-glassfish-embedded-3.1:1.0.0.CR4
-      adapterClass: org.jboss.arquillian.container.glassfish.embedded_3_1.GlassFishContainer
-      requireDist: false
-      dependencies:
-        - org.glassfish.extras:glassfish-embedded-all:${version}
-  defaultType: managed
-  dist: &GF_DIST
-    gav: org.glassfish.main.distributions:glassfish:zip:${version}
-- name: GlassFish
-  versionExpression: 4.*
-  adapters:
-    - *GF_REMOTE
-    - *GF_MANAGED
-    - type: embedded
+        outputToConsole: true
+    - &GF_EMBEDDED
+      type: embedded
       gav: org.jboss.arquillian.container:arquillian-glassfish-embedded-3.1:1.0.0.CR4
       adapterClass: org.jboss.arquillian.container.glassfish.embedded_3_1.GlassFishContainer
       requireDist: false
       dependencies:
         - org.glassfish.main.extras:glassfish-embedded-all:${version}
   defaultType: managed
+  dist: &GF_DIST
+    gav: org.glassfish.main.distributions:glassfish:zip:${version}
+
+- name: GlassFish
+  versionExpression: 4.*
+  adapters:
+    - *GF_REMOTE
+    - *GF_MANAGED
+    - *GF_EMBEDDED
+  defaultType: managed
   dist: *GF_DIST
 
 - name: Payara
   versionExpression: 4.*
   adapters:
-    - type: remote
-      gav: org.jboss.arquillian.container:arquillian-glassfish-remote-3.1:1.0.0.CR4
-      adapterClass: org.jboss.arquillian.container.glassfish.remote_3_1.GlassFishRestDeployableContainer
-    - type: managed
-      gav: org.jboss.arquillian.container:arquillian-glassfish-managed-3.1:1.0.0.CR4
-      adapterClass: org.jboss.arquillian.container.glassfish.managed_3_1.GlassFishManagedDeployableContainer
-      configuration:
-        glassFishHome: ${dist}
-        debug: true
+    - *GF_REMOTE
+    - *GF_MANAGED
     - type: embedded
       gav: org.jboss.arquillian.container:arquillian-glassfish-embedded-3.1:1.0.0.CR4
       adapterClass: org.jboss.arquillian.container.glassfish.embedded_3_1.GlassFishContainer
