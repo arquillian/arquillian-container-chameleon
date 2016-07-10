@@ -1,4 +1,4 @@
-== Arquillian Chameleon Container
+== Arquillian Chameleon Container image:https://travis-ci.org/felipecalmeida/arquillian-container-chameleon.svg?branch=master["Build Status", link="https://travis-ci.org/felipecalmeida/arquillian-container-chameleon"]
 
 
 [quote]
