@@ -212,18 +212,18 @@
   adapters:
     - &GF_REMOTE
           type: remote
-          gav: org.jboss.arquillian.container:arquillian-glassfish-remote-3.1:1.0.0.CR4
+          gav: org.jboss.arquillian.container:arquillian-glassfish-remote-3.1:1.0.0.Final
           adapterClass: org.jboss.arquillian.container.glassfish.remote_3_1.GlassFishRestDeployableContainer
     - &GF_MANAGED
       type: managed
-      gav: org.jboss.arquillian.container:arquillian-glassfish-managed-3.1:1.0.0.CR4
+      gav: org.jboss.arquillian.container:arquillian-glassfish-managed-3.1:1.0.0.Final
       adapterClass: org.jboss.arquillian.container.glassfish.managed_3_1.GlassFishManagedDeployableContainer
       configuration:
         glassFishHome: ${dist}
         outputToConsole: true
     - &GF_EMBEDDED
       type: embedded
-      gav: org.jboss.arquillian.container:arquillian-glassfish-embedded-3.1:1.0.0.CR4
+      gav: org.jboss.arquillian.container:arquillian-glassfish-embedded-3.1:1.0.0.Final
       adapterClass: org.jboss.arquillian.container.glassfish.embedded_3_1.GlassFishContainer
       requireDist: false
       dependencies:
@@ -247,7 +247,7 @@
     - *GF_REMOTE
     - *GF_MANAGED
     - type: embedded
-      gav: org.jboss.arquillian.container:arquillian-glassfish-embedded-3.1:1.0.0.CR4
+      gav: org.jboss.arquillian.container:arquillian-glassfish-embedded-3.1:1.0.0.Final
       adapterClass: org.jboss.arquillian.container.glassfish.embedded_3_1.GlassFishContainer
       requireDist: false
       dependencies:
