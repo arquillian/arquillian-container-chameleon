@@ -160,6 +160,16 @@ use the following format to describe them:
 NOTE: If you want to help improve the configurations, you can find issues related to this configuration labeled as https://github.com/arquillian/arquillian-container-chameleon/labels/container[container]
 in the https://github.com/arquillian/arquillian-container-chameleon/issues[issue tracker].
 
+== Test
+
+To run the whole test suite with the correct configuration use profile `all`:
+
+`mvn clean verify -Pall`
+
+To run Arquillian Container TCK test suite use profile `tck`:
+
+`mvn clean verify -Ptck`
+
 == Community
 
 * Chat: #arquillian channel @ http://webchat.freenode.net/[irc.freenode.net]
