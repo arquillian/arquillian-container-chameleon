@@ -137,6 +137,7 @@
             <configuration>
               <excludes>
                 <exclude>**/*Manual*</exclude>
+                <exclude>**/*Domain*</exclude>
               </excludes>
             </configuration>
           </execution>
@@ -330,6 +331,20 @@
                   <test>SimpleDeploymentTestCase</test>
                   <systemPropertyVariables>
                     <arq.container.chameleon.configuration.chameleonTarget>payara:4.1.1.162:managed
+                    </arq.container.chameleon.configuration.chameleonTarget>
+                  </systemPropertyVariables>
+                </configuration>
+              </execution>
+              <execution>
+                <id>wf10-domain</id>
+                <goals>
+                  <goal>test</goal>
+                </goals>
+                <configuration>
+                  <skip>false</skip>
+                  <test>DomainDeploymentTestCase</test>
+                  <systemPropertyVariables>
+                    <arq.container.chameleon.configuration.chameleonTarget>wildfly domain:10.0.0.Final:managed
                     </arq.container.chameleon.configuration.chameleonTarget>
                   </systemPropertyVariables>
                 </configuration>
