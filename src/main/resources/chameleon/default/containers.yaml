@@ -226,6 +226,9 @@
       configuration: &WF_EMBEDD_CONFIG
         jbossHome: ${dist}
         modulePath: ${dist}/modules
+      dependencies:
+        - org.jboss.remotingjmx:remoting-jmx:2.0.1.Final
+        - org.jboss.logging:jboss-logging:3.2.1.Final
   defaultType: managed
   dist: &WF_DIST
     gav: org.wildfly:wildfly-dist:zip:${version}
@@ -288,6 +291,8 @@
       gav: org.wildfly.arquillian:wildfly-arquillian-container-embedded:1.0.0.Final
       adapterClass: org.jboss.as.arquillian.container.embedded.EmbeddedDeployableContainer
       configuration: *WF_EMBEDD_CONFIG
+      dependencies:
+        - org.jboss.remotingjmx:remoting-jmx:2.0.1.Final
   defaultType: managed
   dist: *WF_DIST
   exclude: &WF9_EXCLUDE
