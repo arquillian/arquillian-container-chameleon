@@ -99,11 +99,6 @@
       <type>pom</type>
     </dependency>
     <dependency>
-      <groupId>org.jboss.logmanager</groupId>
-      <artifactId>jboss-logmanager</artifactId>
-      <version>${version.jboss.logmanager}</version>
-    </dependency>
-    <dependency>
       <groupId>org.jboss.arquillian.junit</groupId>
       <artifactId>arquillian-junit-container</artifactId>
       <scope>test</scope>
@@ -420,6 +415,14 @@
           </plugin>
         </plugins>
       </build>
+      <dependencies>
+        <dependency>
+          <groupId>org.jboss.logmanager</groupId>
+          <artifactId>jboss-logmanager</artifactId>
+          <version>${version.jboss.logmanager}</version>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
     </profile>
     <profile>
       <id>tck</id>
