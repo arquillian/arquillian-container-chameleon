@@ -278,14 +278,14 @@
   versionExpression: 9.*
   adapters:
     - type: remote
-      gav: org.wildfly.arquillian:wildfly-arquillian-container-remote:1.0.0.Final
+      gav: org.wildfly.arquillian:wildfly-arquillian-container-remote:1.1.0.Final
       adapterClass: org.jboss.as.arquillian.container.remote.RemoteDeployableContainer
     - type: managed
-      gav: org.wildfly.arquillian:wildfly-arquillian-container-managed:1.0.0.Final
+      gav: org.wildfly.arquillian:wildfly-arquillian-container-managed:1.1.0.Final
       adapterClass: org.jboss.as.arquillian.container.managed.ManagedDeployableContainer
       configuration: *WF_CONFIG
     - type: embedded
-      gav: org.wildfly.arquillian:wildfly-arquillian-container-embedded:1.0.0.Final
+      gav: org.wildfly.arquillian:wildfly-arquillian-container-embedded:1.1.0.Final
       adapterClass: org.jboss.as.arquillian.container.embedded.EmbeddedDeployableContainer
       configuration: *WF_EMBEDD_CONFIG
   defaultType: managed
@@ -306,11 +306,11 @@
   versionExpression: 9.*
   adapters:
     - type: managed
-      gav: org.wildfly.arquillian:wildfly-arquillian-container-domain-managed:1.0.0.Final
+      gav: org.wildfly.arquillian:wildfly-arquillian-container-domain-managed:1.1.0.Final
       adapterClass: org.jboss.as.arquillian.container.domain.managed.ManagedDomainDeployableContainer
       configuration: *WF_CONFIG
     - type: remote
-      gav: org.wildfly.arquillian:wildfly-arquillian-container-domain-remote:1.0.0.Final
+      gav: org.wildfly.arquillian:wildfly-arquillian-container-domain-remote:1.1.0.Final
       adapterClass: org.jboss.as.arquillian.container.domain.remote.RemoteDomainDeployableContainer
   defaultType: managed
   dist: *WF_DIST
