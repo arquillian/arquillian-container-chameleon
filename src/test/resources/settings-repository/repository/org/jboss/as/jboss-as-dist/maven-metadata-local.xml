@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>org.jboss.as</groupId>
+  <artifactId>jboss-as-arquillian-container-managed</artifactId>
+  <versioning>
+    <release>7.1.3.Final</release>
+    <versions>
+      <version>7.1.3.Final</version>
+    </versions>
+    <lastUpdated>20161102183335</lastUpdated>
+  </versioning>
+</metadata>
