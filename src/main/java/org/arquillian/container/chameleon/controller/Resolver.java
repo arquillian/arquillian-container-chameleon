@@ -18,9 +18,6 @@
 
 package org.arquillian.container.chameleon.controller;
 
-import org.jboss.shrinkwrap.resolver.api.maven.Maven;
-import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenDependency;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -30,9 +27,13 @@ import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jboss.shrinkwrap.resolver.api.maven.ConfigurableMavenResolverSystem;
+import org.jboss.shrinkwrap.resolver.api.maven.Maven;
+import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenDependency;
+
 public final class Resolver {
 
-    public static File[] resolve(File cacheFolder, MavenDependency[] dependencies) {
+    public static File[] resolve(File cacheFolder, MavenDependency[] dependencies, String settingsXml) {
         String hash = hash(dependencies);
         File[] files = null;
 
@@ -40,8 +41,12 @@ public final class Resolver {
         if (cacheFile.exists()) {
             files = readCache(cacheFile);
         } else {
-            files = Maven.configureResolver()
-                    .addDependencies(dependencies)
+            ConfigurableMavenResolverSystem resolver = Maven.configureResolver();
+            if (settingsXml != null) {
+                resolver.fromFile(settingsXml);
+            }
+
+            files = resolver.addDependencies(dependencies)
                     .resolve()
                     .withTransitivity()
                     .asFile();

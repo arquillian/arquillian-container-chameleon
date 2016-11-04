@@ -24,6 +24,7 @@ import org.jboss.arquillian.config.descriptor.api.ContainerDef;
 import org.jboss.arquillian.core.api.threading.ExecutorService;
 import org.jboss.shrinkwrap.api.GenericArchive;
 import org.jboss.shrinkwrap.api.exporter.ExplodedExporter;
+import org.jboss.shrinkwrap.resolver.api.maven.ConfigurableMavenResolverSystem;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenCoordinate;
 
@@ -45,9 +46,9 @@ public class DistributionController {
         this.distributionDownloadFolder = distributionDownloadFolder;
     }
 
-    public void setup(ContainerDef targetConfiguration, ExecutorService executor) throws Exception {
+    public void setup(ContainerDef targetConfiguration, ExecutorService executor, String settingsXml) throws Exception {
         if (requireDistribution(targetConfiguration)) {
-            updateTargetConfiguration(targetConfiguration, resolveDistribution(executor));
+            updateTargetConfiguration(targetConfiguration, resolveDistribution(executor, settingsXml));
         }
     }
 
@@ -60,7 +61,7 @@ public class DistributionController {
         return false;
     }
 
-    private File resolveDistribution(ExecutorService executor) {
+    private File resolveDistribution(ExecutorService executor, final String settingsXml) {
         final MavenCoordinate distributableCoordinate = toMavenCoordinate(targetAdapter.distribution());
 
         if (distributableCoordinate != null) {
@@ -77,7 +78,11 @@ public class DistributionController {
             Future<File> uncompressDirectory = executor.submit(new Callable<File>() {
                 @Override
                 public File call() throws Exception {
-                    return Maven.resolver().resolve(distributableCoordinate.toCanonicalForm())
+                    ConfigurableMavenResolverSystem resolver = Maven.configureResolver();
+                    if (settingsXml != null) {
+                        resolver.fromFile(settingsXml);
+                    }
+                    return resolver.resolve(distributableCoordinate.toCanonicalForm())
                             .withoutTransitivity()
                             .asSingle(GenericArchive.class)
                             .as(ExplodedExporter.class)

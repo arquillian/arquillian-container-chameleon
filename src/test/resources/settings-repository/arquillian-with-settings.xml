@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<arquillian xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns="http://jboss.org/schema/arquillian"
+            xsi:schemaLocation="http://jboss.org/schema/arquillian http://jboss.org/schema/arquillian/arquillian_1_0.xsd">
+
+    <container qualifier="chameleon-manual-with-settings" default="true" mode="manual">
+        <configuration>
+            <property name="chameleonTarget">JBoss EAP:7.1.3.Final:managed</property>
+            <property name="chameleonSettingsXml">target/test-classes/settings-repository/dummy-settings.xml</property>
+            <property name="chameleonDistributionDownloadFolder">target/chameleonDistributionDownloadFolder</property>
+            <property name="chameleonResolveCacheFolder">target/chameleonResolveCacheFolder</property>
+        </configuration>
+    </container>
+
+    <container qualifier="chameleon-manual-without-settings" mode="manual">
+        <configuration>
+            <property name="chameleonTarget">JBoss EAP:7.1.3.Final:managed</property>
+            <property name="chameleonDistributionDownloadFolder">target/chameleonDistributionDownloadFolder</property>
+            <property name="chameleonResolveCacheFolder">target/chameleonResolveCacheFolder</property>
+        </configuration>
+    </container>
+</arquillian>
