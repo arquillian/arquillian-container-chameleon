@@ -173,7 +173,7 @@ public class ContainerTestCase {
     public void resolveWildFly9() throws Exception {
         ContainerAdapter adapter = load("wildfly:9.0.0.CR1:managed");
         Assert.assertEquals(
-                "org.wildfly.arquillian:wildfly-arquillian-container-managed:1.0.0.Final",
+                "org.wildfly.arquillian:wildfly-arquillian-container-managed:1.1.0.Final",
                 adapter.dependencies()[0]);
     }
 
