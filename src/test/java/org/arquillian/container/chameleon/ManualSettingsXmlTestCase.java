@@ -11,6 +11,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -40,7 +41,7 @@ public class ManualSettingsXmlTestCase {
 
     // chameleon cache and download folders
     private static File chameleonDistributionDownloadFolder = new File(target + "/chameleonDistributionDownloadFolder");
-    private static File chameleonResolveCacheFolder = new File("/chameleonResolveCacheFolder");
+    private static File chameleonResolveCacheFolder = new File(target + "/chameleonResolveCacheFolder");
 
     // previous properties
     private static String previousArqXmlProperty = "";
@@ -61,6 +62,12 @@ public class ManualSettingsXmlTestCase {
     @Before
     public void cleanBeforeTest() throws IOException {
         cleanup();
+    }
+
+    @After
+    public void cleanSystemProperties(){
+        System.setProperty("org.apache.maven.global-settings", "");
+        System.setProperty("org.apache.maven.user-settings", "");
     }
 
     public static void cleanup() throws IOException {
@@ -104,11 +111,18 @@ public class ManualSettingsXmlTestCase {
         // it should have not failed
         assertThat(failures).as(message.toString()).isEmpty();
 
-        // verify that target/local-repository was used
-        assertThat(localRepo).exists();
-        assertThat(localRepo).isDirectory();
-        assertThat(localRepo.listFiles()).as("target/local-repository directory should not be empty").isNotEmpty();
-        assertThat(new File(localRepo + "/org")).exists();
+        String usedMavenRepoLocal = System.getProperty("maven.repo.local");
+
+        if (usedMavenRepoLocal == null){
+            usedMavenRepoLocal = localRepo.getAbsolutePath();
+        }
+        File localJBossAsDistDir = new File(usedMavenRepoLocal + "/org/jboss/as/jboss-as-dist/7.1.3.Final/");
+
+        assertThat(localJBossAsDistDir).exists();
+        assertThat(localJBossAsDistDir).isDirectory();
+        assertThat(localJBossAsDistDir.listFiles()).as(localJBossAsDistDir + " directory should not be empty").isNotEmpty();
+        assertThat(new File(localJBossAsDistDir + "/jboss-as-dist-7.1.3.Final.zip")).exists();
+        assertThat(new File(localJBossAsDistDir + "/jboss-as-dist-7.1.3.Final.pom")).exists();
     }
 
 
