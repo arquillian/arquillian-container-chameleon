@@ -120,7 +120,7 @@ public class ContainerTestCase {
     public void resolveJBossEAP7() throws Exception {
         ContainerAdapter adapter = load("jboss eap:7.0.0.GA:managed");
         Assert.assertEquals(
-                "org.wildfly.arquillian:wildfly-arquillian-container-managed:2.0.0.Final",
+                "org.wildfly.arquillian:wildfly-arquillian-container-managed:2.0.1.Final",
                 adapter.dependencies()[0]);
     }
 
@@ -173,7 +173,7 @@ public class ContainerTestCase {
     public void resolveWildFly9() throws Exception {
         ContainerAdapter adapter = load("wildfly:9.0.0.CR1:managed");
         Assert.assertEquals(
-                "org.wildfly.arquillian:wildfly-arquillian-container-managed:1.0.0.Final",
+                "org.wildfly.arquillian:wildfly-arquillian-container-managed:1.1.0.Final",
                 adapter.dependencies()[0]);
     }
 
@@ -195,7 +195,7 @@ public class ContainerTestCase {
     public void resolveWildFly10() throws Exception {
         ContainerAdapter adapter = load("wildfly:10.0.0.Beta2:managed");
         Assert.assertEquals(
-                "org.wildfly.arquillian:wildfly-arquillian-container-managed:2.0.0.Final",
+                "org.wildfly.arquillian:wildfly-arquillian-container-managed:2.0.1.Final",
                 adapter.dependencies()[0]);
     }
 
@@ -203,7 +203,7 @@ public class ContainerTestCase {
     public void resolveWildFly10DomainManaged() throws Exception {
         ContainerAdapter adapter = load("wildfly domain:10.0.0.Final:managed");
         Assert.assertEquals(
-                "org.wildfly.arquillian:wildfly-arquillian-container-domain-managed:2.0.0.Final",
+                "org.wildfly.arquillian:wildfly-arquillian-container-domain-managed:2.0.1.Final",
                 adapter.dependencies()[0]);
     }
 
@@ -211,7 +211,7 @@ public class ContainerTestCase {
     public void resolveWildFly10DomainRemote() throws Exception {
         ContainerAdapter adapter = load("wildfly domain:10.0.0.Final:remote");
         Assert.assertEquals(
-                "org.wildfly.arquillian:wildfly-arquillian-container-domain-remote:2.0.0.Final",
+                "org.wildfly.arquillian:wildfly-arquillian-container-domain-remote:2.0.1.Final",
                 adapter.dependencies()[0]);
     }
 
