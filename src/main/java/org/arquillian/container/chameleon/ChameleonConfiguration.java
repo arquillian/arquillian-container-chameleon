@@ -41,6 +41,7 @@ public class ChameleonConfiguration implements ContainerConfiguration {
     private String chameleonContainerConfigurationFile = null;
     private String chameleonDistributionDownloadFolder = null;
     private String chameleonResolveCacheFolder = null;
+    private String chameleonSettingsXml = null;
 
     public void validate() throws ConfigurationException {
         if (chameleonTarget == null) {
@@ -114,7 +115,12 @@ public class ChameleonConfiguration implements ContainerConfiguration {
 
     public ContainerAdapter getConfiguredAdapter() throws Exception {
         Target target = getParsedTarget();
-        Container[] containers = new ContainerLoader().load(getChameleonContainerConfigurationFileStream(), getChameleonResolveCacheFolder());
+        Container[] containers =
+            new ContainerLoader().load(
+                getChameleonContainerConfigurationFileStream(),
+                getChameleonResolveCacheFolder(),
+                getChameleonSettingsXml());
+
         for (Container container : containers) {
             ContainerAdapter adapter = container.matches(target);
             if (adapter != null) {
@@ -140,5 +146,13 @@ public class ChameleonConfiguration implements ContainerConfiguration {
                 return MAVEN_OUTPUT_DIRECTORY;
             }
         }
+    }
+
+    public String getChameleonSettingsXml() {
+        return chameleonSettingsXml;
+    }
+
+    public void setChameleonSettingsXml(String chameleonSettingsXml) {
+        this.chameleonSettingsXml = chameleonSettingsXml;
     }
 }

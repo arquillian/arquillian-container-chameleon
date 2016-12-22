@@ -18,28 +18,28 @@
 
 package org.arquillian.container.chameleon;
 
-import org.arquillian.container.chameleon.controller.Resolver;
-import org.arquillian.container.chameleon.spi.model.Container;
-import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenDependency;
-
 import java.io.File;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.net.URLClassLoader;
 
+import org.arquillian.container.chameleon.controller.Resolver;
+import org.arquillian.container.chameleon.spi.model.Container;
+import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenDependency;
+
 import static org.arquillian.container.chameleon.Utils.toMavenDependencies;
 import static org.arquillian.container.chameleon.Utils.toURLs;
 
 public class ContainerLoader {
 
-    public Container[] load(InputStream containers, File cacheFolder) throws Exception {
+    public Container[] load(InputStream containers, File cacheFolder, String settingsXml) throws Exception {
 
         MavenDependency[] mavenDependencies = toMavenDependencies(
                 new String[]{"org.yaml:snakeyaml:1.15"},
                 new String[]{});
 
-        File[] archives = Resolver.resolve(cacheFolder, mavenDependencies);
+        File[] archives = Resolver.resolve(cacheFolder, mavenDependencies, settingsXml);
 
         ClassLoader classloader = new URLClassLoader(toURLs(archives), null);
         return loadContainers(classloader, containers);

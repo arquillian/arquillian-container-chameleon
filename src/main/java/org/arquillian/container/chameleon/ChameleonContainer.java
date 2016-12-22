@@ -82,12 +82,12 @@ public class ChameleonContainer implements DeployableContainer<ContainerConfigur
             this.target = new TargetController(
                     adapter,
                     injectorInst.get(),
-                    configuration.getChameleonResolveCacheFolder());
+                    configuration);
             this.distribution = new DistributionController(
                     adapter,
                     configuration.getChameleonDistributionDownloadFolder());
 
-            distribution.setup(targetConfiguration, executorServiceInst.get());
+            distribution.setup(targetConfiguration, executorServiceInst.get(), configuration.getChameleonSettingsXml());
         } catch (Exception e) {
             throw new IllegalStateException("Could not setup chameleon container", e);
         }

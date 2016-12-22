@@ -18,7 +18,7 @@
 
 package org.arquillian.container.chameleon.controller;
 
-
+import org.arquillian.container.chameleon.ChameleonConfiguration;
 import org.arquillian.container.chameleon.ChameleonContainer;
 import org.arquillian.container.chameleon.spi.model.ContainerAdapter;
 import org.jboss.arquillian.container.spi.client.container.ContainerConfiguration;
@@ -48,9 +48,10 @@ public class TargetController {
     private ContainerAdapter adapter;
 
     @SuppressWarnings("rawtypes")
-    public TargetController(ContainerAdapter adapter, Injector injector, File resolverCacheFolder) throws Exception {
+    public TargetController(ContainerAdapter adapter, Injector injector, ChameleonConfiguration configuration)
+        throws Exception {
         // init
-        this.classloader = resolveClasspathDependencies(adapter, resolverCacheFolder);
+        this.classloader = resolveClasspathDependencies(adapter, configuration);
         final Class<?> delegateClass = classloader.loadClass(adapter.adapterClass());
         this.delegate = injector.inject((DeployableContainer) delegateClass.newInstance());
         this.adapter = adapter;
@@ -170,13 +171,19 @@ public class TargetController {
         }
     }
 
-    private ClassLoader resolveClasspathDependencies(ContainerAdapter targetAdapter, File resolverCacheFolder) {
+    private ClassLoader resolveClasspathDependencies(ContainerAdapter targetAdapter,
+        ChameleonConfiguration configuration) {
         String[] dependencies = targetAdapter.dependencies();
 
         try {
             MavenDependency[] mavenDependencies = toMavenDependencies(dependencies, targetAdapter.excludes());
 
-            File[] archives = Resolver.resolve(resolverCacheFolder, mavenDependencies);
+            File[] archives =
+                Resolver.resolve(
+                    configuration.getChameleonResolveCacheFolder(),
+                    mavenDependencies,
+                    configuration.getChameleonSettingsXml());
+
             return new URLClassLoader(toURLs(archives), ChameleonContainer.class.getClassLoader());
 
         } catch (Exception e) {
