@@ -36,6 +36,7 @@
     <version.jboss.logmanager>2.0.4.Final</version.jboss.logmanager>
     <version.assertj>3.5.2</version.assertj>
     <version.jcip.annotations>1.0</version.jcip.annotations>
+    <version.shrinkwrap.resolver>2.2.5</version.shrinkwrap.resolver>
 
     <!-- override from parent -->
     <maven.compiler.target>1.5</maven.compiler.target>
@@ -45,6 +46,13 @@
 
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>org.jboss.shrinkwrap.resolver</groupId>
+        <artifactId>shrinkwrap-resolver-bom</artifactId>
+        <version>${version.shrinkwrap.resolver}</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
       <dependency>
         <groupId>org.jboss.arquillian</groupId>
         <artifactId>arquillian-bom</artifactId>
