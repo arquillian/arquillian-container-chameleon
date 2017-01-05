@@ -91,8 +91,8 @@ container configuration. Use no type if you just want 'something' up and running
 
 ==== chameleonDistributionDownloadFolder
 
-Override the default download folder for container distributions. Could be defined as 'TMP' to create a custom folder under 'java.io.tmpdir', else
-it will be read as a directory. Defaults to detect current build system, either target/ for Maven or bin/ for Gradle.
+Override the default download folder for container distributions. Could be defined as `TMP` to create a custom folder under `java.io.tmpdir`, else
+it will be read as a directory. Defaults to detect current build system, either `target/` for Maven or `bin/` for Gradle.
 
 ==== chameleonContainerConfigurationFile
 
@@ -100,7 +100,7 @@ Define the container configuration file to use. Defaults to the containers.yaml 
 
 ==== chameleonResolveCacheFolder
 
-Define where Chameleon should store the resolver cache files. By default it will use 'chameleonDistributionDownloadFolder'/cache.
+Define where Chameleon should store the resolver cache files. By default it will use `'chameleonDistributionDownloadFolder'/cache`.
 
 == Development
 
@@ -161,7 +161,7 @@ NOTE: If you want to help improve the configurations, you can find issues relate
 in the https://github.com/arquillian/arquillian-container-chameleon/issues[issue tracker].
 
 ==== WildFly Embedded
-If you want to run any of the versions of WildFly embedded, you need to add an additional dependency to your pom.xml file:
+If you want to run any of the versions of WildFly embedded, you need to add an additional dependency to your `pom.xml` file:
 [source,xml]
 ----
 <dependency>
@@ -187,11 +187,11 @@ and set `java.util.logging.manager` variable to `org.jboss.logmanager.LogManager
 
 == Custom Maven setting
 
-In case you need to specify your custom settings.xml file and you cannot put it at the default location (`$HOME/.m2/settings.xml`) then use the property
+In case you need to specify your custom `settings.xml` file and you cannot put it at the default location (`$HOME/.m2/settings.xml`) then use the property
 `org.apache.maven.user-settings`
-to specify a user settings.xml file or
+to specify a user `settings.xml` file or
 `org.apache.maven.global-settings`
-to specify a global settings.xml file.
+to specify a global `settings.xml` file.
 
 The standard Maven property `-s` doesn't work as Chameleon internally uses Shrinkwrap Resolver and the property is not supported there. But you can use any of the properties described here: https://github.com/shrinkwrap/resolver#system-properties
 
