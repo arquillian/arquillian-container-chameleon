@@ -185,6 +185,16 @@ and set `java.util.logging.manager` variable to `org.jboss.logmanager.LogManager
 </plugin>
 ----
 
+== Custom Maven setting
+
+In case you need to specify your custom settings.xml file and you cannot put it at the default location (`$HOME/.m2/settings.xml`) then use the property
+`org.apache.maven.user-settings`
+to specify a user settings.xml file or
+`org.apache.maven.global-settings`
+to specify a global settings.xml file.
+
+The standard Maven property `-s` doesn't work as Chameleon internally uses Shrinkwrap Resolver and the property is not supported there. But you can use any of the properties described here: https://github.com/shrinkwrap/resolver#system-properties
+
 == Test
 
 To run the whole test suite with the correct configuration use profile `all`:
