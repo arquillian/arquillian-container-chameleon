@@ -18,8 +18,6 @@
 
 package org.arquillian.container.chameleon;
 
-import javax.inject.Inject;
-
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -29,14 +27,25 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import javax.inject.Inject;
+
+import static org.arquillian.container.chameleon.Deployments.enrichTomcatWithCdi;
+
 @RunWith(Arquillian.class)
 public class SimpleDeploymentTestCase {
 
     @Deployment
     public static WebArchive deploy() {
-        return ShrinkWrap.create(WebArchive.class)
+        final String container = System.getProperty("arq.container.chameleon.configuration.chameleonTarget", "default");
+        final WebArchive archive = ShrinkWrap.create(WebArchive.class)
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addClass(SimpleBean.class);
+
+        if (container.contains("tomcat")) {
+            enrichTomcatWithCdi(archive);
+        }
+
+        return archive;
     }
 
     @Inject
@@ -51,4 +60,5 @@ public class SimpleDeploymentTestCase {
     public void shouldReturnName() {
         Assert.assertEquals("Proxy", bean.getName());
     }
+
 }

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <!-- Parent -->
   <parent>
     <groupId>org.jboss</groupId>
     <artifactId>jboss-parent</artifactId>
     <version>21</version>
-    <relativePath />
+    <relativePath/>
   </parent>
 
   <!-- Model Version -->
@@ -174,7 +175,7 @@
             </configuration>
 
             <executions>
-            <execution>
+              <execution>
                 <id>wf10</id>
                 <goals>
                   <goal>test</goal>
@@ -322,6 +323,7 @@
                   </systemPropertyVariables>
                 </configuration>
               </execution>
+              <!-- Payara -->
               <execution>
                 <id>payara41-managed</id>
                 <goals>
@@ -409,6 +411,21 @@
                       <value>org.jboss.logmanager.LogManager</value>
                     </property>
                   </systemProperties>
+                </configuration>
+              </execution>
+              <!-- Tomcat 7 -->
+              <execution>
+                <id>tomcat7-managed</id>
+                <goals>
+                  <goal>test</goal>
+                </goals>
+                <configuration>
+                  <skip>false</skip>
+                  <test>SimpleDeploymentTestCase</test>
+                  <systemPropertyVariables>
+                    <arq.container.chameleon.configuration.chameleonTarget>tomcat:7.0.35:managed</arq.container.chameleon.configuration.chameleonTarget>
+                    <arquillian.launch>tomcat7-managed</arquillian.launch>
+                  </systemPropertyVariables>
                 </configuration>
               </execution>
             </executions>
