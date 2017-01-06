@@ -436,6 +436,9 @@
 - name: Tomcat
   versionExpression: 7.*
   adapters:
+    - type: remote
+      gav: org.jboss.arquillian.container:arquillian-tomcat-remote-7:1.0.0.CR8
+      adapterClass: org.jboss.arquillian.container.tomcat.remote.Tomcat7RemoteContainer
     - type: managed
       gav: org.jboss.arquillian.container:arquillian-tomcat-managed-7:1.0.0.CR8
       adapterClass: org.jboss.arquillian.container.tomcat.managed.Tomcat7ManagedContainer
@@ -443,5 +446,5 @@
         catalinaHome: ${dist}
         catalinaBase: ${dist}
   defaultType: managed
-  dist: &TOMCAT_7_DIST
+  dist: &TOMCAT_DIST
     gav: org.apache.tomcat:tomcat:zip:${version}

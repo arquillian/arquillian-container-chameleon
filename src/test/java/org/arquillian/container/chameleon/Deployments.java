@@ -26,7 +26,7 @@ import java.io.File;
 
 public class Deployments {
 
-    private static final File[] WELD_SERVLET = Maven.resolver().resolve("org.jboss.weld.servlet:weld-servlet:2.4.1.Final").withTransitivity().asFile();
+    private static final File[] WELD_SERVLET = Maven.resolver().resolve("org.jboss.weld.servlet:weld-servlet:1.1.33.Final").withTransitivity().asFile();
 
     static void enrichTomcatWithCdi(WebArchive archive) {
         String contextXml = "<Context>\n" +
@@ -37,6 +37,9 @@ public class Deployments {
                 "</Context>\n";
 
         String webXml = "<web-app version=\"3.0\">\n" +
+                "<listener>\n" +
+                "      <listener-class>org.jboss.weld.environment.servlet.Listener</listener-class>\n" +
+                "   </listener>" +
                 "  <resource-env-ref>\n" +
                 "    <resource-env-ref-name>BeanManager</resource-env-ref-name>\n" +
                 "    <resource-env-ref-type>\n" +
