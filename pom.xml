@@ -423,8 +423,23 @@
                   <skip>false</skip>
                   <test>SimpleDeploymentTestCase</test>
                   <systemPropertyVariables>
-                    <arq.container.chameleon.configuration.chameleonTarget>tomcat:7.0.35:managed</arq.container.chameleon.configuration.chameleonTarget>
+                    <arq.container.chameleon.configuration.chameleonTarget>tomcat:7.0.73:managed</arq.container.chameleon.configuration.chameleonTarget>
                     <arquillian.launch>tomcat7-managed</arquillian.launch>
+                  </systemPropertyVariables>
+                </configuration>
+              </execution>
+              <!-- Tomcat 8 -->
+              <execution>
+                <id>tomcat8-managed</id>
+                <goals>
+                  <goal>test</goal>
+                </goals>
+                <configuration>
+                  <skip>false</skip>
+                  <test>SimpleDeploymentTestCase</test>
+                  <systemPropertyVariables>
+                    <arq.container.chameleon.configuration.chameleonTarget>tomcat:8.0.39:managed</arq.container.chameleon.configuration.chameleonTarget>
+                    <arquillian.launch>tomcat8-managed</arquillian.launch>
                   </systemPropertyVariables>
                 </configuration>
               </execution>
