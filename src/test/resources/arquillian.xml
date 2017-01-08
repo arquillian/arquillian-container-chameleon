@@ -12,6 +12,15 @@
       <property name="chameleonTarget">wildfly:9.0.0.Final:managed</property>
     </configuration>
   </container>
+  <container qualifier="tomcat6-managed">
+    <configuration>
+      <property name="chameleonTarget">${arq.container.chameleon.configuration.chameleonTarget}</property>
+      <property name="user">arquillian</property>
+      <property name="pass">arquillian</property>
+      <!-- relative to CATALINA_BASE/conf; catalinaBase is set by chameleon itself -->
+      <property name="serverConfig">../../../../../src/test/resources/tomcat6-server.xml</property>
+    </configuration>
+  </container>
   <container qualifier="tomcat7-managed">
     <configuration>
       <property name="chameleonTarget">${arq.container.chameleon.configuration.chameleonTarget}</property>

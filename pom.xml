@@ -419,6 +419,21 @@
               </execution>
               <!-- Tomcat 7 -->
               <execution>
+                <id>tomcat6-managed</id>
+                <goals>
+                  <goal>test</goal>
+                </goals>
+                <configuration>
+                  <skip>false</skip>
+                  <test>SimpleDeploymentTestCase</test>
+                  <systemPropertyVariables>
+                    <arq.container.chameleon.configuration.chameleonTarget>tomcat:6.0.39:managed</arq.container.chameleon.configuration.chameleonTarget>
+                    <arquillian.launch>tomcat6-managed</arquillian.launch>
+                  </systemPropertyVariables>
+                </configuration>
+              </execution>
+              <!-- Tomcat 7 -->
+              <execution>
                 <id>tomcat7-managed</id>
                 <goals>
                   <goal>test</goal>
