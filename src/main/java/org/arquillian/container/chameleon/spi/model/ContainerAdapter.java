@@ -62,7 +62,7 @@ public class ContainerAdapter {
     }
 
     public String distribution() {
-        return resolve(dist.gav());
+        return resolve(dist.coordinates());
     }
 
     public String[] excludes() {

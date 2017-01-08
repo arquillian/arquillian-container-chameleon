@@ -2,9 +2,9 @@
   versionExpression: 9.*
   adapters:
     - type: managed
-      gav: org.wildfly.arquillian:wildfly-arquillian-container-managed:1.0.0.Final
+      coordinates: org.wildfly.arquillian:wildfly-arquillian-container-managed:1.0.0.Final
       adapterClass: org.jboss.as.arquillian.container.managed.ManagedDeployableContainer
       configuration: &WF_CONFIG
         jbossHome: ${dist}
   dist: &WF_DIST
-    gav: org.wildfly:wildfly-dist:zip:${version}
+    coordinates: org.wildfly:wildfly-dist:zip:${version}

@@ -28,7 +28,7 @@ import java.util.Map;
 public class Adapter {
 
     private String type;
-    private String gav;
+    private String coordinates;
     private String adapterClass;
     private boolean requireDist = true;
     private String[] dependencies;
@@ -48,7 +48,7 @@ public class Adapter {
 
     public String[] dependencies() {
         List<String> deps = new ArrayList<String>();
-        deps.add(gav);
+        deps.add(coordinates);
         if (dependencies != null) {
             deps.addAll(Arrays.asList(dependencies));
         }

@@ -23,13 +23,13 @@ public class Dist {
     public Dist() {
     }
 
-    public Dist(String gav) {
-        this.gav = gav;
+    public Dist(String coordinates) {
+        this.coordinates = coordinates;
     }
 
-    private String gav;
+    private String coordinates;
 
-    public String gav() {
-        return gav;
+    public String coordinates() {
+        return coordinates;
     }
 }
