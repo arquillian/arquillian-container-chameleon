@@ -42,6 +42,9 @@ import static org.arquillian.container.chameleon.Utils.toMavenCoordinate;
 
 public class DistributionController {
 
+    private static final String PROGRESS_INDICATOR = ".";
+    private static final int HALF_A_SECOND = 500;
+
     private ContainerAdapter targetAdapter;
     private String distributionDownloadFolder;
 
@@ -66,30 +69,31 @@ public class DistributionController {
     }
 
     private File resolveDistribution(ExecutorService executor) {
-        if (targetAdapter.distribution().startsWith("http")) {
-            return download();
+        if (targetAdapter.distribution().toLowerCase().startsWith("http")) {
+            return downloadUsingHttp();
         }
-
         return fetchFromMavenRepository(executor);
     }
 
-    private File download() {
+    private File downloadUsingHttp() {
         final String distribution = targetAdapter.distribution();
-        final String serverName = extractFileName(distribution);
+        final String serverName = new FileNameFromUrlExtractor(distribution).extract();
         final File targetDirectory = new File(new File(distributionDownloadFolder, "server"),
                 serverName);
-        if (serverDownloaded(targetDirectory)) {
+
+        if (serverAlreadyDownloaded(targetDirectory)) {
             return getDistributionHome(targetDirectory);
         }
 
         System.out.println("Arquillian Chameleon: downloading distribution from " + distribution);
-        final Execution<File> download = Spacelift.task(DownloadTool.class).from(distribution).to(targetDirectory + "/" + serverName + ".zip").execute();
+        final String targetArchive = targetDirectory + "/" + serverName + ".zip";
+        final Execution<File> download = Spacelift.task(DownloadTool.class).from(distribution).to(targetArchive).execute();
         try {
             while (!download.isFinished()) {
-                System.out.print(".");
-                Thread.sleep(500);
+                System.out.print(PROGRESS_INDICATOR);
+                Thread.sleep(HALF_A_SECOND);
             }
-            System.out.print(".");
+            System.out.print(PROGRESS_INDICATOR);
 
             final File compressedServer = download.await();
             ShrinkWrap.create(ZipImporter.class, serverName)
@@ -103,18 +107,6 @@ public class DistributionController {
         }
     }
 
-    private boolean serverDownloaded(File targetDirectory) {
-        if (targetDirectory.exists()) {
-            return true;
-        }
-        targetDirectory.mkdirs();
-        return false;
-    }
-
-    private String extractFileName(String distribution) {
-        return new FileNameFromUrlExtractor(distribution).extract();
-    }
-
     private File fetchFromMavenRepository(ExecutorService executor) {
         final MavenCoordinate distributableCoordinate = toMavenCoordinate(targetAdapter.distribution());
 
@@ -122,7 +114,7 @@ public class DistributionController {
             final File targetDirectory = new File(new File(distributionDownloadFolder, "server"),
                     distributableCoordinate.getArtifactId() + "_" + distributableCoordinate.getVersion());
 
-            if (serverDownloaded(targetDirectory)) {
+            if (serverAlreadyDownloaded(targetDirectory)) {
                 return getDistributionHome(targetDirectory);
             }
 
@@ -140,8 +132,8 @@ public class DistributionController {
 
             try {
                 while (!uncompressDirectory.isDone()) {
-                    System.out.print(".");
-                    Thread.sleep(500);
+                    System.out.print(PROGRESS_INDICATOR);
+                    Thread.sleep(HALF_A_SECOND);
                 }
                 System.out.println();
                 return getDistributionHome(uncompressDirectory.get());
@@ -152,8 +144,16 @@ public class DistributionController {
         return null;
     }
 
+    private boolean serverAlreadyDownloaded(File targetDirectory) {
+        final boolean exists = targetDirectory.exists();
+        if (!exists) {
+            targetDirectory.mkdirs();
+        }
+        return exists;
+    }
+
     private void updateTargetConfiguration(ContainerDef targetConfiguration, File distributionHome) throws Exception {
-        Map<String, String> values = new HashMap<String, String>();
+        final Map<String, String> values = new HashMap<String, String>();
         values.put("dist", distributionHome.getAbsolutePath());
 
         for (Map.Entry<String, String> configuration : targetAdapter.resolveConfiguration(values).entrySet()) {
@@ -162,8 +162,8 @@ public class DistributionController {
     }
 
     private boolean requiredConfigurationNotSet(ContainerDef targetConfiguration, ContainerAdapter adapter) {
-        String[] configurationKeys = adapter.configurationKeys();
-        Map<String, String> targetProperties = targetConfiguration.getContainerProperties();
+        final String[] configurationKeys = adapter.configurationKeys();
+        final Map<String, String> targetProperties = targetConfiguration.getContainerProperties();
         for (String key : configurationKeys) {
             if (!targetProperties.containsKey(key)) {
                 return true;
@@ -173,7 +173,7 @@ public class DistributionController {
     }
 
     private File getDistributionHome(File uncompressDirectory) {
-        File[] currentDirectoryContent = uncompressDirectory.listFiles();
+        final File[] currentDirectoryContent = uncompressDirectory.listFiles();
         // only one root directory should be here
         if (currentDirectoryContent.length == 1 && currentDirectoryContent[0].isDirectory()) {
             return currentDirectoryContent[0];
