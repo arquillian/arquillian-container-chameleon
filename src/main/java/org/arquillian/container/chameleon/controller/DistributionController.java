@@ -20,10 +20,15 @@ package org.arquillian.container.chameleon.controller;
 
 import org.arquillian.container.chameleon.spi.model.ContainerAdapter;
 import org.arquillian.container.chameleon.spi.model.Target.Type;
+import org.arquillian.spacelift.Spacelift;
+import org.arquillian.spacelift.execution.Execution;
+import org.arquillian.spacelift.task.net.DownloadTool;
 import org.jboss.arquillian.config.descriptor.api.ContainerDef;
 import org.jboss.arquillian.core.api.threading.ExecutorService;
 import org.jboss.shrinkwrap.api.GenericArchive;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.exporter.ExplodedExporter;
+import org.jboss.shrinkwrap.api.importer.ZipImporter;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenCoordinate;
 
@@ -61,19 +66,67 @@ public class DistributionController {
     }
 
     private File resolveDistribution(ExecutorService executor) {
+        if (targetAdapter.distribution().startsWith("http")) {
+            return download();
+        }
+
+        return fetchFromMavenRepository(executor);
+    }
+
+    private File download() {
+        final String distribution = targetAdapter.distribution();
+        final String serverName = extractFileName(distribution);
+        final File targetDirectory = new File(new File(distributionDownloadFolder, "server"),
+                serverName);
+        if (serverDownloaded(targetDirectory)) {
+            return getDistributionHome(targetDirectory);
+        }
+
+        System.out.println("Arquillian Chameleon: downloading distribution from " + distribution);
+        final Execution<File> download = Spacelift.task(DownloadTool.class).from(distribution).to(targetDirectory + "/" + serverName + ".zip").execute();
+        try {
+            while (!download.isFinished()) {
+                System.out.print(".");
+                Thread.sleep(500);
+            }
+            System.out.print(".");
+
+            final File compressedServer = download.await();
+            ShrinkWrap.create(ZipImporter.class, serverName)
+                      .importFrom(compressedServer)
+                      .as(ExplodedExporter.class)
+                      .exportExploded(targetDirectory, ".");
+            compressedServer.delete();
+            return getDistributionHome(targetDirectory);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private boolean serverDownloaded(File targetDirectory) {
+        if (targetDirectory.exists()) {
+            return true;
+        }
+        targetDirectory.mkdirs();
+        return false;
+    }
+
+    private String extractFileName(String distribution) {
+        return new FileNameFromUrlExtractor(distribution).extract();
+    }
+
+    private File fetchFromMavenRepository(ExecutorService executor) {
         final MavenCoordinate distributableCoordinate = toMavenCoordinate(targetAdapter.distribution());
 
         if (distributableCoordinate != null) {
             final File targetDirectory = new File(new File(distributionDownloadFolder, "server"),
                     distributableCoordinate.getArtifactId() + "_" + distributableCoordinate.getVersion());
 
-            if (targetDirectory.exists()) {
+            if (serverDownloaded(targetDirectory)) {
                 return getDistributionHome(targetDirectory);
-            } else {
-                targetDirectory.mkdirs();
             }
 
-            System.out.println("chameleon: preparing distribution " + distributableCoordinate.toCanonicalForm());
+            System.out.println("Arquillian Chameleon: downloading distribution " + distributableCoordinate.toCanonicalForm());
             Future<File> uncompressDirectory = executor.submit(new Callable<File>() {
                 @Override
                 public File call() throws Exception {

@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2016 Red Hat Inc. and/or its affiliates and other contributors
+ * Copyright 2017 Red Hat Inc. and/or its affiliates and other contributors
  * as indicated by the @authors tag. All rights reserved.
  * See the copyright.txt in the distribution for a
  * full listing of individual contributors.
@@ -16,20 +16,19 @@
  * limitations under the License.
  */
 
-package org.arquillian.container.chameleon.spi.model;
+package org.arquillian.container.chameleon.controller;
 
-public class Dist {
+class FileNameFromUrlExtractor {
 
-    public Dist() {
+    private final String url;
+
+    public FileNameFromUrlExtractor(String url) {
+        this.url = url;
     }
 
-    public Dist(String gav) {
-        this.gav = gav;
-    }
-
-    private String gav;
-
-    public String gav() {
-        return gav;
+    public String extract() {
+        final int lastBackslash = url.lastIndexOf('/');
+        final String fileName = url.substring(lastBackslash + 1);
+        return fileName.substring(0, fileName.lastIndexOf('.'));
     }
 }
