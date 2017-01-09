@@ -202,6 +202,20 @@
 
             <executions>
               <execution>
+                <id>wf10.1</id>
+                <goals>
+                  <goal>test</goal>
+                </goals>
+                <configuration>
+                  <skip>false</skip>
+                  <test>SimpleDeploymentTestCase</test>
+                  <systemPropertyVariables>
+                    <arq.container.chameleon.configuration.chameleonTarget>wildfly:10.1.0.Final:managed
+                    </arq.container.chameleon.configuration.chameleonTarget>
+                  </systemPropertyVariables>
+                </configuration>
+              </execution>
+              <execution>
                 <id>wf10</id>
                 <goals>
                   <goal>test</goal>
@@ -210,7 +224,7 @@
                   <skip>false</skip>
                   <test>SimpleDeploymentTestCase</test>
                   <systemPropertyVariables>
-                    <arq.container.chameleon.configuration.chameleonTarget>wildfly:10.0.0.Beta2:managed
+                    <arq.container.chameleon.configuration.chameleonTarget>wildfly:10.0.0.Final:managed
                     </arq.container.chameleon.configuration.chameleonTarget>
                   </systemPropertyVariables>
                 </configuration>
