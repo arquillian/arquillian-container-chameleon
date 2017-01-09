@@ -114,22 +114,22 @@ use the following format to describe them:
   versionExpression: 10.*  <2>
   adapters: <3>
     - type: remote <4>
-      gav: org.wildfly.arquillian:wildfly-arquillian-container-remote:1.0.0.Final <5>
+      coordinates: org.wildfly.arquillian:wildfly-arquillian-container-remote:1.0.0.Final <5>
       adapterClass: org.jboss.as.arquillian.container.remote.RemoteDeployableContainer <6>
     - type: managed
-      gav: org.wildfly.arquillian:wildfly-arquillian-container-managed:1.0.0.Final
+      coordinates: org.wildfly.arquillian:wildfly-arquillian-container-managed:1.0.0.Final
       adapterClass: org.jboss.as.arquillian.container.managed.ManagedDeployableContainer
       configuration: <8>
         jbossHome: ${dist} <9>
     - type: embedded <10>
-      gav: org.wildfly.arquillian:wildfly-arquillian-container-embedded:${version} <11>
+      coordinates: org.wildfly.arquillian:wildfly-arquillian-container-embedded:${version} <11>
       adapterClass: org.jboss.as.arquillian.container.embedded.EmbeddedDeployableContainer
       requireDist: false <12>
       dependencies: <13>
         - org.glassfish.extras:glassfish-embedded-all:${version} <14>
   defaultType: managed <15>
   dist: <16>
-    gav: org.wildfly:wildfly-dist:zip:${version} <17>
+    coordinates: org.wildfly:wildfly-dist:zip:${version} <17>
   defaultProtocol: Servlet 3.0 <18>
   exclude: <19>
     - org.jboss.arquillian.test:* <20>

@@ -34,7 +34,7 @@ public final class Resolver {
 
     public static File[] resolve(File cacheFolder, MavenDependency[] dependencies) {
         String hash = hash(dependencies);
-        File[] files = null;
+        File[] files;
 
         File cacheFile = getCacheFile(cacheFolder, hash);
         if (cacheFile.exists()) {

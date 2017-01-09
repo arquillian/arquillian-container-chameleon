@@ -20,10 +20,15 @@ package org.arquillian.container.chameleon.controller;
 
 import org.arquillian.container.chameleon.spi.model.ContainerAdapter;
 import org.arquillian.container.chameleon.spi.model.Target.Type;
+import org.arquillian.spacelift.Spacelift;
+import org.arquillian.spacelift.execution.Execution;
+import org.arquillian.spacelift.task.net.DownloadTool;
 import org.jboss.arquillian.config.descriptor.api.ContainerDef;
 import org.jboss.arquillian.core.api.threading.ExecutorService;
 import org.jboss.shrinkwrap.api.GenericArchive;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.exporter.ExplodedExporter;
+import org.jboss.shrinkwrap.api.importer.ZipImporter;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenCoordinate;
 
@@ -36,6 +41,9 @@ import java.util.concurrent.Future;
 import static org.arquillian.container.chameleon.Utils.toMavenCoordinate;
 
 public class DistributionController {
+
+    private static final String PROGRESS_INDICATOR = ".";
+    private static final int HALF_A_SECOND = 500;
 
     private ContainerAdapter targetAdapter;
     private String distributionDownloadFolder;
@@ -61,19 +69,56 @@ public class DistributionController {
     }
 
     private File resolveDistribution(ExecutorService executor) {
+        if (targetAdapter.distribution().toLowerCase().startsWith("http")) {
+            return downloadUsingHttp();
+        }
+        return fetchFromMavenRepository(executor);
+    }
+
+    private File downloadUsingHttp() {
+        final String distribution = targetAdapter.distribution();
+        final String serverName = new FileNameFromUrlExtractor(distribution).extract();
+        final File targetDirectory = new File(new File(distributionDownloadFolder, "server"),
+                serverName);
+
+        if (serverAlreadyDownloaded(targetDirectory)) {
+            return getDistributionHome(targetDirectory);
+        }
+
+        System.out.println("Arquillian Chameleon: downloading distribution from " + distribution);
+        final String targetArchive = targetDirectory + "/" + serverName + ".zip";
+        final Execution<File> download = Spacelift.task(DownloadTool.class).from(distribution).to(targetArchive).execute();
+        try {
+            while (!download.isFinished()) {
+                System.out.print(PROGRESS_INDICATOR);
+                Thread.sleep(HALF_A_SECOND);
+            }
+            System.out.print(PROGRESS_INDICATOR);
+
+            final File compressedServer = download.await();
+            ShrinkWrap.create(ZipImporter.class, serverName)
+                      .importFrom(compressedServer)
+                      .as(ExplodedExporter.class)
+                      .exportExploded(targetDirectory, ".");
+            compressedServer.delete();
+            return getDistributionHome(targetDirectory);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private File fetchFromMavenRepository(ExecutorService executor) {
         final MavenCoordinate distributableCoordinate = toMavenCoordinate(targetAdapter.distribution());
 
         if (distributableCoordinate != null) {
             final File targetDirectory = new File(new File(distributionDownloadFolder, "server"),
                     distributableCoordinate.getArtifactId() + "_" + distributableCoordinate.getVersion());
 
-            if (targetDirectory.exists()) {
+            if (serverAlreadyDownloaded(targetDirectory)) {
                 return getDistributionHome(targetDirectory);
-            } else {
-                targetDirectory.mkdirs();
             }
 
-            System.out.println("chameleon: preparing distribution " + distributableCoordinate.toCanonicalForm());
+            System.out.println("Arquillian Chameleon: downloading distribution " + distributableCoordinate.toCanonicalForm());
             Future<File> uncompressDirectory = executor.submit(new Callable<File>() {
                 @Override
                 public File call() throws Exception {
@@ -87,8 +132,8 @@ public class DistributionController {
 
             try {
                 while (!uncompressDirectory.isDone()) {
-                    System.out.print(".");
-                    Thread.sleep(500);
+                    System.out.print(PROGRESS_INDICATOR);
+                    Thread.sleep(HALF_A_SECOND);
                 }
                 System.out.println();
                 return getDistributionHome(uncompressDirectory.get());
@@ -99,8 +144,16 @@ public class DistributionController {
         return null;
     }
 
+    private boolean serverAlreadyDownloaded(File targetDirectory) {
+        final boolean exists = targetDirectory.exists();
+        if (!exists) {
+            targetDirectory.mkdirs();
+        }
+        return exists;
+    }
+
     private void updateTargetConfiguration(ContainerDef targetConfiguration, File distributionHome) throws Exception {
-        Map<String, String> values = new HashMap<String, String>();
+        final Map<String, String> values = new HashMap<String, String>();
         values.put("dist", distributionHome.getAbsolutePath());
 
         for (Map.Entry<String, String> configuration : targetAdapter.resolveConfiguration(values).entrySet()) {
@@ -109,8 +162,8 @@ public class DistributionController {
     }
 
     private boolean requiredConfigurationNotSet(ContainerDef targetConfiguration, ContainerAdapter adapter) {
-        String[] configurationKeys = adapter.configurationKeys();
-        Map<String, String> targetProperties = targetConfiguration.getContainerProperties();
+        final String[] configurationKeys = adapter.configurationKeys();
+        final Map<String, String> targetProperties = targetConfiguration.getContainerProperties();
         for (String key : configurationKeys) {
             if (!targetProperties.containsKey(key)) {
                 return true;
@@ -120,7 +173,7 @@ public class DistributionController {
     }
 
     private File getDistributionHome(File uncompressDirectory) {
-        File[] currentDirectoryContent = uncompressDirectory.listFiles();
+        final File[] currentDirectoryContent = uncompressDirectory.listFiles();
         // only one root directory should be here
         if (currentDirectoryContent.length == 1 && currentDirectoryContent[0].isDirectory()) {
             return currentDirectoryContent[0];
