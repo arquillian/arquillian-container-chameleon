@@ -75,6 +75,10 @@ Example chameleonTarget values:
 ** 4.x
 * Payara
 ** 4.x
+* Tomcat
+** 8.0.*
+** 7.x
+** 6.x
 
 [NOTE]
 Chameleon will download and extract the target container if no distribution home is configured and target type is either embedded or managed.
