@@ -38,9 +38,6 @@
     <version.jcip.annotations>1.0</version.jcip.annotations>
     <version.shrinkwrap.resolver>2.2.5</version.shrinkwrap.resolver>
 
-    <!-- override from parent -->
-    <maven.compiler.target>1.5</maven.compiler.target>
-    <maven.compiler.source>1.5</maven.compiler.source>
     <maven.min.version>3.0.5</maven.min.version>
   </properties>
 

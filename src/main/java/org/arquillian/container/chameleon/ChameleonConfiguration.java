@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 
 public class ChameleonConfiguration implements ContainerConfiguration {
 
@@ -140,5 +141,12 @@ public class ChameleonConfiguration implements ContainerConfiguration {
                 return MAVEN_OUTPUT_DIRECTORY;
             }
         }
+    }
+
+    public boolean isSupported(String source) throws Exception {
+        final Target target = Target.from(source);
+        Container[] containers = new ContainerLoader().load(getChameleonContainerConfigurationFileStream(), getChameleonResolveCacheFolder());
+
+        return Arrays.stream(containers).anyMatch(container -> container.matches(target) != null);
     }
 }
