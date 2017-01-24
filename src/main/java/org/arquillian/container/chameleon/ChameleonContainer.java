@@ -18,9 +18,10 @@
 
 package org.arquillian.container.chameleon;
 
+import org.arquillian.container.chameleon.configuration.ChameleonConfiguration;
+import org.arquillian.container.chameleon.configuration.spi.model.ContainerAdapter;
 import org.arquillian.container.chameleon.controller.DistributionController;
 import org.arquillian.container.chameleon.controller.TargetController;
-import org.arquillian.container.chameleon.spi.model.ContainerAdapter;
 import org.jboss.arquillian.config.descriptor.api.ContainerDef;
 import org.jboss.arquillian.container.spi.client.container.ContainerConfiguration;
 import org.jboss.arquillian.container.spi.client.container.DeployableContainer;

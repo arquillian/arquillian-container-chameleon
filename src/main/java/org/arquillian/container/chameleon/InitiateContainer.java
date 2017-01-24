@@ -18,6 +18,7 @@
 
 package org.arquillian.container.chameleon;
 
+import org.arquillian.container.chameleon.configuration.ChameleonConfiguration;
 import org.jboss.arquillian.config.descriptor.api.ContainerDef;
 import org.jboss.arquillian.config.descriptor.impl.ContainerDefImpl;
 import org.jboss.arquillian.container.spi.event.SetupContainer;

@@ -16,9 +16,9 @@
  * limitations under the License.
  */
 
-package org.arquillian.container.chameleon;
+package org.arquillian.container.chameleon.configuration;
 
-import org.arquillian.container.chameleon.spi.model.ContainerAdapter;
+import org.arquillian.container.chameleon.configuration.spi.model.ContainerAdapter;
 import org.jboss.arquillian.container.spi.ConfigurationException;
 import org.junit.Assert;
 import org.junit.Test;

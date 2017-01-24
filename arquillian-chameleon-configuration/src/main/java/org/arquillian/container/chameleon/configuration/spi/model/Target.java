@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package org.arquillian.container.chameleon.spi.model;
+package org.arquillian.container.chameleon.configuration.spi.model;
 
 import org.jboss.arquillian.container.spi.ConfigurationException;
 

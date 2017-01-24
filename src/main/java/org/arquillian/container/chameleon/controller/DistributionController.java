@@ -18,8 +18,8 @@
 
 package org.arquillian.container.chameleon.controller;
 
-import org.arquillian.container.chameleon.spi.model.ContainerAdapter;
-import org.arquillian.container.chameleon.spi.model.Target.Type;
+import org.arquillian.container.chameleon.configuration.spi.model.ContainerAdapter;
+import org.arquillian.container.chameleon.configuration.spi.model.Target.Type;
 import org.arquillian.spacelift.Spacelift;
 import org.arquillian.spacelift.execution.Execution;
 import org.arquillian.spacelift.task.net.DownloadTool;
@@ -38,7 +38,7 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 
-import static org.arquillian.container.chameleon.Utils.toMavenCoordinate;
+import static org.arquillian.container.chameleon.configuration.Utils.toMavenCoordinate;
 
 public class DistributionController {
 

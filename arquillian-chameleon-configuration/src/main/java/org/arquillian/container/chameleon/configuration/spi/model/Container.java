@@ -16,9 +16,9 @@
  * limitations under the License.
  */
 
-package org.arquillian.container.chameleon.spi.model;
+package org.arquillian.container.chameleon.configuration.spi.model;
 
-import org.arquillian.container.chameleon.spi.model.Target.Type;
+import org.arquillian.container.chameleon.configuration.spi.model.Target.Type;
 
 public class Container {
 
@@ -57,4 +57,6 @@ public class Container {
         }
         return null;
     }
+
+
 }

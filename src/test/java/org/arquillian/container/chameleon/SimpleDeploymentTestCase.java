@@ -36,7 +36,7 @@ public class SimpleDeploymentTestCase {
 
     @Deployment
     public static WebArchive deploy() {
-        final String container = System.getProperty("arq.container.chameleon.configuration.chameleonTarget", "default");
+        final String container = System.getProperty("arq.container.chameleon.configuration.chameleonTarget", "chameleon/default");
         final WebArchive archive = ShrinkWrap.create(WebArchive.class)
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addClass(SimpleBean.class);

@@ -16,15 +16,15 @@
  * limitations under the License.
  */
 
-package org.arquillian.container.chameleon;
+package org.arquillian.container.chameleon.configuration;
+
+import org.arquillian.container.chameleon.configuration.spi.model.ContainerAdapter;
+import org.arquillian.container.chameleon.configuration.spi.model.Target.Type;
+import org.junit.Assert;
+import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import org.arquillian.container.chameleon.spi.model.ContainerAdapter;
-import org.arquillian.container.chameleon.spi.model.Target.Type;
-import org.junit.Assert;
-import org.junit.Test;
 
 public class ContainerTestCase {
 

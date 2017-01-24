@@ -16,10 +16,10 @@
  * limitations under the License.
  */
 
-package org.arquillian.container.chameleon;
+package org.arquillian.container.chameleon.configuration;
 
-import org.arquillian.container.chameleon.controller.Resolver;
-import org.arquillian.container.chameleon.spi.model.Container;
+import org.arquillian.container.chameleon.configuration.controller.Resolver;
+import org.arquillian.container.chameleon.configuration.spi.model.Container;
 import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenDependency;
 
 import java.io.File;
@@ -28,20 +28,17 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.net.URLClassLoader;
 
-import static org.arquillian.container.chameleon.Utils.toMavenDependencies;
-import static org.arquillian.container.chameleon.Utils.toURLs;
-
 public class ContainerLoader {
 
     public Container[] load(InputStream containers, File cacheFolder) throws Exception {
 
-        MavenDependency[] mavenDependencies = toMavenDependencies(
+        MavenDependency[] mavenDependencies = Utils.toMavenDependencies(
                 new String[]{"org.yaml:snakeyaml:1.15"},
                 new String[]{});
 
         File[] archives = Resolver.resolve(cacheFolder, mavenDependencies);
 
-        ClassLoader classloader = new URLClassLoader(toURLs(archives), null);
+        ClassLoader classloader = new URLClassLoader(Utils.toURLs(archives), null);
         return loadContainers(classloader, containers);
     }
 
