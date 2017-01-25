@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package org.arquillian.container.chameleon.configuration;
+package org.arquillian.container.chameleon;
 
 import org.arquillian.container.chameleon.configuration.spi.model.ContainerAdapter;
 import org.arquillian.container.chameleon.configuration.spi.model.Target.Type;

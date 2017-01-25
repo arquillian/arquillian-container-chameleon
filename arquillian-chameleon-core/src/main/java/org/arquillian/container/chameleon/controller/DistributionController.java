@@ -38,7 +38,7 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 
-import static org.arquillian.container.chameleon.configuration.Utils.toMavenCoordinate;
+import static org.arquillian.container.chameleon.Utils.toMavenCoordinate;
 
 public class DistributionController {
 

@@ -18,7 +18,6 @@
 
 package org.arquillian.container.chameleon;
 
-import org.arquillian.container.chameleon.configuration.ChameleonConfiguration;
 import org.arquillian.container.chameleon.configuration.spi.model.ContainerAdapter;
 import org.arquillian.container.chameleon.controller.DistributionController;
 import org.arquillian.container.chameleon.controller.TargetController;

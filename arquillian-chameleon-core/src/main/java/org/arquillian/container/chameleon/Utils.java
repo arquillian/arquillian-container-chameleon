@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package org.arquillian.container.chameleon.configuration;
+package org.arquillian.container.chameleon;
 
 import org.jboss.shrinkwrap.resolver.api.maven.ScopeType;
 import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenCoordinate;

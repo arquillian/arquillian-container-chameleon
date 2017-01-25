@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package org.arquillian.container.chameleon.configuration.controller;
+package org.arquillian.container.chameleon.controller;
 
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenDependency;

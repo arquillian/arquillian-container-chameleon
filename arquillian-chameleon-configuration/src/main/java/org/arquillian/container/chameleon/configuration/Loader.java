@@ -1,57 +1,23 @@
-/*
- * JBoss, Home of Professional Open Source
- * Copyright 2016 Red Hat Inc. and/or its affiliates and other contributors
- * as indicated by the @authors tag. All rights reserved.
- * See the copyright.txt in the distribution for a
- * full listing of individual contributors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package org.arquillian.container.chameleon.configuration;
 
-import org.arquillian.container.chameleon.configuration.controller.Resolver;
 import org.arquillian.container.chameleon.configuration.spi.model.Container;
-import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenDependency;
 
-import java.io.File;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.net.URLClassLoader;
 
-public class ContainerLoader {
-
-    public Container[] load(InputStream containers, File cacheFolder) throws Exception {
-
-        MavenDependency[] mavenDependencies = Utils.toMavenDependencies(
-                new String[]{"org.yaml:snakeyaml:1.15"},
-                new String[]{});
-
-        File[] archives = Resolver.resolve(cacheFolder, mavenDependencies);
-
-        ClassLoader classloader = new URLClassLoader(Utils.toURLs(archives), null);
-        return loadContainers(classloader, containers);
-    }
+public class Loader {
 
     /*
-    Constructor constructor = new Constructor();
-    constructor.addTypeDescription(new TypeDescription(Container[].class, "tag:yaml.org,2002:" + Container[].class.getName()));
+   Constructor constructor = new Constructor();
+   constructor.addTypeDescription(new TypeDescription(Container[].class, "tag:yaml.org,2002:" + Container[].class.getName()));
 
-    Yaml yaml = new Yaml(constructor);
-    yaml.setBeanAccess(BeanAccess.FIELD);
+   Yaml yaml = new Yaml(constructor);
+   yaml.setBeanAccess(BeanAccess.FIELD);
 
-    return yaml.loadAs(containers, Container[].class);
-     */
-    private Container[] loadContainers(ClassLoader classloader, InputStream containers) throws Exception {
+   return yaml.loadAs(containers, Container[].class);
+    */
+    protected Container[] loadContainers(ClassLoader classloader, InputStream containers) throws Exception {
         Class<?> constructorClass = classloader.loadClass("org.yaml.snakeyaml.constructor.Constructor");
         Class<?> baseConstructorClass = classloader.loadClass("org.yaml.snakeyaml.constructor.BaseConstructor");
 
@@ -83,5 +49,9 @@ public class ContainerLoader {
         setBeanAccess.invoke(yaml, fieldBeanAccess);
 
         return (Container[]) loadAs.invoke(yaml, new Object[]{containers, Container[].class});
+    }
+
+    public Container[] loadContainers(InputStream inputStream) throws Exception {
+        return this.loadContainers(Thread.currentThread().getContextClassLoader(), inputStream);
     }
 }

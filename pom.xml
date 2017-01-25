@@ -15,9 +15,16 @@
 
   <!-- Artifact Configuration -->
   <groupId>org.arquillian.container</groupId>
-  <artifactId>arquillian-container-chameleon</artifactId>
+  <artifactId>arquillian-container-chameleon-parent</artifactId>
+  <packaging>pom</packaging>
   <version>1.0.0.Final-SNAPSHOT</version>
-  <name>Arquillian Container Chameleon</name>
+
+  <modules>
+    <module>arquillian-chameleon-core</module>
+    <module>arquillian-chameleon-configuration</module>
+  </modules>
+
+  <name>Arquillian Container Chameleon Parent</name>
   <description>Chameleon container that dynamically loads correct container adapter versions</description>
 
   <scm>
@@ -37,10 +44,8 @@
     <version.assertj>3.5.2</version.assertj>
     <version.jcip.annotations>1.0</version.jcip.annotations>
     <version.shrinkwrap.resolver>2.2.5</version.shrinkwrap.resolver>
+    <version.snakeyaml>1.17</version.snakeyaml>
 
-    <!-- override from parent -->
-    <maven.compiler.target>1.5</maven.compiler.target>
-    <maven.compiler.source>1.5</maven.compiler.source>
     <maven.min.version>3.0.5</maven.min.version>
   </properties>
 
@@ -67,82 +72,15 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+      <dependency>
+        <groupId>org.assertj</groupId>
+        <artifactId>assertj-core</artifactId>
+        <version>${version.assertj}</version>
+        <scope>test</scope>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
-  <dependencies>
-    <dependency> <!-- 'illegal' dependency -->
-      <groupId>org.jboss.arquillian.config</groupId>
-      <artifactId>arquillian-config-impl-base</artifactId>
-    </dependency>
-    <dependency> <!-- 'illegal' dependency -->
-      <groupId>org.jboss.arquillian.container</groupId>
-      <artifactId>arquillian-container-impl-base</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.arquillian.container</groupId>
-      <artifactId>arquillian-container-spi</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.arquillian.protocol</groupId>
-      <artifactId>arquillian-protocol-servlet</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.arquillian.testenricher</groupId>
-      <artifactId>arquillian-testenricher-ejb</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.arquillian.testenricher</groupId>
-      <artifactId>arquillian-testenricher-resource</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.arquillian.testenricher</groupId>
-      <artifactId>arquillian-testenricher-cdi</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.arquillian.testenricher</groupId>
-      <artifactId>arquillian-testenricher-initialcontext</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.arquillian.spacelift</groupId>
-      <artifactId>arquillian-spacelift</artifactId>
-      <version>${version.arquillian-spacelift}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.arquillian.junit</groupId>
-      <artifactId>arquillian-junit-container</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.assertj</groupId>
-      <artifactId>assertj-core</artifactId>
-      <version>${version.assertj}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>net.jcip</groupId>
-      <artifactId>jcip-annotations</artifactId>
-      <version>${version.jcip.annotations}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.spec</groupId>
-      <artifactId>jboss-javaee-6.0</artifactId>
-      <version>${version.jboss.javaee-6_api}</version>
-      <type>pom</type>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.arquillian.container</groupId>
-      <artifactId>arquillian-chameleon-configuration</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-  </dependencies>
   <build>
     <plugins>
       <plugin>

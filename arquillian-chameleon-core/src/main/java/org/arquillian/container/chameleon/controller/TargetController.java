@@ -20,7 +20,6 @@ package org.arquillian.container.chameleon.controller;
 
 
 import org.arquillian.container.chameleon.ChameleonContainer;
-import org.arquillian.container.chameleon.configuration.controller.Resolver;
 import org.arquillian.container.chameleon.configuration.spi.model.ContainerAdapter;
 import org.jboss.arquillian.container.spi.client.container.ContainerConfiguration;
 import org.jboss.arquillian.container.spi.client.container.DeployableContainer;
@@ -37,8 +36,8 @@ import java.io.File;
 import java.net.URLClassLoader;
 import java.util.concurrent.Callable;
 
-import static org.arquillian.container.chameleon.configuration.Utils.toMavenDependencies;
-import static org.arquillian.container.chameleon.configuration.Utils.toURLs;
+import static org.arquillian.container.chameleon.Utils.toMavenDependencies;
+import static org.arquillian.container.chameleon.Utils.toURLs;
 
 public class TargetController {
 

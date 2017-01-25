@@ -18,7 +18,11 @@
 
 package org.arquillian.container.chameleon.configuration.spi.model;
 
+import org.arquillian.container.chameleon.configuration.FileUtils;
+import org.arquillian.container.chameleon.configuration.Loader;
 import org.jboss.arquillian.container.spi.ConfigurationException;
+
+import java.util.Arrays;
 
 public class Target {
 
@@ -80,4 +84,12 @@ public class Target {
     public String toString() {
         return server + ":" + version + ":" + type;
     }
+
+    public boolean isSupported() throws Exception {
+        Loader loader = new Loader();
+        Container[] containers = loader.loadContainers(FileUtils.loadConfiguration("chameleon/default/containers.yaml", true));
+
+        return Arrays.stream(containers).anyMatch(container -> container.matches(this) != null);
+    }
+
 }

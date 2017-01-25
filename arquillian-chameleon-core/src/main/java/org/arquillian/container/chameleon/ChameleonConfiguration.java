@@ -16,9 +16,10 @@
  * limitations under the License.
  */
 
-package org.arquillian.container.chameleon.configuration;
+package org.arquillian.container.chameleon;
 
 
+import org.arquillian.container.chameleon.configuration.FileUtils;
 import org.arquillian.container.chameleon.configuration.spi.model.Container;
 import org.arquillian.container.chameleon.configuration.spi.model.ContainerAdapter;
 import org.arquillian.container.chameleon.configuration.spi.model.Target;
@@ -29,7 +30,6 @@ import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
 
 public class ChameleonConfiguration implements ContainerConfiguration {
 
@@ -143,13 +143,5 @@ public class ChameleonConfiguration implements ContainerConfiguration {
             }
         }
     }
-
-    public boolean isSupported(String source) throws Exception {
-        final Target target = Target.from(source);
-        Container[] containers = new ContainerLoader().load(getChameleonContainerConfigurationFileStream(), getChameleonResolveCacheFolder());
-
-        return Arrays.stream(containers).anyMatch(container -> container.matches(target) != null);
-    }
-
 
 }

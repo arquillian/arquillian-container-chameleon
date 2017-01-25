@@ -30,9 +30,9 @@ import java.io.InputStream;
  * @author <a href="mailto:aslak@redhat.com">Aslak Knutsen</a>
  * @version $Revision: $
  */
-class FileUtils {
+public class FileUtils {
 
-    static InputStream loadConfiguration(String resourceName, boolean isDefault) {
+    public static InputStream loadConfiguration(String resourceName, boolean isDefault) {
         InputStream stream = loadResource(resourceName);
         if (stream == null) {
             if (isDefault) {
