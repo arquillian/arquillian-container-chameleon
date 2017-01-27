@@ -32,7 +32,7 @@ public class ContainerLoader extends Loader {
     public Container[] load(InputStream containers, File cacheFolder) throws Exception {
 
         MavenDependency[] mavenDependencies = Utils.toMavenDependencies(
-                new String[]{"org.yaml:snakeyaml:1.15"},
+                new String[]{"org.yaml:snakeyaml:1.17"},
                 new String[]{});
 
         File[] archives = Resolver.resolve(cacheFolder, mavenDependencies);

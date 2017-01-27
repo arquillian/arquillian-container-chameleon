@@ -22,8 +22,6 @@ import org.arquillian.container.chameleon.configuration.FileUtils;
 import org.arquillian.container.chameleon.configuration.Loader;
 import org.jboss.arquillian.container.spi.ConfigurationException;
 
-import java.util.Arrays;
-
 public class Target {
 
     public static enum Type {
@@ -89,7 +87,12 @@ public class Target {
         Loader loader = new Loader();
         Container[] containers = loader.loadContainers(FileUtils.loadConfiguration("chameleon/default/containers.yaml", true));
 
-        return Arrays.stream(containers).anyMatch(container -> container.matches(this) != null);
+        for (Container container: containers) {
+            if (container.matches(this) != null) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
