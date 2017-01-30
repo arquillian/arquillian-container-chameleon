@@ -20,7 +20,7 @@ package org.arquillian.container.chameleon.controller;
 
 
 import org.arquillian.container.chameleon.ChameleonContainer;
-import org.arquillian.container.chameleon.configuration.spi.model.ContainerAdapter;
+import org.arquillian.container.chameleon.spi.model.ContainerAdapter;
 import org.jboss.arquillian.container.spi.client.container.ContainerConfiguration;
 import org.jboss.arquillian.container.spi.client.container.DeployableContainer;
 import org.jboss.arquillian.container.spi.client.container.DeploymentException;

@@ -18,7 +18,7 @@
 
 package org.arquillian.container.chameleon;
 
-import org.arquillian.container.chameleon.configuration.spi.model.ContainerAdapter;
+import org.arquillian.container.chameleon.spi.model.ContainerAdapter;
 import org.jboss.arquillian.container.spi.ConfigurationException;
 import org.junit.Assert;
 import org.junit.Test;

@@ -18,8 +18,8 @@
 
 package org.arquillian.container.chameleon.controller;
 
-import org.arquillian.container.chameleon.configuration.spi.model.ContainerAdapter;
-import org.arquillian.container.chameleon.configuration.spi.model.Target.Type;
+import org.arquillian.container.chameleon.spi.model.ContainerAdapter;
+import org.arquillian.container.chameleon.spi.model.Target.Type;
 import org.arquillian.spacelift.Spacelift;
 import org.arquillian.spacelift.execution.Execution;
 import org.arquillian.spacelift.task.net.DownloadTool;

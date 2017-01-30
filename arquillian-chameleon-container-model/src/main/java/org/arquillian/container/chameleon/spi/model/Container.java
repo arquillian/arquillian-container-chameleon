@@ -16,9 +16,7 @@
  * limitations under the License.
  */
 
-package org.arquillian.container.chameleon.configuration.spi.model;
-
-import org.arquillian.container.chameleon.configuration.spi.model.Target.Type;
+package org.arquillian.container.chameleon.spi.model;
 
 public class Container {
 
@@ -36,10 +34,10 @@ public class Container {
     public ContainerAdapter matches(Target target) {
         if (target.getServer().equalsIgnoreCase(name)) {
             if (target.getVersion().matches(versionExpression)) {
-                Type definedType = target.getType();
-                if (target.getType() == Type.Default) {
+                Target.Type definedType = target.getType();
+                if (target.getType() == Target.Type.Default) {
                     if (defaultType != null) {
-                        definedType = Type.from(defaultType);
+                        definedType = Target.Type.from(defaultType);
                     }
                 }
                 for (Adapter adapter : adapters) {

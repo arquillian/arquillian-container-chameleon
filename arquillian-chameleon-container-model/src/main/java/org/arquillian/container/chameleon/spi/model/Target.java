@@ -16,10 +16,10 @@
  * limitations under the License.
  */
 
-package org.arquillian.container.chameleon.configuration.spi.model;
+package org.arquillian.container.chameleon.spi.model;
 
-import org.arquillian.container.chameleon.configuration.FileUtils;
-import org.arquillian.container.chameleon.configuration.Loader;
+import org.arquillian.container.chameleon.FileUtils;
+import org.arquillian.container.chameleon.Loader;
 import org.jboss.arquillian.container.spi.ConfigurationException;
 
 public class Target {

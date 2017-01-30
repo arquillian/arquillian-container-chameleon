@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.arquillian.container.chameleon.configuration;
+package org.arquillian.container.chameleon;
 
 import org.jboss.arquillian.container.spi.ConfigurationException;
 

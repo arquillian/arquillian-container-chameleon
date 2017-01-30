@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package org.arquillian.container.chameleon.configuration.spi.model;
+package org.arquillian.container.chameleon.spi.model;
 
 import java.util.Map;
 import java.util.regex.Matcher;

@@ -1,6 +1,6 @@
-package org.arquillian.container.chameleon.configuration;
+package org.arquillian.container.chameleon;
 
-import org.arquillian.container.chameleon.configuration.spi.model.Container;
+import org.arquillian.container.chameleon.spi.model.Container;
 
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
