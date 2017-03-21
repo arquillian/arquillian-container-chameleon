@@ -31,6 +31,18 @@ public class Container {
 
     private String[] exclude;
 
+    public String getName() {
+        return name;
+    }
+
+    public Dist getDist() {
+        return dist;
+    }
+
+    public Adapter[] getAdapters() {
+        return this.adapters;
+    }
+
     public ContainerAdapter matches(Target target) {
         if (target.getServer().equalsIgnoreCase(name)) {
             if (target.getVersion().matches(versionExpression)) {
@@ -54,5 +66,9 @@ public class Container {
             }
         }
         return null;
+    }
+
+    public boolean isVersionMatches(Target target) {
+        return target.getServer().equalsIgnoreCase(name) && target.getVersion().matches(versionExpression);
     }
 }

@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import org.arquillian.container.chameleon.spi.model.Target;
 import org.jboss.arquillian.container.spi.ConfigurationException;
 
 /**
@@ -37,7 +38,7 @@ public class FileUtils {
             if (isDefault) {
                 throw new IllegalStateException(
                     "Could not find built-in configuration as file nor classloader resource: " + resourceName + ". " +
-                        "Something is terrible wrong with the Classpath.");
+                        "Make sure that this file exists in classpath resource or in the project folder.");
             } else {
                 throw new ConfigurationException(
                     "Could not locate configured containerConfigurationFile as file" +
@@ -71,7 +72,7 @@ public class FileUtils {
     }
 
     private static InputStream loadClassPathResource(String resourceName) {
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        ClassLoader classLoader = Target.class.getClassLoader();
         return classLoader.getResourceAsStream(resourceName);
     }
 }

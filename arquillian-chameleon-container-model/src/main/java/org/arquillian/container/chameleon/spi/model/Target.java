@@ -84,6 +84,19 @@ public class Target {
         return false;
     }
 
+    public boolean isVersionSupported() throws Exception {
+        Loader loader = new Loader();
+        Container[] containers =
+            loader.loadContainers(FileUtils.loadConfiguration("chameleon/default/containers.yaml", true));
+
+        for (Container container : containers) {
+            if (container.isVersionMatches(this)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public enum Type {
         Remote, Managed, Embedded, Default;
 

@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import org.arquillian.container.chameleon.spi.model.Container;
+import org.arquillian.container.chameleon.spi.model.Target;
 
 public class Loader {
 
@@ -55,6 +56,6 @@ public class Loader {
     }
 
     public Container[] loadContainers(InputStream inputStream) throws Exception {
-        return this.loadContainers(Thread.currentThread().getContextClassLoader(), inputStream);
+        return this.loadContainers(Target.class.getClassLoader(), inputStream);
     }
 }
