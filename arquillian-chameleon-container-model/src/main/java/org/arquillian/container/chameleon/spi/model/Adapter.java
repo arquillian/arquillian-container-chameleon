@@ -42,6 +42,10 @@ public class Adapter {
         return adapterClass;
     }
 
+    public String getType() {
+        return type;
+    }
+
     public boolean requireDist() {
         return requireDist;
     }
