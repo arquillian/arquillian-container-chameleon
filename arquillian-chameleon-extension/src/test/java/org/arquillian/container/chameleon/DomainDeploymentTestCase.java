@@ -37,8 +37,8 @@ public class DomainDeploymentTestCase {
     @TargetsContainer("main-server-group")
     public static WebArchive deploy() {
         return ShrinkWrap.create(WebArchive.class)
-                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
-                .addClass(SimpleBean.class);
+            .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
+            .addClass(SimpleBean.class);
     }
 
     @Inject

@@ -79,7 +79,7 @@ public class DistributionController {
         final String distribution = targetAdapter.distribution();
         final String serverName = new FileNameFromUrlExtractor(distribution).extract();
         final File targetDirectory = new File(new File(distributionDownloadFolder, "server"),
-                serverName);
+            serverName);
 
         if (serverAlreadyDownloaded(targetDirectory)) {
             return getDistributionHome(targetDirectory);
@@ -87,7 +87,8 @@ public class DistributionController {
 
         System.out.println("Arquillian Chameleon: downloading distribution from " + distribution);
         final String targetArchive = targetDirectory + "/" + serverName + ".zip";
-        final Execution<File> download = Spacelift.task(DownloadTool.class).from(distribution).to(targetArchive).execute();
+        final Execution<File> download =
+            Spacelift.task(DownloadTool.class).from(distribution).to(targetArchive).execute();
         try {
             while (!download.isFinished()) {
                 System.out.print(PROGRESS_INDICATOR);
@@ -97,9 +98,9 @@ public class DistributionController {
 
             final File compressedServer = download.await();
             ShrinkWrap.create(ZipImporter.class, serverName)
-                    .importFrom(compressedServer)
-                    .as(ExplodedExporter.class)
-                    .exportExploded(targetDirectory, ".");
+                .importFrom(compressedServer)
+                .as(ExplodedExporter.class)
+                .exportExploded(targetDirectory, ".");
             compressedServer.delete();
             return getDistributionHome(targetDirectory);
         } catch (InterruptedException e) {
@@ -112,21 +113,22 @@ public class DistributionController {
 
         if (distributableCoordinate != null) {
             final File targetDirectory = new File(new File(distributionDownloadFolder, "server"),
-                    distributableCoordinate.getArtifactId() + "_" + distributableCoordinate.getVersion());
+                distributableCoordinate.getArtifactId() + "_" + distributableCoordinate.getVersion());
 
             if (serverAlreadyDownloaded(targetDirectory)) {
                 return getDistributionHome(targetDirectory);
             }
 
-            System.out.println("Arquillian Chameleon: downloading distribution " + distributableCoordinate.toCanonicalForm());
+            System.out.println(
+                "Arquillian Chameleon: downloading distribution " + distributableCoordinate.toCanonicalForm());
             Future<File> uncompressDirectory = executor.submit(new Callable<File>() {
                 @Override
                 public File call() throws Exception {
                     return Maven.resolver().resolve(distributableCoordinate.toCanonicalForm())
-                            .withoutTransitivity()
-                            .asSingle(GenericArchive.class)
-                            .as(ExplodedExporter.class)
-                            .exportExploded(targetDirectory, ".");
+                        .withoutTransitivity()
+                        .asSingle(GenericArchive.class)
+                        .as(ExplodedExporter.class)
+                        .exportExploded(targetDirectory, ".");
                 }
             });
 
@@ -181,6 +183,5 @@ public class DistributionController {
             // means that the server is uncompressed without a root directory
             return uncompressDirectory;
         }
-
     }
 }

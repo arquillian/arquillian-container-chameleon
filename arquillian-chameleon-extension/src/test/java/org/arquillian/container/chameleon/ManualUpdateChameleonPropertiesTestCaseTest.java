@@ -28,10 +28,9 @@ public class ManualUpdateChameleonPropertiesTestCaseTest extends ManualContainer
     @Test
     public void shouldBeAbleToStartTargetContainerWithNewArguments() throws Exception {
         containerController.start("manual",
-                new Config()
-                        .add("chameleonTarget", "glassfish:4.1:managed").map());
+            new Config()
+                .add("chameleonTarget", "glassfish:4.1:managed").map());
 
         assertConnectionPossible(InetAddress.getLocalHost(), 4848);
     }
-
 }

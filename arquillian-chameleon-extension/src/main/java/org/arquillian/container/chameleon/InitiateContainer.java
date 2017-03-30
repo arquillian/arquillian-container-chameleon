@@ -88,14 +88,15 @@ public class InitiateContainer {
         return containerDef.getContainerProperties();
     }
 
-    private void setAndRemoveProperties(Node node, Map<String, String> properties, ChameleonConfiguration configuration) throws Exception {
+    private void setAndRemoveProperties(Node node, Map<String, String> properties, ChameleonConfiguration configuration)
+        throws Exception {
 
         for (Method setter : configuration.getClass().getMethods()) {
             if ( // isSetter
-                    setter.getName().startsWith("set") &&
-                            setter.getReturnType().equals(Void.TYPE) &&
-                            setter.getParameterTypes().length == 1
-                    ) {
+                setter.getName().startsWith("set") &&
+                    setter.getReturnType().equals(Void.TYPE) &&
+                    setter.getParameterTypes().length == 1
+                ) {
                 String propertyName = toCamelCase(setter);
                 if (properties.containsKey(propertyName)) {
                     setter.invoke(configuration, properties.get(propertyName));
@@ -107,10 +108,10 @@ public class InitiateContainer {
 
     private String toCamelCase(Method setter) {
         return new StringBuilder(setter.getName())
-                .replace(0, 4,
-                        String.valueOf(
-                                Character.toLowerCase(
-                                        setter.getName().charAt(3))))
-                .toString();
+            .replace(0, 4,
+                String.valueOf(
+                    Character.toLowerCase(
+                        setter.getName().charAt(3))))
+            .toString();
     }
 }

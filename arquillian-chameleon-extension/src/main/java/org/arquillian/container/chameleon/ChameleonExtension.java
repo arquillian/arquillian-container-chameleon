@@ -28,5 +28,4 @@ public class ChameleonExtension implements LoadableExtension {
         builder.service(DeployableContainer.class, ChameleonContainer.class);
         builder.observer(InitiateContainer.class);
     }
-
 }

@@ -54,7 +54,8 @@ public class ConfigurationTestCase {
         System.setProperty("java.io.tmpdir", tempFolder);
         ChameleonConfiguration configuration = new ChameleonConfiguration();
         configuration.setChameleonDistributionDownloadFolder("TMP");
-        Assert.assertTrue(configuration.getChameleonDistributionDownloadFolder().contains(tempFolder + "/arquillian_chameleon"));
+        Assert.assertTrue(
+            configuration.getChameleonDistributionDownloadFolder().contains(tempFolder + "/arquillian_chameleon"));
     }
 
     @Test(expected = IllegalArgumentException.class)

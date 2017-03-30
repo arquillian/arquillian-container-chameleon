@@ -73,7 +73,8 @@ public class Target {
                 }
             }
             if (target.type == null) {
-                throw new ConfigurationException("Unknown target type " + sections[2] + ". Supported " + Target.Type.values());
+                throw new ConfigurationException(
+                    "Unknown target type " + sections[2] + ". Supported " + Target.Type.values());
             }
         } else {
             target.type = Type.Default;
@@ -88,7 +89,8 @@ public class Target {
 
     public boolean isSupported() throws Exception {
         Loader loader = new Loader();
-        Container[] containers = loader.loadContainers(FileUtils.loadConfiguration("chameleon/default/containers.yaml", true));
+        Container[] containers =
+            loader.loadContainers(FileUtils.loadConfiguration("chameleon/default/containers.yaml", true));
 
         for (Container container : containers) {
             if (container.matches(this) != null) {
@@ -97,5 +99,4 @@ public class Target {
         }
         return false;
     }
-
 }

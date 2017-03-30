@@ -4,7 +4,6 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
 public class TargetTest {
 
     @Test
@@ -30,5 +29,4 @@ public class TargetTest {
         Target target = Target.from("Tomcat`:7.0.47:Remote");
         assertThat(target.isSupported()).isFalse();
     }
-
 }

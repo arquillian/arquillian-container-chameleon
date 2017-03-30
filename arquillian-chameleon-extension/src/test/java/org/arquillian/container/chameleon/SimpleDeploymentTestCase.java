@@ -36,10 +36,11 @@ public class SimpleDeploymentTestCase {
 
     @Deployment
     public static WebArchive deploy() {
-        final String container = System.getProperty("arq.container.chameleon.configuration.chameleonTarget", "chameleon/default");
+        final String container =
+            System.getProperty("arq.container.chameleon.configuration.chameleonTarget", "chameleon/default");
         final WebArchive archive = ShrinkWrap.create(WebArchive.class)
-                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
-                .addClass(SimpleBean.class);
+            .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
+            .addClass(SimpleBean.class);
 
         if (container.contains("tomcat")) {
             enrichTomcatWithCdi(archive);
@@ -60,5 +61,4 @@ public class SimpleDeploymentTestCase {
     public void shouldReturnName() {
         Assert.assertEquals("Proxy", bean.getName());
     }
-
 }

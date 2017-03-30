@@ -41,10 +41,10 @@ public final class Resolver {
             files = readCache(cacheFile);
         } else {
             files = Maven.configureResolver()
-                    .addDependencies(dependencies)
-                    .resolve()
-                    .withTransitivity()
-                    .asFile();
+                .addDependencies(dependencies)
+                .resolve()
+                .withTransitivity()
+                .asFile();
 
             writeCache(getCacheFile(cacheFolder, hash), files);
         }
@@ -85,7 +85,8 @@ public final class Resolver {
                 files.add(new File(line));
             }
         } catch (Exception e) {
-            throw new RuntimeException("Could not read cache file " + cacheFile + ". Please remove the file and rerun", e);
+            throw new RuntimeException("Could not read cache file " + cacheFile + ". Please remove the file and rerun",
+                e);
         } finally {
             if (br != null) {
                 try {
@@ -95,7 +96,7 @@ public final class Resolver {
                 }
             }
         }
-        return files.toArray(new File[]{});
+        return files.toArray(new File[] {});
     }
 
     private static File getCacheFile(File cacheFolder, String hash) {

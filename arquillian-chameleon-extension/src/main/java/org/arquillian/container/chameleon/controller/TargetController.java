@@ -18,7 +18,6 @@
 
 package org.arquillian.container.chameleon.controller;
 
-
 import org.arquillian.container.chameleon.ChameleonContainer;
 import org.arquillian.container.chameleon.spi.model.ContainerAdapter;
 import org.jboss.arquillian.container.spi.client.container.ContainerConfiguration;
@@ -67,7 +66,7 @@ public class TargetController {
 
     public ProtocolDescription getDefaultProtocol() {
         return this.adapter.overrideDefaultProtocol() ?
-                new ProtocolDescription(adapter.getDefaultProtocol()) : delegate.getDefaultProtocol();
+            new ProtocolDescription(adapter.getDefaultProtocol()) : delegate.getDefaultProtocol();
     }
 
     public void setup(final ContainerConfiguration configuration) throws LifecycleException {
@@ -178,7 +177,6 @@ public class TargetController {
 
             File[] archives = Resolver.resolve(resolverCacheFolder, mavenDependencies);
             return new URLClassLoader(toURLs(archives), ChameleonContainer.class.getClassLoader());
-
         } catch (Exception e) {
             throw new RuntimeException("Could not resolve target " + targetAdapter + " adapter dependencies", e);
         }

@@ -18,7 +18,6 @@
 
 package org.arquillian.container.chameleon;
 
-
 import org.arquillian.container.chameleon.spi.model.Container;
 import org.arquillian.container.chameleon.spi.model.ContainerAdapter;
 import org.arquillian.container.chameleon.spi.model.Target;
@@ -115,14 +114,16 @@ public class ChameleonConfiguration implements ContainerConfiguration {
 
     public ContainerAdapter getConfiguredAdapter() throws Exception {
         Target target = getParsedTarget();
-        Container[] containers = new ContainerLoader().load(getChameleonContainerConfigurationFileStream(), getChameleonResolveCacheFolder());
+        Container[] containers = new ContainerLoader().load(getChameleonContainerConfigurationFileStream(),
+            getChameleonResolveCacheFolder());
         for (Container container : containers) {
             ContainerAdapter adapter = container.matches(target);
             if (adapter != null) {
                 return adapter;
             }
         }
-        throw new IllegalArgumentException("No container configuration found in " + getChameleonContainerConfigurationFile()
+        throw new IllegalArgumentException(
+            "No container configuration found in " + getChameleonContainerConfigurationFile()
                 + " for target " + getChameleonTarget());
     }
 
@@ -142,5 +143,4 @@ public class ChameleonConfiguration implements ContainerConfiguration {
             }
         }
     }
-
 }

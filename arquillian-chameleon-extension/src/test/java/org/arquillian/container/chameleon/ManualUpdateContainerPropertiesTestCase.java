@@ -34,13 +34,15 @@ public class ManualUpdateContainerPropertiesTestCase extends ManualContainerCont
         // given
         final InetAddress localHost = InetAddress.getLocalHost();
         final Integer newPort = 10990;
-        final String jvmArguments = String.format("-Djboss.socket.binding.port-offset=1000 -Djboss.bind.address=%1$s -Djboss.bind.address.management=%1$s", localHost.getHostAddress());
+        final String jvmArguments = String.format(
+            "-Djboss.socket.binding.port-offset=1000 -Djboss.bind.address=%1$s -Djboss.bind.address.management=%1$s",
+            localHost.getHostAddress());
         final Map<String, String> newContainerConfiguration = new Config()
-                .add("chameleonTarget", "wildfly:9.0.0.Final:managed")
-                .add("javaVmArguments", jvmArguments)
-                .add("managementPort", newPort.toString())
-                .add("managementAddress", localHost.getHostAddress())
-                .map();
+            .add("chameleonTarget", "wildfly:9.0.0.Final:managed")
+            .add("javaVmArguments", jvmArguments)
+            .add("managementPort", newPort.toString())
+            .add("managementAddress", localHost.getHostAddress())
+            .map();
 
         // when
         containerController.start("manual", newContainerConfiguration);
@@ -48,5 +50,4 @@ public class ManualUpdateContainerPropertiesTestCase extends ManualContainerCont
         // then
         assertConnectionPossible(localHost, newPort);
     }
-
 }

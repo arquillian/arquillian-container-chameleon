@@ -43,18 +43,16 @@ public class Container {
                 for (Adapter adapter : adapters) {
                     if (adapter.isType(definedType)) {
                         return new ContainerAdapter(
-                                target.getVersion(),
-                                definedType,
-                                adapter,
-                                dist,
-                                exclude,
-                                defaultProtocol);
+                            target.getVersion(),
+                            definedType,
+                            adapter,
+                            dist,
+                            exclude,
+                            defaultProtocol);
                     }
                 }
             }
         }
         return null;
     }
-
-
 }

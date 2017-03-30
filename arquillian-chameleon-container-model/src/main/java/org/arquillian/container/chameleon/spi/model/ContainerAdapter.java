@@ -32,7 +32,7 @@ public class ContainerAdapter {
     private String defaultProtocol;
 
     public ContainerAdapter(String version, Target.Type targetType, Adapter adapter, Dist dist,
-                            String[] gavExcludeExpression, String defaultProtocol) {
+        String[] gavExcludeExpression, String defaultProtocol) {
         this.version = version;
         this.targetType = targetType;
         this.adapter = adapter;
@@ -70,7 +70,7 @@ public class ContainerAdapter {
     }
 
     public String[] configurationKeys() {
-        return adapter.configuration().keySet().toArray(new String[]{});
+        return adapter.configuration().keySet().toArray(new String[] {});
     }
 
     public boolean requireDistribution() {

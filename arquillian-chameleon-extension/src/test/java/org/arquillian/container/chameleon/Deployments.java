@@ -26,27 +26,28 @@ import java.io.File;
 
 public class Deployments {
 
-    private static final File[] WELD_SERVLET = Maven.resolver().resolve("org.jboss.weld.servlet:weld-servlet:1.1.33.Final").withTransitivity().asFile();
+    private static final File[] WELD_SERVLET =
+        Maven.resolver().resolve("org.jboss.weld.servlet:weld-servlet:1.1.33.Final").withTransitivity().asFile();
 
     static void enrichTomcatWithCdi(WebArchive archive) {
         String contextXml = "<Context>\n" +
-                "   <Resource name=\"BeanManager\" \n" +
-                "      auth=\"Container\"\n" +
-                "      type=\"javax.enterprise.inject.spi.BeanManager\"\n" +
-                "      factory=\"org.jboss.weld.resources.ManagerObjectFactory\"/>\n" +
-                "</Context>\n";
+            "   <Resource name=\"BeanManager\" \n" +
+            "      auth=\"Container\"\n" +
+            "      type=\"javax.enterprise.inject.spi.BeanManager\"\n" +
+            "      factory=\"org.jboss.weld.resources.ManagerObjectFactory\"/>\n" +
+            "</Context>\n";
 
         String webXml = "<web-app version=\"3.0\">\n" +
-                "<listener>\n" +
-                "      <listener-class>org.jboss.weld.environment.servlet.Listener</listener-class>\n" +
-                "   </listener>" +
-                "  <resource-env-ref>\n" +
-                "    <resource-env-ref-name>BeanManager</resource-env-ref-name>\n" +
-                "    <resource-env-ref-type>\n" +
-                "            javax.enterprise.inject.spi.BeanManager\n" +
-                "    </resource-env-ref-type>\n" +
-                "  </resource-env-ref>\n" +
-                "</web-app>";
+            "<listener>\n" +
+            "      <listener-class>org.jboss.weld.environment.servlet.Listener</listener-class>\n" +
+            "   </listener>" +
+            "  <resource-env-ref>\n" +
+            "    <resource-env-ref-name>BeanManager</resource-env-ref-name>\n" +
+            "    <resource-env-ref-type>\n" +
+            "            javax.enterprise.inject.spi.BeanManager\n" +
+            "    </resource-env-ref-type>\n" +
+            "  </resource-env-ref>\n" +
+            "</web-app>";
 
         archive.addAsLibraries(WELD_SERVLET);
         archive.addAsManifestResource(new StringAsset(contextXml), "context.xml");

@@ -120,11 +120,11 @@ public class ManualSettingsXmlTestCase {
 
         assertThat(localJBossAsDistDir).exists();
         assertThat(localJBossAsDistDir).isDirectory();
-        assertThat(localJBossAsDistDir.listFiles()).as(localJBossAsDistDir + " directory should not be empty").isNotEmpty();
+        assertThat(localJBossAsDistDir.listFiles()).as(localJBossAsDistDir + " directory should not be empty")
+            .isNotEmpty();
         assertThat(new File(localJBossAsDistDir + "/jboss-as-dist-7.1.3.Final.zip")).exists();
         assertThat(new File(localJBossAsDistDir + "/jboss-as-dist-7.1.3.Final.pom")).exists();
     }
-
 
     @Test
     public void runTestWithoutSettingsXmlFileSet() throws InitializationError, IOException {
@@ -147,5 +147,4 @@ public class ManualSettingsXmlTestCase {
         public void test() {
         }
     }
-
 }

@@ -33,7 +33,6 @@ import java.net.Socket;
 @RunAsClient
 public abstract class ManualContainerControlTestTemplate {
 
-
     @ArquillianResource
     protected ContainerController containerController;
 
@@ -51,5 +50,4 @@ public abstract class ManualContainerControlTestTemplate {
             }
         }
     }
-
 }

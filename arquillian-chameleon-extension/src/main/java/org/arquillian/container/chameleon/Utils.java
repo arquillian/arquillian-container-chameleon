@@ -59,10 +59,10 @@ public final class Utils {
         MavenDependency[] mavenDependencies = new MavenDependency[dependencies.length];
         for (int i = 0; i < dependencies.length; i++) {
             mavenDependencies[i] = MavenDependencies.createDependency(
-                    dependencies[i],
-                    ScopeType.COMPILE,
-                    false,
-                    mavenExclusions);
+                dependencies[i],
+                ScopeType.COMPILE,
+                false,
+                mavenExclusions);
         }
         return mavenDependencies;
     }
@@ -74,5 +74,4 @@ public final class Utils {
         }
         return mavenExclusions;
     }
-
 }

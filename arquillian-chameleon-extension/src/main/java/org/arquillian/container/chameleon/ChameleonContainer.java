@@ -75,17 +75,18 @@ public class ChameleonContainer implements DeployableContainer<ContainerConfigur
     public void init(ChameleonConfiguration configuration, ContainerDef targetConfiguration) {
         this.configuration = configuration;
         if (this.originalContainerConfiguration == null) {
-            this.originalContainerConfiguration = new HashMap<String, String>(targetConfiguration.getContainerProperties());
+            this.originalContainerConfiguration =
+                new HashMap<String, String>(targetConfiguration.getContainerProperties());
         }
         try {
             ContainerAdapter adapter = configuration.getConfiguredAdapter();
             this.target = new TargetController(
-                    adapter,
-                    injectorInst.get(),
-                    configuration.getChameleonResolveCacheFolder());
+                adapter,
+                injectorInst.get(),
+                configuration.getChameleonResolveCacheFolder());
             this.distribution = new DistributionController(
-                    adapter,
-                    configuration.getChameleonDistributionDownloadFolder());
+                adapter,
+                configuration.getChameleonDistributionDownloadFolder());
 
             distribution.setup(targetConfiguration, executorServiceInst.get());
         } catch (Exception e) {
@@ -106,7 +107,8 @@ public class ChameleonContainer implements DeployableContainer<ContainerConfigur
         try {
             target.setup(targetConfiguration);
         } catch (Exception e) {
-            throw new RuntimeException("Could not setup Chameleon container for " + configuration.getChameleonTarget(), e);
+            throw new RuntimeException("Could not setup Chameleon container for " + configuration.getChameleonTarget(),
+                e);
         }
     }
 

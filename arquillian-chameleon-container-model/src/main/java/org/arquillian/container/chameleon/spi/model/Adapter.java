@@ -52,7 +52,7 @@ public class Adapter {
         if (dependencies != null) {
             deps.addAll(Arrays.asList(dependencies));
         }
-        return deps.toArray(new String[]{});
+        return deps.toArray(new String[] {});
     }
 
     public Map<String, String> configuration() {

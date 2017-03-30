@@ -39,10 +39,10 @@
          UserDatabaseRealm to authenticate users
     -->
     <Resource name="UserDatabase" auth="Container"
-              type="org.apache.catalina.UserDatabase"
-              description="User database that can be updated and saved"
-              factory="org.apache.catalina.users.MemoryUserDatabaseFactory"
-              pathname="${catalina.home}/../../../../src/test/resources/tomcat-users.xml"/>
+        type="org.apache.catalina.UserDatabase"
+        description="User database that can be updated and saved"
+        factory="org.apache.catalina.users.MemoryUserDatabaseFactory"
+        pathname="${catalina.home}/../../../../src/test/resources/tomcat-users.xml"/>
   </GlobalNamingResources>
 
   <!-- A "Service" is a collection of one or more "Connectors" that share
@@ -67,8 +67,8 @@
          Define a non-SSL/TLS HTTP/1.1 Connector on port 8080
     -->
     <Connector port="8080" protocol="HTTP/1.1"
-               connectionTimeout="20000"
-               redirectPort="8443"/>
+        connectionTimeout="20000"
+        redirectPort="8443"/>
     <!-- A "Connector" using the shared thread pool-->
     <!--
     <Connector executor="tomcatThreadPool"
@@ -117,11 +117,11 @@
              that are performed against this UserDatabase are immediately
              available for use by the Realm.  -->
         <Realm className="org.apache.catalina.realm.UserDatabaseRealm"
-               resourceName="UserDatabase"/>
+            resourceName="UserDatabase"/>
       </Realm>
 
       <Host name="localhost" appBase="webapps"
-            unpackWARs="true" autoDeploy="true">
+          unpackWARs="true" autoDeploy="true">
 
         <!-- SingleSignOn valve, share authentication between web applications
              Documentation at: /docs/config/valve.html -->
@@ -133,8 +133,8 @@
              Documentation at: /docs/config/valve.html
              Note: The pattern used is equivalent to using pattern="common" -->
         <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs"
-               prefix="localhost_access_log" suffix=".txt"
-               pattern="%h %l %u %t &quot;%r&quot; %s %b"/>
+            prefix="localhost_access_log" suffix=".txt"
+            pattern="%h %l %u %t &quot;%r&quot; %s %b"/>
 
       </Host>
     </Engine>
