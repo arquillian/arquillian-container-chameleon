@@ -24,18 +24,21 @@ import org.jboss.arquillian.container.spi.ConfigurationException;
 
 public class Target {
 
-    public static enum Type {
+    public static enum Type
+
+    {
         Remote, Managed, Embedded, Default;
 
-        public static Type from(String name) {
-            for (Type type : Type.values()) {
-                if (type.name().equalsIgnoreCase(name)) {
-                    return type;
-                }
+    public static Type from(String name) {
+        for (Type type : Type.values()) {
+            if (type.name().equalsIgnoreCase(name)) {
+                return type;
             }
-            return null;
         }
+        return null;
     }
+
+}
 
     private String server;
     private String version;
@@ -87,7 +90,7 @@ public class Target {
         Loader loader = new Loader();
         Container[] containers = loader.loadContainers(FileUtils.loadConfiguration("chameleon/default/containers.yaml", true));
 
-        for (Container container: containers) {
+        for (Container container : containers) {
             if (container.matches(this) != null) {
                 return true;
             }

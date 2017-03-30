@@ -65,7 +65,7 @@ public class ManualSettingsXmlTestCase {
     }
 
     @After
-    public void cleanSystemProperties(){
+    public void cleanSystemProperties() {
         System.setProperty("org.apache.maven.global-settings", "");
         System.setProperty("org.apache.maven.user-settings", "");
     }
@@ -113,7 +113,7 @@ public class ManualSettingsXmlTestCase {
 
         String usedMavenRepoLocal = System.getProperty("maven.repo.local");
 
-        if (usedMavenRepoLocal == null){
+        if (usedMavenRepoLocal == null) {
             usedMavenRepoLocal = localRepo.getAbsolutePath();
         }
         File localJBossAsDistDir = new File(usedMavenRepoLocal + "/org/jboss/as/jboss-as-dist/7.1.3.Final/");

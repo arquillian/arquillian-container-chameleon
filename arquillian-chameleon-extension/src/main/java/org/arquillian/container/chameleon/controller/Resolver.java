@@ -52,7 +52,7 @@ public final class Resolver {
     }
 
     private static void writeCache(File cacheFile, File[] files) {
-        if (!cacheFile.getParentFile().exists()){
+        if (!cacheFile.getParentFile().exists()) {
             cacheFile.getParentFile().mkdirs();
         }
         BufferedWriter bw = null;

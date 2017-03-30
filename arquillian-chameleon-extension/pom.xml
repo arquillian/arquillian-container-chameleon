@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
     <artifactId>arquillian-container-chameleon-parent</artifactId>
     <groupId>org.arquillian.container</groupId>
@@ -9,7 +10,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>arquillian-container-chameleon</artifactId>
-  
+
   <name>Arquillian Container Chameleon</name>
   <description>Chameleon container that dynamically loads correct container adapter versions</description>
 
@@ -375,7 +376,8 @@
                   <skip>false</skip>
                   <test>SimpleDeploymentTestCase</test>
                   <systemPropertyVariables>
-                    <arq.container.chameleon.configuration.chameleonTarget>tomcat:6.0.39:managed</arq.container.chameleon.configuration.chameleonTarget>
+                    <arq.container.chameleon.configuration.chameleonTarget>tomcat:6.0.39:managed
+                    </arq.container.chameleon.configuration.chameleonTarget>
                     <arquillian.launch>tomcat6-managed</arquillian.launch>
                   </systemPropertyVariables>
                 </configuration>
@@ -390,7 +392,8 @@
                   <skip>false</skip>
                   <test>SimpleDeploymentTestCase</test>
                   <systemPropertyVariables>
-                    <arq.container.chameleon.configuration.chameleonTarget>tomcat:7.0.73:managed</arq.container.chameleon.configuration.chameleonTarget>
+                    <arq.container.chameleon.configuration.chameleonTarget>tomcat:7.0.73:managed
+                    </arq.container.chameleon.configuration.chameleonTarget>
                     <arquillian.launch>tomcat7-managed</arquillian.launch>
                   </systemPropertyVariables>
                 </configuration>
@@ -405,7 +408,8 @@
                   <skip>false</skip>
                   <test>SimpleDeploymentTestCase</test>
                   <systemPropertyVariables>
-                    <arq.container.chameleon.configuration.chameleonTarget>tomcat:8.0.39:managed</arq.container.chameleon.configuration.chameleonTarget>
+                    <arq.container.chameleon.configuration.chameleonTarget>tomcat:8.0.39:managed
+                    </arq.container.chameleon.configuration.chameleonTarget>
                     <arquillian.launch>tomcat8-managed</arquillian.launch>
                   </systemPropertyVariables>
                 </configuration>

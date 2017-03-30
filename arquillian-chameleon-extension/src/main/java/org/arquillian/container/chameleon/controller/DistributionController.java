@@ -97,9 +97,9 @@ public class DistributionController {
 
             final File compressedServer = download.await();
             ShrinkWrap.create(ZipImporter.class, serverName)
-                      .importFrom(compressedServer)
-                      .as(ExplodedExporter.class)
-                      .exportExploded(targetDirectory, ".");
+                    .importFrom(compressedServer)
+                    .as(ExplodedExporter.class)
+                    .exportExploded(targetDirectory, ".");
             compressedServer.delete();
             return getDistributionHome(targetDirectory);
         } catch (InterruptedException e) {
