@@ -29,16 +29,16 @@ public class Target {
     {
         Remote, Managed, Embedded, Default;
 
-    public static Type from(String name) {
-        for (Type type : Type.values()) {
-            if (type.name().equalsIgnoreCase(name)) {
-                return type;
+        public static Type from(String name) {
+            for (Type type : Type.values()) {
+                if (type.name().equalsIgnoreCase(name)) {
+                    return type;
+                }
             }
+            return null;
         }
-        return null;
-    }
 
-}
+    }
 
     private String server;
     private String version;
@@ -99,4 +99,17 @@ public class Target {
         }
         return false;
     }
+
+    public boolean isVersionSupported() throws Exception {
+        Loader loader = new Loader();
+        Container[] containers = loader.loadContainers(FileUtils.loadConfiguration("chameleon/default/containers.yaml", true));
+
+        for (Container container : containers) {
+            if (container.isVersionMatches(this)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
