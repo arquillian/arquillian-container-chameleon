@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.jboss</groupId>
     <artifactId>jboss-parent</artifactId>
-    <version>21</version>
+    <version>22</version>
     <relativePath/>
   </parent>
 
@@ -36,7 +36,7 @@
 
   <!-- Properties -->
   <properties>
-    <version.arquillian_core>1.1.11.Final</version.arquillian_core>
+    <version.arquillian_core>1.1.13.Final</version.arquillian_core>
     <version.arquillian_tck>1.0.0.Alpha1</version.arquillian_tck>
     <version.jboss.javaee-6_api>1.0.0.Final</version.jboss.javaee-6_api>
     <version.jboss.logmanager>2.0.4.Final</version.jboss.logmanager>
@@ -44,7 +44,7 @@
     <version.assertj>3.5.2</version.assertj>
     <version.jcip.annotations>1.0</version.jcip.annotations>
     <version.shrinkwrap.resolver>2.2.5</version.shrinkwrap.resolver>
-    <version.snakeyaml>1.17</version.snakeyaml>
+    <version.snakeyaml>1.18</version.snakeyaml>
 
     <maven.compiler.target>1.5</maven.compiler.target>
     <maven.compiler.source>1.5</maven.compiler.source>
