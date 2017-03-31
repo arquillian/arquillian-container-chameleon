@@ -43,7 +43,7 @@
     <version.arquillian-spacelift>1.0.0.Alpha9</version.arquillian-spacelift>
     <version.assertj>3.5.2</version.assertj>
     <version.jcip.annotations>1.0</version.jcip.annotations>
-    <version.shrinkwrap.resolver>2.2.5</version.shrinkwrap.resolver>
+    <version.shrinkwrap.resolver>2.2.6</version.shrinkwrap.resolver>
     <version.snakeyaml>1.18</version.snakeyaml>
 
     <maven.compiler.target>1.5</maven.compiler.target>
