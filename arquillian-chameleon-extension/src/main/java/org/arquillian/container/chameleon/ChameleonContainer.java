@@ -18,9 +18,11 @@
 
 package org.arquillian.container.chameleon;
 
-import org.arquillian.container.chameleon.spi.model.ContainerAdapter;
+import java.util.HashMap;
+import java.util.Map;
 import org.arquillian.container.chameleon.controller.DistributionController;
 import org.arquillian.container.chameleon.controller.TargetController;
+import org.arquillian.container.chameleon.spi.model.ContainerAdapter;
 import org.jboss.arquillian.config.descriptor.api.ContainerDef;
 import org.jboss.arquillian.container.spi.client.container.ContainerConfiguration;
 import org.jboss.arquillian.container.spi.client.container.DeployableContainer;
@@ -34,9 +36,6 @@ import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.threading.ExecutorService;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.descriptor.api.Descriptor;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class ChameleonContainer implements DeployableContainer<ContainerConfiguration> {
 

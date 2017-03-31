@@ -18,9 +18,6 @@
 
 package org.arquillian.container.chameleon.controller;
 
-import org.jboss.shrinkwrap.resolver.api.maven.Maven;
-import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenDependency;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -29,6 +26,8 @@ import java.io.FileWriter;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
+import org.jboss.shrinkwrap.resolver.api.maven.Maven;
+import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenDependency;
 
 public final class Resolver {
 

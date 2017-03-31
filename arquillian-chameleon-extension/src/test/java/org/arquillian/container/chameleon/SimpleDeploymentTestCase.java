@@ -18,6 +18,7 @@
 
 package org.arquillian.container.chameleon;
 
+import javax.inject.Inject;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -27,12 +28,13 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import javax.inject.Inject;
-
 import static org.arquillian.container.chameleon.Deployments.enrichTomcatWithCdi;
 
 @RunWith(Arquillian.class)
 public class SimpleDeploymentTestCase {
+
+    @Inject
+    private SimpleBean bean;
 
     @Deployment
     public static WebArchive deploy() {
@@ -48,9 +50,6 @@ public class SimpleDeploymentTestCase {
 
         return archive;
     }
-
-    @Inject
-    private SimpleBean bean;
 
     @Test
     public void shouldNotBeNull() {

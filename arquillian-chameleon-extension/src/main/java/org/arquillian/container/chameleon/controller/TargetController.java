@@ -18,6 +18,9 @@
 
 package org.arquillian.container.chameleon.controller;
 
+import java.io.File;
+import java.net.URLClassLoader;
+import java.util.concurrent.Callable;
 import org.arquillian.container.chameleon.ChameleonContainer;
 import org.arquillian.container.chameleon.spi.model.ContainerAdapter;
 import org.jboss.arquillian.container.spi.client.container.ContainerConfiguration;
@@ -30,10 +33,6 @@ import org.jboss.arquillian.core.api.Injector;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.descriptor.api.Descriptor;
 import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenDependency;
-
-import java.io.File;
-import java.net.URLClassLoader;
-import java.util.concurrent.Callable;
 
 import static org.arquillian.container.chameleon.Utils.toMavenDependencies;
 import static org.arquillian.container.chameleon.Utils.toURLs;

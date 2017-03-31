@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
-
 import net.jcip.annotations.NotThreadSafe;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -34,18 +33,16 @@ public class ManualSettingsXmlTestCase {
 
     // settings.xml using repository located in src/test/resources/settings-repository/repository
     private static File dummySettingsXml = new File(target + "/test-classes/settings-repository/dummy-settings.xml");
-    // arquillian.xml JBoss EAP:7.1.3.Final:managed
-    private String arqXmlWithEap = target + "/test-classes/settings-repository/arquillian-with-eap.xml";
     // our dummy local repository
     private static File localRepo = new File(target + "/local-repository");
-
     // chameleon cache and download folders
     private static File chameleonDistributionDownloadFolder = new File(target + "/chameleonDistributionDownloadFolder");
     private static File chameleonResolveCacheFolder = new File(target + "/chameleonResolveCacheFolder");
-
     // previous properties
     private static String previousArqXmlProperty = "";
     private static String previousArqLaunchProperty = "";
+    // arquillian.xml JBoss EAP:7.1.3.Final:managed
+    private String arqXmlWithEap = target + "/test-classes/settings-repository/arquillian-with-eap.xml";
 
     @BeforeClass
     public static void prepare() throws IOException {
@@ -57,17 +54,6 @@ public class ManualSettingsXmlTestCase {
         // store properties
         previousArqXmlProperty = System.getProperty("arquillian.xml");
         previousArqLaunchProperty = System.getProperty("arquillian.launch");
-    }
-
-    @Before
-    public void cleanBeforeTest() throws IOException {
-        cleanup();
-    }
-
-    @After
-    public void cleanSystemProperties() {
-        System.setProperty("org.apache.maven.global-settings", "");
-        System.setProperty("org.apache.maven.user-settings", "");
     }
 
     public static void cleanup() throws IOException {
@@ -84,6 +70,17 @@ public class ManualSettingsXmlTestCase {
 
         // remove created directories
         cleanup();
+    }
+
+    @Before
+    public void cleanBeforeTest() throws IOException {
+        cleanup();
+    }
+
+    @After
+    public void cleanSystemProperties() {
+        System.setProperty("org.apache.maven.global-settings", "");
+        System.setProperty("org.apache.maven.user-settings", "");
     }
 
     @Test

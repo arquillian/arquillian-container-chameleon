@@ -24,37 +24,9 @@ import org.jboss.arquillian.container.spi.ConfigurationException;
 
 public class Target {
 
-    public static enum Type
-
-    {
-        Remote, Managed, Embedded, Default;
-
-    public static Type from(String name) {
-        for (Type type : Type.values()) {
-            if (type.name().equalsIgnoreCase(name)) {
-                return type;
-            }
-        }
-        return null;
-    }
-
-}
-
     private String server;
     private String version;
     private Type type;
-
-    public Type getType() {
-        return type;
-    }
-
-    public String getServer() {
-        return server;
-    }
-
-    public String getVersion() {
-        return version;
-    }
 
     public static Target from(String source) {
         Target target = new Target();
@@ -82,6 +54,18 @@ public class Target {
         return target;
     }
 
+    public Type getType() {
+        return type;
+    }
+
+    public String getServer() {
+        return server;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
     @Override
     public String toString() {
         return server + ":" + version + ":" + type;
@@ -98,5 +82,19 @@ public class Target {
             }
         }
         return false;
+    }
+
+    public enum Type {
+        Remote, Managed, Embedded, Default;
+
+        public static Type from(String name) {
+            for (Type type : Type.values()) {
+                if (type.name().equalsIgnoreCase(name)) {
+                    return type;
+                }
+            }
+            return null;
+        }
+
     }
 }

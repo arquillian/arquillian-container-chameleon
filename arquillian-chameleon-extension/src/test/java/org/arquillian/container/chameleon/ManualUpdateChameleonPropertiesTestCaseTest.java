@@ -18,10 +18,9 @@
 
 package org.arquillian.container.chameleon;
 
+import java.net.InetAddress;
 import org.jboss.arquillian.container.test.api.Config;
 import org.junit.Test;
-
-import java.net.InetAddress;
 
 public class ManualUpdateChameleonPropertiesTestCaseTest extends ManualContainerControlTestTemplate {
 

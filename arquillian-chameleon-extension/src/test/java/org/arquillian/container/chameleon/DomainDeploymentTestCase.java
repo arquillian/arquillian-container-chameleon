@@ -18,6 +18,7 @@
 
 package org.arquillian.container.chameleon;
 
+import javax.inject.Inject;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.TargetsContainer;
 import org.jboss.arquillian.junit.Arquillian;
@@ -28,10 +29,11 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import javax.inject.Inject;
-
 @RunWith(Arquillian.class)
 public class DomainDeploymentTestCase {
+
+    @Inject
+    private SimpleBean bean;
 
     @Deployment
     @TargetsContainer("main-server-group")
@@ -40,9 +42,6 @@ public class DomainDeploymentTestCase {
             .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
             .addClass(SimpleBean.class);
     }
-
-    @Inject
-    private SimpleBean bean;
 
     @Test
     public void shouldNotBeNull() {

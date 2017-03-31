@@ -18,15 +18,14 @@
 
 package org.arquillian.container.chameleon;
 
+import java.io.File;
+import java.net.URL;
 import org.jboss.shrinkwrap.resolver.api.maven.ScopeType;
 import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenCoordinate;
 import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenCoordinates;
 import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenDependencies;
 import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenDependency;
 import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenDependencyExclusion;
-
-import java.io.File;
-import java.net.URL;
 
 public final class Utils {
 

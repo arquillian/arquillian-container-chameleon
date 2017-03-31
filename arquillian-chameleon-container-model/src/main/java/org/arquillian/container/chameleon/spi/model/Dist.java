@@ -20,14 +20,14 @@ package org.arquillian.container.chameleon.spi.model;
 
 public class Dist {
 
+    private String coordinates;
+
     public Dist() {
     }
 
     public Dist(String coordinates) {
         this.coordinates = coordinates;
     }
-
-    private String coordinates;
 
     public String coordinates() {
         return coordinates;

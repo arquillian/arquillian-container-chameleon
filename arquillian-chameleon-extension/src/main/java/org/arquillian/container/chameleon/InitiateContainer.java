@@ -18,16 +18,15 @@
 
 package org.arquillian.container.chameleon;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.Map;
 import org.jboss.arquillian.config.descriptor.api.ContainerDef;
 import org.jboss.arquillian.config.descriptor.impl.ContainerDefImpl;
 import org.jboss.arquillian.container.spi.event.SetupContainer;
 import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.core.spi.EventContext;
 import org.jboss.shrinkwrap.descriptor.spi.node.Node;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.Map;
 
 public class InitiateContainer {
 

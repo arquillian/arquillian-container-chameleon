@@ -18,11 +18,10 @@
 
 package org.arquillian.container.chameleon;
 
+import java.io.File;
 import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
-
-import java.io.File;
 
 public class Deployments {
 

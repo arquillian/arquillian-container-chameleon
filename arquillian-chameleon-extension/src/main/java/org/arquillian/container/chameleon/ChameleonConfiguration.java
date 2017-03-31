@@ -18,16 +18,15 @@
 
 package org.arquillian.container.chameleon;
 
+import java.io.File;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import org.arquillian.container.chameleon.spi.model.Container;
 import org.arquillian.container.chameleon.spi.model.ContainerAdapter;
 import org.arquillian.container.chameleon.spi.model.Target;
 import org.jboss.arquillian.container.spi.ConfigurationException;
 import org.jboss.arquillian.container.spi.client.container.ContainerConfiguration;
-
-import java.io.File;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 public class ChameleonConfiguration implements ContainerConfiguration {
 
@@ -73,6 +72,10 @@ public class ChameleonConfiguration implements ContainerConfiguration {
         return chameleonContainerConfigurationFile;
     }
 
+    public void setChameleonContainerConfigurationFile(String containerConfigurationFile) {
+        this.chameleonContainerConfigurationFile = containerConfigurationFile;
+    }
+
     public InputStream getChameleonContainerConfigurationFileStream() {
         boolean isDefault = false;
         String resource = getChameleonContainerConfigurationFile();
@@ -81,18 +84,6 @@ public class ChameleonConfiguration implements ContainerConfiguration {
             isDefault = true;
         }
         return FileUtils.loadConfiguration(resource, isDefault);
-    }
-
-    public void setChameleonContainerConfigurationFile(String containerConfigurationFile) {
-        this.chameleonContainerConfigurationFile = containerConfigurationFile;
-    }
-
-    public void setChameleonDistributionDownloadFolder(String distributionDownloadFolder) {
-        this.chameleonDistributionDownloadFolder = distributionDownloadFolder;
-    }
-
-    public void setChameleonResolveCacheFolder(String chameleonResolveCacheFolder) {
-        this.chameleonResolveCacheFolder = chameleonResolveCacheFolder;
     }
 
     public String getChameleonDistributionDownloadFolder() {
@@ -105,11 +96,19 @@ public class ChameleonConfiguration implements ContainerConfiguration {
         return getOutputDirectory();
     }
 
+    public void setChameleonDistributionDownloadFolder(String distributionDownloadFolder) {
+        this.chameleonDistributionDownloadFolder = distributionDownloadFolder;
+    }
+
     public File getChameleonResolveCacheFolder() {
         if (chameleonResolveCacheFolder != null) {
             return new File(chameleonResolveCacheFolder);
         }
         return new File(new File(getChameleonDistributionDownloadFolder(), "server"), "cache");
+    }
+
+    public void setChameleonResolveCacheFolder(String chameleonResolveCacheFolder) {
+        this.chameleonResolveCacheFolder = chameleonResolveCacheFolder;
     }
 
     public ContainerAdapter getConfiguredAdapter() throws Exception {

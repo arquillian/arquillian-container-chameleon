@@ -18,13 +18,12 @@
 
 package org.arquillian.container.chameleon;
 
-import org.arquillian.container.chameleon.spi.model.Container;
-import org.arquillian.container.chameleon.controller.Resolver;
-import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenDependency;
-
 import java.io.File;
 import java.io.InputStream;
 import java.net.URLClassLoader;
+import org.arquillian.container.chameleon.controller.Resolver;
+import org.arquillian.container.chameleon.spi.model.Container;
+import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenDependency;
 
 public class ContainerLoader extends Loader {
 

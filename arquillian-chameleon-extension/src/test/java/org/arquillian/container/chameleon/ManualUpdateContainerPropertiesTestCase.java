@@ -18,14 +18,10 @@
 
 package org.arquillian.container.chameleon;
 
-import org.jboss.arquillian.container.test.api.Config;
-import org.jboss.arquillian.container.test.api.RunAsClient;
-import org.jboss.arquillian.junit.Arquillian;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import java.net.InetAddress;
 import java.util.Map;
+import org.jboss.arquillian.container.test.api.Config;
+import org.junit.Test;
 
 public class ManualUpdateContainerPropertiesTestCase extends ManualContainerControlTestTemplate {
 

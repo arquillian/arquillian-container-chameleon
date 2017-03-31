@@ -18,6 +18,11 @@
 
 package org.arquillian.container.chameleon.controller;
 
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
 import org.arquillian.container.chameleon.spi.model.ContainerAdapter;
 import org.arquillian.container.chameleon.spi.model.Target.Type;
 import org.arquillian.spacelift.Spacelift;
@@ -31,12 +36,6 @@ import org.jboss.shrinkwrap.api.exporter.ExplodedExporter;
 import org.jboss.shrinkwrap.api.importer.ZipImporter;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenCoordinate;
-
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.Future;
 
 import static org.arquillian.container.chameleon.Utils.toMavenCoordinate;
 
