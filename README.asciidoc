@@ -69,7 +69,8 @@ Example chameleonTarget values:
 ** 9.x
 ** 8.x
 * JBoss AS
-** 7.x
+** 7.0.*
+** 7.1.0.* to 7.1.1.* (version > 7.1.1.* are not supported.)
 * GlassFish
 ** 3.1.2.*
 ** 4.x

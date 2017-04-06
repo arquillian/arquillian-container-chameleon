@@ -147,7 +147,7 @@
   defaultProtocol: Servlet 3.0
   exclude: *EAP_EXCLUDE
 - name: JBoss AS
-  versionExpression: 7.*
+  versionExpression: 7\.0\.[0-2]\.(.*)$|7\.1\.[0-1]\.(.*)$
   adapters:
     - type: remote
       coordinates: org.jboss.as:jboss-as-arquillian-container-remote:${version}
@@ -181,7 +181,7 @@
     - "*:jboss-as-arquillian-testenricher-msc"
     - "*:jboss-as-arquillian-protocol-jmx"
 - name: JBoss AS Domain
-  versionExpression: 7.*
+  versionExpression: 7\.0\.[0-2]\.(.*)$|7\.1\.[0-1]\.(.*)$
   adapters:
     - type: managed
       coordinates: org.jboss.as:jboss-as-arquillian-container-domain-managed:${version}
