@@ -210,6 +210,38 @@ To run Arquillian Container TCK test suite use profile `tck`:
 
 `mvn clean verify -Ptck`
 
+== Troubleshooting
+
+=== NoResolvedResultException of SnakeYaml
+When you see resolution exception like following one:
+[source]
+----
+org.jboss.shrinkwrap.resolver.api.NoResolvedResultException: Unable to collect/resolve dependency tree for a resolution due to: Could not find artifact org.yaml:snakeyaml:jar:1.15 in ...
+----
+It is because of custom loading of SnakeYaml parser using ShrinkWrap Maven resolution and usage of custom classloader. Resolution takes current user´s Maven settings (or global `settings.xml`) which does not have access to Maven central to download specified dependency.
+You should specify custom `settings.xml` file using system property `org.apache.maven.user-settings` or `org.apache.maven.global-settings` with custom repository specified (repository with access to the Maven central).
+[source,xml]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+    <profiles>
+        <profile>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <repositories>
+                <repository>
+                    <id>public-dmz-proxy-repo</id>
+                    <url>http://server-with-access-to-the-internet/content/groups/public</url>
+                </repository>
+            </repositories>
+        </profile>
+    </profiles>
+</settings>
+----
+
 == Community
 
 * Chat: #arquillian channel @ http://webchat.freenode.net/[irc.freenode.net]
