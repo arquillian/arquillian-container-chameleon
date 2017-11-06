@@ -97,7 +97,7 @@ container configuration. Use no type if you just want 'something' up and running
 ==== chameleonDistributionDownloadFolder
 
 Override the default download folder for container distributions. Could be defined as `TMP` to create a custom folder under `java.io.tmpdir`, else
-it will be read as a directory. Defaults to detect current build system, either `target/` for Maven or `bin/` for Gradle.
+it will be read as a directory. Defaults to detect current build system, either `target/` for Maven or `build/` for Gradle.
 
 ==== chameleonContainerConfigurationFile
 

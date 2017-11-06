@@ -31,7 +31,7 @@ import org.jboss.arquillian.container.spi.client.container.ContainerConfiguratio
 public class ChameleonConfiguration implements ContainerConfiguration {
 
     private static final String MAVEN_OUTPUT_DIRECTORY = "target";
-    private static final String GRADLE_OUTPUT_DIRECTORY = "bin";
+    private static final String GRADLE_OUTPUT_DIRECTORY = "build";
     private static final String TMP_FOLDER_EXPRESSION = "TMP";
 
     private static final String DEFAULT_CONTAINER_MAPPING = "chameleon/default/containers.yaml";
