@@ -275,6 +275,20 @@
                   </systemPropertyVariables>
                 </configuration>
               </execution>
+              <execution>
+                <id>gf50-managed</id>
+                <goals>
+                  <goal>test</goal>
+                </goals>
+                <configuration>
+                  <skip>false</skip>
+                  <test>SimpleDeploymentTestCase</test>
+                  <systemPropertyVariables>
+                    <arq.container.chameleon.configuration.chameleonTarget>glassfish:5.0:managed
+                    </arq.container.chameleon.configuration.chameleonTarget>
+                  </systemPropertyVariables>
+                </configuration>
+              </execution>
               <!-- Payara -->
               <execution>
                 <id>payara41-managed</id>
