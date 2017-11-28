@@ -65,6 +65,7 @@ Example chameleonTarget values:
 ** 6.x
 ** 7.x
 * WildFly
+** 11.x
 ** 10.x
 ** 9.x
 ** 8.x
@@ -73,7 +74,8 @@ Example chameleonTarget values:
 ** 7.1.0.* to 7.1.1.* (version > 7.1.1.* are not supported.)
 * GlassFish
 ** 3.1.2.*
-** 4.x
+** 4.1.* (versions prior to 4.1.x are no longer supported)
+** 5.x
 * Payara
 ** 4.x
 * Tomcat
