@@ -18,12 +18,13 @@
 
 package org.arquillian.container.chameleon;
 
-import java.util.HashMap;
-import java.util.Map;
 import org.arquillian.container.chameleon.spi.model.ContainerAdapter;
 import org.arquillian.container.chameleon.spi.model.Target.Type;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ContainerTestCase {
 
@@ -194,7 +195,7 @@ public class ContainerTestCase {
     public void resolveWildFly10() throws Exception {
         ContainerAdapter adapter = load("wildfly:10.0.0.Beta2:managed");
         Assert.assertEquals(
-            "org.wildfly.arquillian:wildfly-arquillian-container-managed:2.0.1.Final",
+            "org.wildfly.arquillian:wildfly-arquillian-container-managed:2.1.0.Final",
             adapter.dependencies()[0]);
     }
 
@@ -202,7 +203,7 @@ public class ContainerTestCase {
     public void resolveWildFly10DomainManaged() throws Exception {
         ContainerAdapter adapter = load("wildfly domain:10.0.0.Final:managed");
         Assert.assertEquals(
-            "org.wildfly.arquillian:wildfly-arquillian-container-domain-managed:2.0.1.Final",
+            "org.wildfly.arquillian:wildfly-arquillian-container-domain-managed:2.1.0.Final",
             adapter.dependencies()[0]);
     }
 
@@ -210,9 +211,34 @@ public class ContainerTestCase {
     public void resolveWildFly10DomainRemote() throws Exception {
         ContainerAdapter adapter = load("wildfly domain:10.0.0.Final:remote");
         Assert.assertEquals(
-            "org.wildfly.arquillian:wildfly-arquillian-container-domain-remote:2.0.1.Final",
+            "org.wildfly.arquillian:wildfly-arquillian-container-domain-remote:2.1.0.Final",
             adapter.dependencies()[0]);
     }
+
+    @Test
+    public void resolveWildFly11() throws Exception {
+        ContainerAdapter adapter = load("wildfly:11.0.0.Final:managed");
+        Assert.assertEquals(
+            "org.wildfly.arquillian:wildfly-arquillian-container-managed:2.1.0.Final",
+            adapter.dependencies()[0]);
+    }
+
+    @Test
+    public void resolveWildFly11DomainManaged() throws Exception {
+        ContainerAdapter adapter = load("wildfly domain:11.0.0.Final:managed");
+        Assert.assertEquals(
+            "org.wildfly.arquillian:wildfly-arquillian-container-domain-managed:2.1.0.Final",
+            adapter.dependencies()[0]);
+    }
+
+    @Test
+    public void resolveWildFly11DomainRemote() throws Exception {
+        ContainerAdapter adapter = load("wildfly domain:11.0.0.Final:remote");
+        Assert.assertEquals(
+            "org.wildfly.arquillian:wildfly-arquillian-container-domain-remote:2.1.0.Final",
+            adapter.dependencies()[0]);
+    }
+
 
     @Test
     public void noOverrideDefaultProtocolWildFly10() throws Exception {
