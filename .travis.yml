@@ -13,5 +13,6 @@ before_install:
 install: true
 
 script:
-- ./mvnw clean install -Pall
+  - ./mvnw clean install
+  - ./mvnw clean install -Pall
 
