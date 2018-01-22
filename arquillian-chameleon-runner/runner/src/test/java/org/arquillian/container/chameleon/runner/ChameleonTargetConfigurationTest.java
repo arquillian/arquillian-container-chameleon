@@ -62,7 +62,7 @@ public class ChameleonTargetConfigurationTest {
             new ChameleonTargetConfiguration("tomcat:8.0.0:managed");
 
         // when
-        final Document containerDefinition = (Document) chameleonTargetConfiguration.getContainerDefinitionAsXml();
+        final Element containerDefinition = (Element) chameleonTargetConfiguration.getContainerDefinitionAsXml();
 
         // then
         final NodeList properties = containerDefinition.getElementsByTagName("property");
@@ -116,7 +116,7 @@ public class ChameleonTargetConfigurationTest {
             new ChameleonTargetConfiguration("tomcat", "8.0.0", Mode.MANAGED, customProps);
 
         // when
-        final Document containerDefinition = (Document) chameleonTargetConfiguration.getContainerDefinitionAsXml();
+        final Element containerDefinition = (Element) chameleonTargetConfiguration.getContainerDefinitionAsXml();
 
         // then
         final NodeList properties = containerDefinition.getElementsByTagName("property");
