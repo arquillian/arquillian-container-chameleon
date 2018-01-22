@@ -21,6 +21,8 @@
   <modules>
     <module>arquillian-chameleon-container-model</module>
     <module>arquillian-chameleon-extension</module>
+    <module>arquillian-chameleon-junit-container-starter</module>
+    <module>arquillian-chameleon-testng-container-starter</module>
   </modules>
 
   <name>Arquillian Container Chameleon Parent</name>
