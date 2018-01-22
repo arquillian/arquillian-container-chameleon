@@ -1,0 +1,5 @@
+<container qualifier="chameleon" default="true">
+  <configuration>
+    <property name="chameleonTarget"></property>
+  </configuration>
+</container>
