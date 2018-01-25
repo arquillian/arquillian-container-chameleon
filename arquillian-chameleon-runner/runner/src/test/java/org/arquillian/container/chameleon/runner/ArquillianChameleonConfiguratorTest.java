@@ -1,7 +1,10 @@
 package org.arquillian.container.chameleon.runner;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Path;
 import javax.xml.transform.TransformerException;
 import org.arquillian.container.chameleon.runner.fixtures.GenericTest;
@@ -14,6 +17,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -84,6 +89,38 @@ public class ArquillianChameleonConfiguratorTest {
         final Path setup = arquillianChameleonConfigurator.setup(GenericTest.class, classLoader);
 
         // then
+        assertThat(setup)
+            .hasFileName(ArquillianChameleonConfigurationGenerator.ARQUILLIAN_CHAMELEON_XML)
+            .exists();
+
+        assertThat(System.getProperties())
+            .contains(entry("arquillian.xml", ArquillianChameleonConfigurationGenerator.ARQUILLIAN_CHAMELEON_XML));
+
+    }
+
+    @Test
+    public void should_override_custom_arquillian_using_xml_if_it_is_configured_as_such_and_configured_with_properties()
+        throws IOException, TransformerException {
+
+        // given
+        final ArquillianChameleonConfigurator arquillianChameleonConfigurator = new ArquillianChameleonConfigurator();
+        when(classLoader.getResourceAsStream(ArquillianChameleonConfigurationGenerator.ARQUILLIAN_PROPERTIES))
+            .thenReturn(file);
+
+        final InputStream arquillian =
+            Thread.currentThread().getContextClassLoader().getResourceAsStream("arquillian_xml_extensions.xml");
+
+        when(classLoader.getResourceAsStream("arquillian_xml_extensions.xml"))
+        .thenReturn(arquillian);
+
+        System.setProperty("arquillian.xml", "arquillian_xml_extensions.xml");
+
+        // when
+        final Path setup = arquillianChameleonConfigurator.setup(GenericTest.class, classLoader);
+
+        // then
+        verify(classLoader, times(1)).getResourceAsStream("arquillian_xml_extensions.xml");
+
         assertThat(setup)
             .hasFileName(ArquillianChameleonConfigurationGenerator.ARQUILLIAN_CHAMELEON_XML)
             .exists();

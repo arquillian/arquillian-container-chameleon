@@ -13,6 +13,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import static org.arquillian.container.chameleon.runner.RunnerExpressionParser.parseExpressions;
+
 public class ChameleonTargetConfiguration {
 
     private static final int CONTAINER = 0;
@@ -51,9 +53,17 @@ public class ChameleonTargetConfiguration {
     public static ChameleonTargetConfiguration from(ChameleonTarget chameleonTarget) {
 
         if ("".equals(chameleonTarget.value())) {
-            return new ChameleonTargetConfiguration(chameleonTarget.container(), chameleonTarget.version(), chameleonTarget.mode(), toMap(chameleonTarget.customProperties()));
+            return new ChameleonTargetConfiguration(
+                parseExpressions(chameleonTarget.container()),
+                parseExpressions(chameleonTarget.version()),
+                Mode.valueOf(parseExpressions(chameleonTarget.mode()).toUpperCase()),
+                toMap(chameleonTarget.customProperties()));
         } else {
-            return new ChameleonTargetConfiguration(chameleonTarget.value());
+            final ChameleonTargetConfiguration chameleonTargetConfiguration =
+                new ChameleonTargetConfiguration(chameleonTarget.value());
+            chameleonTargetConfiguration.customProperties = toMap(chameleonTarget.customProperties());
+
+            return chameleonTargetConfiguration;
         }
 
     }
@@ -61,7 +71,7 @@ public class ChameleonTargetConfiguration {
     private static Map<String, String> toMap(Property[] properties) {
         final Map<String, String> map = new HashMap<>();
         for (Property property : properties) {
-            map.put(property.name(), property.value());
+            map.put(property.name(), parseExpressions(property.value()));
         }
 
         return map;

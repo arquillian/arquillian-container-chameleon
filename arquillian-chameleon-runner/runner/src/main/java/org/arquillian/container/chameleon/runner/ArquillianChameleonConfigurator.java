@@ -9,6 +9,7 @@ import javax.xml.transform.TransformerException;
 public class ArquillianChameleonConfigurator {
 
     private static final Logger log = Logger.getLogger(ArquillianChameleonConfigurator.class.getName());
+    public static final String ARQUILLIAN_XML_SYS_PROPERTY = "arquillian.xml";
 
     public Path setup(Class<?> testClass, ClassLoader parent) throws IOException, TransformerException {
 
@@ -22,16 +23,15 @@ public class ArquillianChameleonConfigurator {
 
             configurationProperties.close();
 
-            final InputStream configurationXml =
-                parent.getResourceAsStream(ArquillianChameleonConfigurationGenerator.ARQUILLIAN_XML);
+            final InputStream configurationXml = getArquillianXmlConfiguration(parent);
 
             if (isArquillianConfiguredWithXml(configurationXml)) {
 
                 arquillianChameleonConfiguration = arquillianChameleonConfigurationGenerator.generateAppendedArquillianXml(testClass, configurationXml);
-                System.setProperty("arquillian.xml", arquillianChameleonConfiguration.getFileName().toString());
+                System.setProperty(ARQUILLIAN_XML_SYS_PROPERTY, arquillianChameleonConfiguration.getFileName().toString());
 
                 log.warning("Current project is configured with arquillian.properties and arquillian.xml. So we have created a custom arquillian filename and set it using a JVM System property."
-                    + "If you are planning to run tests in parallel in same JVM, this might cause some problems. We recommend to configure Arquillian either with .proeprties or .xml file approach but not both.");
+                    + " If you are planning to run tests in parallel in same JVM, this might cause some problems. We recommend to configure Arquillian either with .proeprties or .xml file approach but not both.");
 
             } else {
                 arquillianChameleonConfiguration =
@@ -45,6 +45,27 @@ public class ArquillianChameleonConfigurator {
         }
 
         return arquillianChameleonConfiguration;
+    }
+
+    private InputStream getArquillianXmlConfiguration(ClassLoader parent) {
+
+        final String customConfigurationXml = System.getProperty(ARQUILLIAN_XML_SYS_PROPERTY);
+
+        final InputStream customXml = parent.getResourceAsStream(customConfigurationXml);
+
+        if (customXml != null) {
+            return customXml;
+        }
+
+        final InputStream configurationXml =
+            parent.getResourceAsStream(ArquillianChameleonConfigurationGenerator.ARQUILLIAN_XML);
+
+        if (configurationXml != null) {
+            return configurationXml;
+        }
+
+        return null;
+
     }
 
     private boolean isArquillianConfiguredWithProperties(InputStream properties) {
