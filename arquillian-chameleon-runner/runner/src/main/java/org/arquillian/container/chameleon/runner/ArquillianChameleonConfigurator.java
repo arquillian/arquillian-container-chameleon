@@ -51,10 +51,12 @@ public class ArquillianChameleonConfigurator {
 
         final String customConfigurationXml = System.getProperty(ARQUILLIAN_XML_SYS_PROPERTY);
 
-        final InputStream customXml = parent.getResourceAsStream(customConfigurationXml);
+        if (customConfigurationXml != null) {
+            final InputStream customXml = parent.getResourceAsStream(customConfigurationXml);
 
-        if (customXml != null) {
-            return customXml;
+            if (customXml != null) {
+                return customXml;
+            }
         }
 
         final InputStream configurationXml =

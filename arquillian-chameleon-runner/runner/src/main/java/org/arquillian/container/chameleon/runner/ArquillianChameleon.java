@@ -1,15 +1,21 @@
 package org.arquillian.container.chameleon.runner;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.logging.Logger;
 import org.arquillian.container.chameleon.runner.extension.ChameleonRunnerAppender;
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.model.InitializationError;
 
 public class ArquillianChameleon extends Arquillian {
+
+    private static final Logger log = Logger.getLogger(ArquillianChameleon.class.getName());
 
     public ArquillianChameleon(Class<?> testClass) throws InitializationError {
         super(testClass);
@@ -19,11 +25,19 @@ public class ArquillianChameleon extends Arquillian {
     public void run(RunNotifier notifier) {
 
         Class<?> testClass = getTestClass().getJavaClass();
+
         final ClassLoader parent = Thread.currentThread().getContextClassLoader();
 
-        if (isInClientSide(parent)) {
+        if (isInClientSide(parent) && !isSpecialChameleonFile(parent)) {
+
+            System.out.println("*******");
+
             try {
                 Path arquillianChameleonConfiguration = new ArquillianChameleonConfigurator().setup(testClass, parent);
+
+                log.info(String.format("Arquillian Configuration created by Chameleon runner is placed at %s.", arquillianChameleonConfiguration.toFile().getAbsolutePath()));
+
+                createSpecialChameleonFile(arquillianChameleonConfiguration.getParent());
                 addsArquillianFile(arquillianChameleonConfiguration.getParent(),
                     parent);
             } catch (Exception e) {
@@ -31,6 +45,22 @@ public class ArquillianChameleon extends Arquillian {
             }
         }
         super.run(notifier);
+    }
+
+    /**
+     * We need to create an special file and put it inside classloader. This is because Chameleon runner adds configuration files dynamically inside the classpath.
+     * When you run your tests from your build tool, some or all of them shares the same classloader. So we need to avoid calling the same logic all the time to not get multiple files placed at classloader
+     * representing different versions, because then you have uncertainty on which configuration file is really used
+     * @param parent
+     * @throws IOException
+     */
+    private void createSpecialChameleonFile(Path parent) throws IOException {
+        final Path chameleon = parent.resolve("chameleonrunner");
+        Files.write(chameleon, "Chameleon Runner was there".getBytes());
+    }
+
+    private boolean isSpecialChameleonFile(ClassLoader parent) {
+        return parent.getResource("chameleonrunner") != null;
     }
 
     private boolean isInClientSide(ClassLoader parent) {
