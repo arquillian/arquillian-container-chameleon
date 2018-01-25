@@ -30,8 +30,6 @@ public class ArquillianChameleon extends Arquillian {
 
         if (isInClientSide(parent) && !isSpecialChameleonFile(parent)) {
 
-            System.out.println("*******");
-
             try {
                 Path arquillianChameleonConfiguration = new ArquillianChameleonConfigurator().setup(testClass, parent);
 
