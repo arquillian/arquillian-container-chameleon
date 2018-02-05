@@ -209,6 +209,96 @@ to specify a global `settings.xml` file.
 
 The standard Maven property `-s` doesn't work as Chameleon internally uses Shrinkwrap Resolver and the property is not supported there. But you can use any of the properties described here: https://github.com/shrinkwrap/resolver#system-properties
 
+== Arquillian Chameleon Runner
+
+Arquillian Chameleon Container is a special container that allows you to define which container and mode without having to remember any concrete dependency of the desired container.
+You've seen this at <<Get Started>>.
+
+This approach is the most versatile one and has been here for a long time and offers a generic and global solution, but with Chameleon, you can use another approach where instead of configuring container using `arquillian.xml`, you can use an annotation to set up the test container.
+
+The first thing to do is add next dependency:
+
+[source, xml]
+.pom.xml
+----
+<dependency>
+    <groupId>org.arquillian.container</groupId>
+    <artifactId>arquillian-container-chameleon-runner</artifactId>
+    <version>${project.version}</version>
+    <scope>test</scope>
+</dependency>
+----
+
+Then instead of using Arquillian runner, you need to use a new one provided by Chameleon called `ArquillianChameleon`.
+
+Then you need to annotate your test with `@ChameleonTarget("wildfly:9.0.0.Final:managed") where you set the container, version, and mode as you usually do with `chameleonTarget` in `arquillian.xml`.
+
+But this annotation also allows you to set each of the property (even custom properties) one by one, for example:
+
+[source, java]
+----
+@ChameleonTarget(container = "tomcat", version = "7.0.0", customProperties = {
+    @Property(name="a", value="b")
+})
+----
+
+Last important thing to take into consideration is that `@ChameleonTarget` can be used in meta-annotations and inherit properties form meta-annotations.
+For example, you can use next form to define `Tomcat` container:
+
+[source, java]
+.Tomcat.java
+----
+@Target({ ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Inherited
+@ChameleonTarget("tomcat:7.0.0:managed") // <1>
+public @interface Tomcat {
+}
+----
+<1> Defines container, version and mode
+
+And then to define that the test needs to be run in `Tomcat`, you can simply do:
+
+[source, java]
+.Tomcat.java
+----
+@Tomcat
+public class TomcatTest {
+}
+----
+
+But you can even redefine meta-annotations, for example, to specify Tomcat 8 you only need to do:
+
+[source, java]
+.Tomcat8.java
+----
+@Target({ ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Inherited
+@Tomcat // <1>
+@ChameleonTarget(version = "8.0.0") // <2>
+public @interface Tomcat8 {
+}
+----
+<1> Inherit properties from `Tomcat` meta-annotation
+<2> Override version number
+
+All fields accept expressions like `${property:defaultValue} where property is first resolved as environment variable, if not set as the system property and if not the default value is used.
+
+[IMPORTANT]
+====
+There some limitations when using this approach.
+
+* The first one is that test execution that occurs in the same JVM must use the same container, you cannot run in the same JVM a list of tests that require different containers (i.e some with Wildfly and others with Payara).
+If you want to do this you need to isolate each of the tests in different JVMs.
+
+* The second one is that if you are configuring extensions with `arquillian.properties` *AND* `arquillian.xml files at the same time and you run tests in parallel *within* the same JVM, then you might find some unexpected results.
+Of course, this is a corner case, but a solution to this is just moving configuration of one of the files to either `arquillian.properties` or `arquillian.xml` file or run parallel tests in different JVMs.
+====
+
+
 == Test
 
 To run the whole test suite with the correct configuration use profile `all`:

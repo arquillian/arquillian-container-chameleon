@@ -40,7 +40,7 @@ import java.util.Map;
  * }
  * </pre>
  *
- * All fields accepts expressions like ${property:defaultValue} where {@code property} is first resolved as environment variable,
+ * All fields accept expressions like ${property:defaultValue} where {@code property} is first resolved as environment variable,
  * if not set as system property and if not the default value is used.
  *
  */
