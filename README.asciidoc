@@ -289,9 +289,9 @@ All fields accept expressions like `${property:defaultValue} where property is f
 
 [IMPORTANT]
 ====
-There some limitations when using this approach.
+There are some limitations when using this approach.
 
-* The first one is that test execution that occurs in the same JVM must use the same container, you cannot run in the same JVM a list of tests that require different containers (i.e some with Wildfly and others with Payara).
+* The first one is that test execution that occurs in the same JVM must use the same container, you cannot run in the same JVM a set of tests that require different containers (i.e some with Wildfly and others with Payara).
 If you want to do this you need to isolate each of the tests in different JVMs.
 
 * The second one is that if you are configuring extensions with `arquillian.properties` *AND* `arquillian.xml files at the same time and you run tests in parallel *within* the same JVM, then you might find some unexpected results.
