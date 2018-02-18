@@ -24,6 +24,7 @@
     <module>arquillian-chameleon-junit-container-starter</module>
     <module>arquillian-chameleon-testng-container-starter</module>
     <module>arquillian-chameleon-runner</module>
+    <module>arquillian-chameleon-deployments/arquillian-chameleon-maven-build-deployment</module>
   </modules>
 
   <name>Arquillian Container Chameleon Parent</name>
@@ -38,22 +39,24 @@
 
   <!-- Properties -->
   <properties>
-    <version.arquillian_core>1.2.0.Final</version.arquillian_core>
+
+    <version.arquillian_core>1.3.0.Final</version.arquillian_core>
     <version.arquillian_tck>1.0.0.Alpha1</version.arquillian_tck>
     <version.jboss.javaee-6_api>1.0.0.Final</version.jboss.javaee-6_api>
     <version.jboss.logmanager>2.0.4.Final</version.jboss.logmanager>
     <version.arquillian-spacelift>1.0.0.Alpha9</version.arquillian-spacelift>
     <version.assertj>3.9.0</version.assertj>
     <version.jcip.annotations>1.0</version.jcip.annotations>
-    <version.shrinkwrap.resolver>2.2.6</version.shrinkwrap.resolver>
     <version.snakeyaml>1.19</version.snakeyaml>
     <version.mockito>2.13.0</version.mockito>
     <version.xmlpath>3.0.6</version.xmlpath>
     <version.system-rules>1.17.0</version.system-rules>
+    <version.shrinkwrap.resolver>3.0.1</version.shrinkwrap.resolver>
 
     <maven.compiler.target>1.7</maven.compiler.target>
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.min.version>3.0.5</maven.min.version>
+    <version.mockito-core>2.15.0</version.mockito-core>
   </properties>
 
   <dependencyManagement>
@@ -88,7 +91,7 @@
       <dependency>
         <groupId>org.mockito</groupId>
         <artifactId>mockito-core</artifactId>
-        <version>${version.mockito}</version>
+        <version>${version.mockito-core}</version>
         <scope>test</scope>
       </dependency>
       <dependency>
