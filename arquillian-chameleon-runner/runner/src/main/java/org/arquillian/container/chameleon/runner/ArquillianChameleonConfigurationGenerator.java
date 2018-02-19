@@ -93,7 +93,6 @@ public class ArquillianChameleonConfigurationGenerator {
             final ChameleonTargetConfiguration chameleonTargetConfiguration = AnnotationExtractor.extract(annotation);
 
             if (chameleonTargetConfiguration != null) {
-                // We only support one container for now.
                 return chameleonTargetConfiguration;
             }
         }

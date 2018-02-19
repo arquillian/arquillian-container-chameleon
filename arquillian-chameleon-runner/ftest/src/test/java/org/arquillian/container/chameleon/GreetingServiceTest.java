@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.junit.Assert.assertThat;
 
 @Wildfly
 @RunWith(ArquillianChameleon.class)
@@ -27,7 +28,7 @@ public class GreetingServiceTest {
 
     @Test
     public void should_get_greetings() {
-        Assert.assertThat(service, is(notNullValue()));
+        assertThat(service, is(notNullValue()));
     }
 
 }

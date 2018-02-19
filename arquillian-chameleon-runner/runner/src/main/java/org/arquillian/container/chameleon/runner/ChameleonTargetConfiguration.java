@@ -32,7 +32,8 @@ public class ChameleonTargetConfiguration {
         final String[] definition = value.split(":");
 
         if (definition.length != 3) {
-            throw new IllegalArgumentException("Value of Chameleon expression must be of form container:version:mode");
+            throw new IllegalArgumentException("Value of Chameleon expression must be of form container:version:mode. For example wildfly:9.0.0.Final:managed. "
+                + "Refer to https://github.com/arquillian/arquillian-container-chameleon#supported-containers for the complete list of supported containers.");
         }
 
         this.container = definition[CONTAINER];
@@ -52,7 +53,7 @@ public class ChameleonTargetConfiguration {
 
     public static ChameleonTargetConfiguration from(ChameleonTarget chameleonTarget) {
 
-        if ("".equals(chameleonTarget.value())) {
+        if (isContainerNotDefinedAsString(chameleonTarget)) {
             return new ChameleonTargetConfiguration(
                 parseExpressions(chameleonTarget.container()),
                 parseExpressions(chameleonTarget.version()),
@@ -66,6 +67,10 @@ public class ChameleonTargetConfiguration {
             return chameleonTargetConfiguration;
         }
 
+    }
+
+    private static boolean isContainerNotDefinedAsString(ChameleonTarget chameleonTarget) {
+        return chameleonTarget.value().trim().isEmpty();
     }
 
     private static Map<String, String> toMap(Property[] properties) {
