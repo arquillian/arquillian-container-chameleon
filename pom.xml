@@ -25,6 +25,8 @@
     <module>arquillian-chameleon-testng-container-starter</module>
     <module>arquillian-chameleon-runner</module>
     <module>arquillian-chameleon-deployments/arquillian-chameleon-maven-build-deployment</module>
+    <module>arquillian-chameleon-deployments/ftest-arquillian-chameleon-maven-build-deployment</module>
+    <module>arquillian-chameleon-deployments/hello-world-example</module>
   </modules>
 
   <name>Arquillian Container Chameleon Parent</name>

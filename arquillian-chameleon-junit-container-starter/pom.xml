@@ -27,6 +27,11 @@
       <artifactId>arquillian-container-chameleon</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.arquillian.container</groupId>
+      <artifactId>arquillian-container-chameleon-runner</artifactId>
+      <version>${project.version}</version>
+    </dependency>
   </dependencies>
 
 </project>
