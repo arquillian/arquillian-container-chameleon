@@ -8,22 +8,14 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>arquillian-chameleon-maven-build-deployment</artifactId>
+  <artifactId>arquillian-chameleon-file-deployment</artifactId>
 
-  <name>Arquillian Chameleon Maven Build Deployment</name>
+  <name>Arquillian Chameleon File Deployment</name>
 
   <dependencies>
     <dependency>
       <groupId>org.jboss.arquillian.container</groupId>
       <artifactId>arquillian-container-test-spi</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.shrinkwrap.resolver</groupId>
-      <artifactId>shrinkwrap-resolver-api-maven-embedded</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.shrinkwrap.resolver</groupId>
-      <artifactId>shrinkwrap-resolver-impl-maven-embedded</artifactId>
     </dependency>
     <dependency>
       <groupId>org.arquillian.container</groupId>
@@ -49,3 +41,4 @@
   </dependencies>
 
 </project>
+

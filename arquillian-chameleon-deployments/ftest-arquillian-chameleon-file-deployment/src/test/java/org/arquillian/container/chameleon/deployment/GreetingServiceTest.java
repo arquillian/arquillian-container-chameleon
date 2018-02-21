@@ -3,7 +3,7 @@ package org.arquillian.container.chameleon.deployment;
 import java.net.URL;
 import org.arquillian.container.chameleon.api.ChameleonTarget;
 import org.arquillian.container.chameleon.deployment.api.DeploymentParameters;
-import org.arquillian.container.chameleon.deployment.maven.MavenBuild;
+import org.arquillian.container.chameleon.deployment.file.File;
 import org.arquillian.container.chameleon.runner.ArquillianChameleon;
 import org.hamcrest.CoreMatchers;
 import org.jboss.arquillian.test.api.ArquillianResource;
@@ -14,8 +14,8 @@ import static io.restassured.RestAssured.given;
 
 @RunWith(ArquillianChameleon.class)
 @ChameleonTarget("wildfly:9.0.0.Final:managed")
-@MavenBuild(pom = "../hello-world-example/pom.xml")
 @DeploymentParameters(testable = false)
+@File("src/test/resources/arquillian-example-helloworld.war")
 public class GreetingServiceTest {
 
     @ArquillianResource

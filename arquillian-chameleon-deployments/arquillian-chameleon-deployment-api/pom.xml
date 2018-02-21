@@ -8,36 +8,19 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>arquillian-chameleon-maven-build-deployment</artifactId>
+  <artifactId>arquillian-chameleon-deployment-api</artifactId>
 
-  <name>Arquillian Chameleon Maven Build Deployment</name>
+  <name>Arquillian Chameleon Deployment API</name>
 
   <dependencies>
     <dependency>
       <groupId>org.jboss.arquillian.container</groupId>
       <artifactId>arquillian-container-test-spi</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.jboss.shrinkwrap.resolver</groupId>
-      <artifactId>shrinkwrap-resolver-api-maven-embedded</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.shrinkwrap.resolver</groupId>
-      <artifactId>shrinkwrap-resolver-impl-maven-embedded</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.arquillian.container</groupId>
-      <artifactId>arquillian-chameleon-deployment-api</artifactId>
-      <version>${project.version}</version>
-    </dependency>
+
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -45,7 +28,11 @@
       <artifactId>assertj-core</artifactId>
       <scope>test</scope>
     </dependency>
-
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
 </project>

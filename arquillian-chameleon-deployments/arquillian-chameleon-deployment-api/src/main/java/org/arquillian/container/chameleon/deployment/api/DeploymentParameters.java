@@ -1,4 +1,4 @@
-package org.arquillian.container.chameleon.deployment.maven;
+package org.arquillian.container.chameleon.deployment.api;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,12 +7,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface MavenBuildDeployment {
-
-    String[] mavenGoals() default "package";
-    String mavenVersion() default "3.5.0";
-    String[] mavenProfiles() default {};
-    String pom() default "pom.xml";
+public @interface DeploymentParameters {
 
     String deploymentName() default "";
     boolean testable() default true;

@@ -1,8 +1,6 @@
-package org.arquillian.container.chameleon.deployment.maven;
+package org.arquillian.container.chameleon.deployment.api;
 
-import org.assertj.core.api.Assertions;
 import org.assertj.core.api.JUnitSoftAssertions;
-import org.assertj.core.api.SoftAssertions;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.DeploymentConfiguration;
 import org.jboss.arquillian.test.spi.TestClass;
@@ -14,38 +12,25 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class MavenBuildAutomaticDeploymentTest {
+public class DeploymentConfigurationPopulatorTest {
 
     @Rule
     public final JUnitSoftAssertions softly = new JUnitSoftAssertions();
 
     @Mock
-    private MavenRunner mavenRunner;
-
-    @Mock
-    private Archive archive;
-
-    @Before
-    public void prepareMockRunner() {
-        when(mavenRunner.run(any(MavenBuildDeployment.class)))
-            .thenReturn(archive);
-    }
+    Archive<?> archive;
 
     @Test
     public void should_generate_default_deployment_content() {
 
         // given
-        final MavenBuildAutomaticDeployment mavenBuildAutomaticDeployment = new MavenBuildAutomaticDeployment();
-        mavenBuildAutomaticDeployment.mavenRunner = mavenRunner;
-
         // when
         final DeploymentConfiguration deploymentConfiguration =
-            mavenBuildAutomaticDeployment.generateDeploymentScenario(new TestClass(DefaultConfigurationTest.class));
+            DeploymentConfigurationPopulator.populate(new TestClass(DefaultConfigurationTest.class), archive).get();
 
         // then
         softly.assertThat(deploymentConfiguration.getArchive()).isEqualTo(archive);
@@ -65,12 +50,9 @@ public class MavenBuildAutomaticDeploymentTest {
     public void should_generate_deployment_custom_content() {
 
         // given
-        final MavenBuildAutomaticDeployment mavenBuildAutomaticDeployment = new MavenBuildAutomaticDeployment();
-        mavenBuildAutomaticDeployment.mavenRunner = mavenRunner;
-
         // when
         final DeploymentConfiguration deploymentConfiguration =
-            mavenBuildAutomaticDeployment.generateDeploymentScenario(new TestClass(ParametrizedConfigurationTest.class));
+            DeploymentConfigurationPopulator.populate(new TestClass(ParametrizedConfigurationTest.class), archive).get();
 
         // then
         softly.assertThat(deploymentConfiguration.getArchive()).isEqualTo(archive);
@@ -87,10 +69,9 @@ public class MavenBuildAutomaticDeploymentTest {
 
     }
 
-    @MavenBuildDeployment
     public static class DefaultConfigurationTest {}
 
-    @MavenBuildDeployment(testable = false, deploymentName = "dep", overProtocol = "https",
+    @DeploymentParameters(testable = false, deploymentName = "dep", overProtocol = "https",
         targetsContainer = "container", managed = false, order = 1)
     public static class ParametrizedConfigurationTest {}
 

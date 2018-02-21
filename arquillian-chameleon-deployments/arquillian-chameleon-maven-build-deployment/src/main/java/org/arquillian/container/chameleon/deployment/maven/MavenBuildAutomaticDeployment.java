@@ -1,76 +1,57 @@
 package org.arquillian.container.chameleon.deployment.maven;
 
-import org.jboss.arquillian.container.test.api.DeploymentConfiguration;
-import org.jboss.arquillian.container.test.spi.client.deployment.AutomaticDeployment;
+import java.io.File;
+import java.util.Arrays;
+import org.arquillian.container.chameleon.deployment.api.AbstractAutomaticDeployment;
 import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.resolver.api.maven.embedded.EmbeddedMaven;
+import org.jboss.shrinkwrap.resolver.api.maven.embedded.pom.equipped.ConfigurationDistributionStage;
 
-public class MavenBuildAutomaticDeployment implements AutomaticDeployment {
+public class MavenBuildAutomaticDeployment extends AbstractAutomaticDeployment {
 
-    MavenRunner mavenRunner;
-
-    public MavenBuildAutomaticDeployment() {
-
-        mavenRunner = new MavenRunner() {
-            public Archive<?> run(MavenBuildDeployment conf) {
-                return EmbeddedMaven.forProject(conf.pom())
-                    .useMaven3Version(conf.mavenVersion())
-                    .setGoals(conf.mavenGoals())
-                    .setProfiles(conf.mavenProfiles())
-                    .setQuiet()
-                    .skipTests(true)
-                    .ignoreFailure()
-                    .build().getDefaultBuiltArchive();
-            }
-        };
-
-    }
-
-    public DeploymentConfiguration generateDeploymentScenario(TestClass testClass) {
-
-        if (testClass.isAnnotationPresent(MavenBuildDeployment.class)) {
-
-            final MavenBuildDeployment mavenBuildDeployment = testClass.getAnnotation(MavenBuildDeployment.class);
-
-            final Archive archive = mavenRunner.run(mavenBuildDeployment);
-
-            DeploymentConfiguration.DeploymentContentBuilder deploymentContentBuilder =
-                initializeWithDeploymentInformation(mavenBuildDeployment, archive);
-
-            if (isNotEmptyOrNull(mavenBuildDeployment.overProtocol())) {
-                deploymentContentBuilder.withOverProtocol(mavenBuildDeployment.overProtocol());
-            }
-
-            if (isNotEmptyOrNull(mavenBuildDeployment.targetsContainer())) {
-                deploymentContentBuilder.withTargetsContainer(mavenBuildDeployment.targetsContainer());
-            }
-
-            if (mavenBuildDeployment.shouldThrowExcetionClass() != ConstantException.class) {
-                deploymentContentBuilder.withShouldThrowException(mavenBuildDeployment.shouldThrowExcetionClass(), mavenBuildDeployment.testable());
-            }
-
-            return deploymentContentBuilder.get();
-
+    @Override
+    protected Archive<?> build(TestClass testClass) {
+        if (testClass.isAnnotationPresent(MavenBuild.class)) {
+            final MavenBuild mavenBuildDeployment = testClass.getAnnotation(MavenBuild.class);
+            return runBuild(mavenBuildDeployment);
         }
 
-        // It is safe to return null, we cannot return Optional since core runs on Java5
         return null;
     }
 
-    private DeploymentConfiguration.DeploymentContentBuilder initializeWithDeploymentInformation(
-        MavenBuildDeployment mavenBuildDeployment, Archive archive) {
-        DeploymentConfiguration.DeploymentContentBuilder deploymentContentBuilder = new DeploymentConfiguration.DeploymentContentBuilder(archive);
-        final DeploymentConfiguration.DeploymentBuilder deploymentBuilder = deploymentContentBuilder.withDeployment()
-            .withManaged(mavenBuildDeployment.managed())
-            .withOrder(mavenBuildDeployment.order())
-            .withTestable(mavenBuildDeployment.testable());
+    private Archive<?> runBuild(MavenBuild conf) {
+        final ConfigurationDistributionStage configurationDistributionStage = EmbeddedMaven.forProject(conf.pom())
+            .useMaven3Version(conf.mavenVersion())
+            .setGoals(conf.mavenGoals())
+            .setProfiles(conf.mavenProfiles())
+            .setOffline(conf.offline())
+            .setQuiet()
+            .skipTests(true);
 
-        if (isNotEmptyOrNull(mavenBuildDeployment.deploymentName())) {
-            deploymentBuilder.withName(mavenBuildDeployment.deploymentName());
+        if (isNotEmptyOrNull(conf.localRepositoryDirectory())) {
+            configurationDistributionStage.setLocalRepositoryDirectory(new File(conf.localRepositoryDirectory()));
         }
-        deploymentContentBuilder = deploymentBuilder.build();
-        return deploymentContentBuilder;
+
+        if (isNotEmptyOrNull(conf.mvnOpts())) {
+            configurationDistributionStage.setMavenOpts(conf.mvnOpts());
+        }
+
+        final String[] properties = conf.properties();
+        for (int i = 0; i < properties.length; i += 2) {
+
+            if (i + 1 >= properties.length) {
+                throw new IllegalArgumentException(String.format(
+                    "Maven properties must be set in an array of pairs key, value, but in %s properties are odd",
+                    Arrays.toString(properties)));
+            }
+
+            configurationDistributionStage.addProperty(properties[i], properties[i + 2]);
+        }
+
+        return configurationDistributionStage
+            .ignoreFailure()
+            .build().getDefaultBuiltArchive();
     }
 
     private boolean isNotEmptyOrNull(String value) {
