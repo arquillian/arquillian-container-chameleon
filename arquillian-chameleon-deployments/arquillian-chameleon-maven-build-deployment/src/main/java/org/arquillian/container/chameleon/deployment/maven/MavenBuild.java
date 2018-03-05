@@ -9,9 +9,9 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface MavenBuild {
 
-    String[] mavenGoals() default "package";
-    String mavenVersion() default "3.5.0";
-    String[] mavenProfiles() default {};
+    String[] goals() default "package";
+    String version() default "3.5.0";
+    String[] profiles() default {};
     String pom() default "pom.xml";
     String localRepositoryDirectory() default "";
     boolean offline() default false;

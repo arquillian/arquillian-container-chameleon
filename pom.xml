@@ -45,7 +45,7 @@
   <!-- Properties -->
   <properties>
 
-    <version.arquillian_core>1.3.0.Final</version.arquillian_core>
+    <version.arquillian_core>1.4.0.Final</version.arquillian_core>
     <version.arquillian_tck>1.0.0.Alpha1</version.arquillian_tck>
     <version.jboss.javaee-6_api>1.0.0.Final</version.jboss.javaee-6_api>
     <version.jboss.logmanager>2.0.4.Final</version.jboss.logmanager>

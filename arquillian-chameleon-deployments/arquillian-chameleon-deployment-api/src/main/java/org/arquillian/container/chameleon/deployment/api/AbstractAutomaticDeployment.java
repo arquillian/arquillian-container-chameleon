@@ -19,7 +19,7 @@ public abstract class AbstractAutomaticDeployment implements AutomaticDeployment
             return deploymentContentBuilder.get();
         }
 
-        // It is safe to return null, we cannot return Optional since core runs on Java7
+        // It is safe to return null, we cannot return Optional since core runs on Java5
         return null;
     }
 

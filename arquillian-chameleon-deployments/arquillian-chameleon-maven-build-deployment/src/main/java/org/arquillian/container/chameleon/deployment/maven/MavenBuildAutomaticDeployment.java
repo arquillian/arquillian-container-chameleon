@@ -38,14 +38,14 @@ public class MavenBuildAutomaticDeployment extends AbstractAutomaticDeployment {
         }
 
         final String[] properties = conf.properties();
+
+        if (properties.length % 2 != 0) {
+            throw new IllegalArgumentException(String.format(
+                "Maven properties must be set in an array of pairs key, value, but in %s properties are odd",
+                Arrays.toString(properties)));
+        }
+
         for (int i = 0; i < properties.length; i += 2) {
-
-            if (i + 1 >= properties.length) {
-                throw new IllegalArgumentException(String.format(
-                    "Maven properties must be set in an array of pairs key, value, but in %s properties are odd",
-                    Arrays.toString(properties)));
-            }
-
             configurationDistributionStage.addProperty(properties[i], properties[i + 2]);
         }
 
