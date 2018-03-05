@@ -22,9 +22,9 @@ public class MavenBuildAutomaticDeployment extends AbstractAutomaticDeployment {
 
     private Archive<?> runBuild(MavenBuild conf) {
         final ConfigurationDistributionStage configurationDistributionStage = EmbeddedMaven.forProject(conf.pom())
-            .useMaven3Version(conf.mavenVersion())
-            .setGoals(conf.mavenGoals())
-            .setProfiles(conf.mavenProfiles())
+            .useMaven3Version(conf.version())
+            .setGoals(conf.goals())
+            .setProfiles(conf.profiles())
             .setOffline(conf.offline())
             .setQuiet()
             .skipTests(true);
