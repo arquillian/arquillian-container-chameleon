@@ -32,6 +32,6 @@ public class FileAutomaticDeployment extends AbstractAutomaticDeployment {
     }
 
     private String getArchiveName(String deploymentFileLocation) {
-        return deploymentFileLocation.substring(deploymentFileLocation.lastIndexOf('/') + 1);
+        return deploymentFileLocation.substring(deploymentFileLocation.lastIndexOf(java.io.File.separatorChar) + 1);
     }
 }

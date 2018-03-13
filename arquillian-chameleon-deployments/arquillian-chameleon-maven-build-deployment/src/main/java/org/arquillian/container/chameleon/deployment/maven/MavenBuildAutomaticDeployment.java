@@ -46,7 +46,7 @@ public class MavenBuildAutomaticDeployment extends AbstractAutomaticDeployment {
         }
 
         for (int i = 0; i < properties.length; i += 2) {
-            configurationDistributionStage.addProperty(properties[i], properties[i + 2]);
+            configurationDistributionStage.addProperty(properties[i], properties[i + 1]);
         }
 
         return configurationDistributionStage
