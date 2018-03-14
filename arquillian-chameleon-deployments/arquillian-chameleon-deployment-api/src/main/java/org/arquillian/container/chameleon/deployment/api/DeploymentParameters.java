@@ -18,6 +18,6 @@ public @interface DeploymentParameters {
 
     String targetsContainer() default "";
 
-    Class<? extends Exception> shouldThrowExcetionClass() default ConstantException.class;
+    Class<? extends Exception> shouldThrowExcetionClass() default IgnorePlaceholderException.class;
 
 }

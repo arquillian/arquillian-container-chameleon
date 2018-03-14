@@ -31,7 +31,7 @@ public class DeploymentConfigurationPopulator {
             deploymentContentBuilder.withTargetsContainer(deploymentParameters.targetsContainer());
         }
 
-        if (deploymentParameters.shouldThrowExcetionClass() != ConstantException.class) {
+        if (deploymentParameters.shouldThrowExcetionClass() != IgnorePlaceholderException.class) {
             deploymentContentBuilder.withShouldThrowException(deploymentParameters.shouldThrowExcetionClass(),
                 deploymentParameters.testable());
         }
@@ -86,7 +86,7 @@ public class DeploymentConfigurationPopulator {
 
         @Override
         public Class<? extends Exception> shouldThrowExcetionClass() {
-            return ConstantException.class;
+            return IgnorePlaceholderException.class;
         }
 
         @Override
