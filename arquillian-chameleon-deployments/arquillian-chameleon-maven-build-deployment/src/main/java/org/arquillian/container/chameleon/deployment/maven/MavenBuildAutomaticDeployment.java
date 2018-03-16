@@ -26,8 +26,9 @@ public class MavenBuildAutomaticDeployment extends AbstractAutomaticDeployment {
             .setGoals(conf.goals())
             .setProfiles(conf.profiles())
             .setOffline(conf.offline())
-            .setQuiet()
             .skipTests(true);
+
+        configurationDistributionStage.setQuiet(conf.quiet());
 
         if (isNotEmptyOrNull(conf.localRepositoryDirectory())) {
             configurationDistributionStage.setLocalRepositoryDirectory(new File(conf.localRepositoryDirectory()));
