@@ -13,6 +13,7 @@ public @interface MavenBuild {
     String version() default "3.5.0";
     String[] profiles() default {};
     String pom() default "pom.xml";
+    String module() default "";
     String localRepositoryDirectory() default "";
     boolean offline() default false;
     String mvnOpts() default "";
