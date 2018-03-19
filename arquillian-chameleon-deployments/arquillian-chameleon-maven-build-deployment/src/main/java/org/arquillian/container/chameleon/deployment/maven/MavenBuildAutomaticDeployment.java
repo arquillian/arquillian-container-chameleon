@@ -1,12 +1,15 @@
 package org.arquillian.container.chameleon.deployment.maven;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.Arrays;
 import org.arquillian.container.chameleon.deployment.api.AbstractAutomaticDeployment;
 import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.shrinkwrap.api.Archive;
+import org.jboss.shrinkwrap.resolver.api.maven.embedded.BuiltProject;
 import org.jboss.shrinkwrap.resolver.api.maven.embedded.EmbeddedMaven;
 import org.jboss.shrinkwrap.resolver.api.maven.embedded.pom.equipped.ConfigurationDistributionStage;
+import org.jboss.shrinkwrap.resolver.impl.maven.embedded.BuiltProjectImpl;
 
 public class MavenBuildAutomaticDeployment extends AbstractAutomaticDeployment {
 
@@ -50,9 +53,35 @@ public class MavenBuildAutomaticDeployment extends AbstractAutomaticDeployment {
             configurationDistributionStage.addProperty(properties[i], properties[i + 1]);
         }
 
-        return configurationDistributionStage
+        BuiltProject build = configurationDistributionStage
             .ignoreFailure()
-            .build().getDefaultBuiltArchive();
+            .build();
+
+        if (isModuleSet(conf)) {
+            final File projectDirectory = build.getModel().getProjectDirectory();
+            final Path normalize = projectDirectory.toPath().normalize();
+
+            final String relativeModuleDirectory = conf.module().replace('/', File.separatorChar);
+
+            build = getSubmodule(build,
+                normalize.toString() + File.separator + relativeModuleDirectory + File.separator + "pom.xml");
+        }
+
+        return build.getDefaultBuiltArchive();
+
+    }
+
+    private boolean isModuleSet(MavenBuild conf) {
+        return !"".equals(conf.module());
+    }
+
+    private BuiltProject getSubmodule(BuiltProject builtProject, String pomfile) {
+        BuiltProjectImpl submodule = new BuiltProjectImpl(
+            pomfile
+        );
+        submodule.setMavenBuildExitCode(builtProject.getMavenBuildExitCode());
+        submodule.setMavenLog(builtProject.getMavenLog());
+        return submodule;
     }
 
     private boolean isNotEmptyOrNull(String value) {
