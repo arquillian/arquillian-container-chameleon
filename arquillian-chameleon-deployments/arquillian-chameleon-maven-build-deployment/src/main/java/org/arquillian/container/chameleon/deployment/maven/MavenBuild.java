@@ -18,5 +18,6 @@ public @interface MavenBuild {
     boolean offline() default false;
     String mvnOpts() default "";
     String[] properties() default {};
+    boolean quiet() default true;
 
 }
