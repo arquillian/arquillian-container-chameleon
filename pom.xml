@@ -29,6 +29,8 @@
     <module>arquillian-chameleon-deployments/ftest-arquillian-chameleon-maven-build-deployment</module>
     <module>arquillian-chameleon-deployments/ftest-arquillian-chameleon-file-deployment</module>
     <module>arquillian-chameleon-deployments/arquillian-chameleon-file-deployment</module>
+    <module>arquillian-chameleon-deployments/arquillian-chameleon-gradle-build-deployment</module>
+    <module>arquillian-chameleon-deployments/ftest-arquillian-chameleon-gradle-build-deployment</module>
     <module>arquillian-chameleon-deployments/hello-world-example</module>
   </modules>
 

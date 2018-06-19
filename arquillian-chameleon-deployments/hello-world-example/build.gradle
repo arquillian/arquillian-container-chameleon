@@ -1,0 +1,21 @@
+apply plugin: 'war'
+apply plugin: 'maven'
+
+group = 'org.arquillian.example'
+version = '1.0.0-SNAPSHOT'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    providedCompile 'javax:javaee-api:7.0'
+}
+
+test {
+    
+}
+
+war {
+  archiveName 'helloworld.war'
+}
