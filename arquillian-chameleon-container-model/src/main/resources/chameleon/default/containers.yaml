@@ -332,17 +332,17 @@
     - org.jboss.shrinkwrap.resolver:*
     - "*:wildfly-arquillian-testenricher-msc"
 - name: WildFly
-  versionExpression: [10.*|11.*]
+  versionExpression: [10.*|11.*|12.*|13.*]
   adapters:
     - type: remote
-      coordinates: org.wildfly.arquillian:wildfly-arquillian-container-remote:2.1.0.Final
+      coordinates: org.wildfly.arquillian:wildfly-arquillian-container-remote:2.1.1.Final
       adapterClass: org.jboss.as.arquillian.container.remote.RemoteDeployableContainer
     - type: managed
-      coordinates: org.wildfly.arquillian:wildfly-arquillian-container-managed:2.1.0.Final
+      coordinates: org.wildfly.arquillian:wildfly-arquillian-container-managed:2.1.1.Final
       adapterClass: org.jboss.as.arquillian.container.managed.ManagedDeployableContainer
       configuration: *WF_CONFIG
     - type: embedded
-      coordinates: org.wildfly.arquillian:wildfly-arquillian-container-embedded:2.1.0.Final
+      coordinates: org.wildfly.arquillian:wildfly-arquillian-container-embedded:2.1.1.Final
       adapterClass: org.jboss.as.arquillian.container.embedded.EmbeddedDeployableContainer
       configuration: *WF_EMBEDD_CONFIG
   defaultType: managed
@@ -360,14 +360,14 @@
     - org.jboss.shrinkwrap.resolver:*
     - "*:wildfly-arquillian-testenricher-msc"
 - name: WildFly Domain
-  versionExpression: [10.*|11.*]
+  versionExpression: [10.*|11.*|12.*|13.*]
   adapters:
     - type: managed
-      coordinates: org.wildfly.arquillian:wildfly-arquillian-container-domain-managed:2.1.0.Final
+      coordinates: org.wildfly.arquillian:wildfly-arquillian-container-domain-managed:2.1.1.Final
       adapterClass: org.jboss.as.arquillian.container.domain.managed.ManagedDomainDeployableContainer
       configuration: *WF_CONFIG
     - type: remote
-      coordinates: org.wildfly.arquillian:wildfly-arquillian-container-domain-remote:2.1.0.Final
+      coordinates: org.wildfly.arquillian:wildfly-arquillian-container-domain-remote:2.1.1.Final
       adapterClass: org.jboss.as.arquillian.container.domain.remote.RemoteDomainDeployableContainer
   defaultType: managed
   dist: *WF_DIST
