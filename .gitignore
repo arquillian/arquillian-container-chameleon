@@ -15,6 +15,7 @@ target/
 
 #Gradle
 .gradle
+build/
 
 # TestNG
 test-output/
