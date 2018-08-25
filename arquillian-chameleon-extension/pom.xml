@@ -332,6 +332,20 @@
                 </configuration>
               </execution>
               <execution>
+                <id>payara5-managed</id>
+                <goals>
+                  <goal>test</goal>
+                </goals>
+                <configuration>
+                  <skip>false</skip>
+                  <test>SimpleDeploymentTestCase</test>
+                  <systemPropertyVariables>
+                    <arq.container.chameleon.configuration.chameleonTarget>payara:5.182:managed
+                    </arq.container.chameleon.configuration.chameleonTarget>
+                  </systemPropertyVariables>
+                </configuration>
+              </execution>
+              <execution>
                 <id>wf10-domain</id>
                 <goals>
                   <goal>test</goal>
