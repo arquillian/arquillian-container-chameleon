@@ -429,7 +429,7 @@
   dist: *GF_DIST
 
 - name: Payara
-  versionExpression: 4.*
+  versionExpression: [4.*|5.*]
   adapters:
     - *GF_REMOTE
     - *GF_MANAGED
