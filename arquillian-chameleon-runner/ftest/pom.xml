@@ -59,12 +59,6 @@
           <systemPropertyVariables>
             <arquillian.container>wildfly:8.2.0.Final:managed</arquillian.container>
           </systemPropertyVariables>
-           <systemProperties>
-            <property>
-              <name>arquillian.container</name>
-              <value>wildfly:8.2.0.Final:managed</value>
-            </property>
-          </systemProperties>
         </configuration>
       </plugin>
      </plugins>
