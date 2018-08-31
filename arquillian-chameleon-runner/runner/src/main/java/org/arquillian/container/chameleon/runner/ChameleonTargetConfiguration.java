@@ -7,7 +7,6 @@ import java.util.Set;
 import org.arquillian.container.chameleon.api.ChameleonTarget;
 import org.arquillian.container.chameleon.api.Mode;
 import org.arquillian.container.chameleon.api.Property;
-import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -61,7 +60,7 @@ public class ChameleonTargetConfiguration {
                 toMap(chameleonTarget.customProperties()));
         } else {
             final ChameleonTargetConfiguration chameleonTargetConfiguration =
-                new ChameleonTargetConfiguration(chameleonTarget.value());
+                new ChameleonTargetConfiguration(parseExpressions(chameleonTarget.value()));
             chameleonTargetConfiguration.customProperties = toMap(chameleonTarget.customProperties());
 
             return chameleonTargetConfiguration;
