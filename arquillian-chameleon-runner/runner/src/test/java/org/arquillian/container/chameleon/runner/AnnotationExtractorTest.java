@@ -1,10 +1,9 @@
 package org.arquillian.container.chameleon.runner;
 
-import java.lang.annotation.Annotation;
-import java.util.Map;
 import org.arquillian.container.chameleon.api.ChameleonTarget;
 import org.arquillian.container.chameleon.api.Mode;
 import org.arquillian.container.chameleon.runner.fixtures.GenericTest;
+import org.arquillian.container.chameleon.runner.fixtures.SystemPropertiesTest;
 import org.arquillian.container.chameleon.runner.fixtures.Tomcat;
 import org.arquillian.container.chameleon.runner.fixtures.Tomcat8;
 import org.arquillian.container.chameleon.runner.fixtures.Tomcat8Test;
@@ -17,7 +16,7 @@ import static org.assertj.core.api.Assertions.entry;
 public class AnnotationExtractorTest {
 
     @Test
-    public void should_get_roeprties_from_chameleon_annotation() {
+    public void should_get_proeprties_from_chameleon_annotation() {
 
         // given
         final ChameleonTarget chameleonTarget = GenericTest.class.getAnnotation(ChameleonTarget.class);
@@ -30,6 +29,22 @@ public class AnnotationExtractorTest {
         assertThat(chameleonTargetConfiguration.getVersion()).isEqualTo("7.0.0");
         assertThat(chameleonTargetConfiguration.getMode()).isEqualTo(Mode.MANAGED);
         assertThat(chameleonTargetConfiguration.getCustomProperties()).contains(entry("a", "b"));
+    }
+    
+    @Test
+    public void should_get_proeprties_from_chameleon_annotation_with_system_properties() {
+
+        // given
+    	System.setProperty("arquillian.container", "wildfly:8.2.0.Final:managed");
+        final ChameleonTarget chameleonTarget = SystemPropertiesTest.class.getAnnotation(ChameleonTarget.class);
+
+        // when
+        final ChameleonTargetConfiguration chameleonTargetConfiguration = AnnotationExtractor.extract(chameleonTarget);
+
+        // then
+        assertThat(chameleonTargetConfiguration.getContainer()).isEqualTo("wildfly");
+        assertThat(chameleonTargetConfiguration.getVersion()).isEqualTo("8.2.0.Final");
+        assertThat(chameleonTargetConfiguration.getMode()).isEqualTo(Mode.MANAGED);
     }
 
     @Test
@@ -45,8 +60,8 @@ public class AnnotationExtractorTest {
         assertThat(chameleonTargetConfiguration.getContainer()).isEqualTo("tomcat");
         assertThat(chameleonTargetConfiguration.getVersion()).isEqualTo("7.0.0");
         assertThat(chameleonTargetConfiguration.getMode()).isEqualTo(Mode.MANAGED);
-
     }
+    
 
     @Test
     public void should_navigate_through_all_hierarchy_of_configurations() {
