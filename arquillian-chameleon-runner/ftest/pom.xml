@@ -67,7 +67,6 @@
     <profiles>
         <profile>
             <id>tomee7</id>
-
             <build>
                 <!-- used by GreetingServiceSystemPropertiesTest -->
                 <plugins>
