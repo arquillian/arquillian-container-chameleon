@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.jboss</groupId>
     <artifactId>jboss-parent</artifactId>
-    <version>28</version>
+    <version>29</version>
     <relativePath />
   </parent>
 
@@ -16,7 +16,7 @@
   <groupId>org.arquillian.container</groupId>
   <artifactId>arquillian-container-chameleon-parent</artifactId>
   <packaging>pom</packaging>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0.Final-SNAPSHOT</version>
 
   <modules>
     <module>arquillian-chameleon-container-model</module>
@@ -50,20 +50,20 @@
     <version.arquillian_core>1.4.0.Final</version.arquillian_core>
     <version.arquillian_tck>1.0.0.Alpha1</version.arquillian_tck>
     <version.jboss.javaee-6_api>3.0.3.Final</version.jboss.javaee-6_api>
-    <version.jboss.logmanager>2.1.4.Final</version.jboss.logmanager>
+    <version.jboss.logmanager>2.1.5.Final</version.jboss.logmanager>
     <version.arquillian-spacelift>1.0.0.Alpha9</version.arquillian-spacelift>
     <version.assertj>3.11.1</version.assertj>
     <version.jcip.annotations>1.0</version.jcip.annotations>
-    <version.snakeyaml>1.19</version.snakeyaml>
+    <version.snakeyaml>1.23</version.snakeyaml>
     <version.mockito>2.13.0</version.mockito>
-    <version.xmlpath>3.1.1</version.xmlpath>
-    <version.system-rules>1.18.0</version.system-rules>
+    <version.xmlpath>3.2.0</version.xmlpath>
+    <version.system-rules>1.19.0</version.system-rules>
     <version.shrinkwrap.resolver>3.0.1</version.shrinkwrap.resolver>
 
     <maven.compiler.target>1.7</maven.compiler.target>
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.min.version>3.0.5</maven.min.version>
-    <version.mockito-core>2.15.0</version.mockito-core>
+    <version.mockito-core>2.23.0</version.mockito-core>
   </properties>
 
   <dependencyManagement>

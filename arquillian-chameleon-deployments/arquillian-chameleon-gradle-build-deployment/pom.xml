@@ -3,7 +3,7 @@
   <parent>
     <artifactId>arquillian-container-chameleon-parent</artifactId>
     <groupId>org.arquillian.container</groupId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0.Final-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
@@ -13,7 +13,7 @@
   <name>Arquillian Chameleon Gradle Build Deployment</name>
 
   <properties>
-  	<version.gradle-tooling-api>4.10</version.gradle-tooling-api>
+  	<version.gradle-tooling-api>4.10.2</version.gradle-tooling-api>
   </properties>
 
   <repositories>

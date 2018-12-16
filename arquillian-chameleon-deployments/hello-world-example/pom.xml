@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.arquillian.example.helloworld</groupId>
   <artifactId>arquillian-example-helloworld</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0.Final-SNAPSHOT</version>
   <packaging>war</packaging>
   <name>Simple Arquillian Hello World example</name>
 
