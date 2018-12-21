@@ -110,8 +110,35 @@
             <configuration>
               <skip>true</skip>
             </configuration>
-
             <executions>
+              <execution>
+                <id>wf15</id>
+                <goals>
+                  <goal>test</goal>
+                </goals>
+                <configuration>
+                  <skip>false</skip>
+                  <test>SimpleDeploymentTestCase</test>
+                  <systemPropertyVariables>
+                    <arq.container.chameleon.configuration.chameleonTarget>wildfly:15.0.0.Final:managed
+                    </arq.container.chameleon.configuration.chameleonTarget>
+                  </systemPropertyVariables>
+                </configuration>
+              </execution>
+              <execution>
+                <id>wf14</id>
+                <goals>
+                  <goal>test</goal>
+                </goals>
+                <configuration>
+                  <skip>false</skip>
+                  <test>SimpleDeploymentTestCase</test>
+                  <systemPropertyVariables>
+                    <arq.container.chameleon.configuration.chameleonTarget>wildfly:14.0.1.Final:managed
+                    </arq.container.chameleon.configuration.chameleonTarget>
+                  </systemPropertyVariables>
+                </configuration>
+              </execution>
               <execution>
                 <id>wf13</id>
                 <goals>

@@ -332,7 +332,7 @@
     - org.jboss.shrinkwrap.resolver:*
     - "*:wildfly-arquillian-testenricher-msc"
 - name: WildFly
-  versionExpression: [10.*|11.*|12.*|13.*]
+  versionExpression: [10.*|11.*|12.*|13.*|14.*|15.*]
   adapters:
     - type: remote
       coordinates: org.wildfly.arquillian:wildfly-arquillian-container-remote:2.1.1.Final
