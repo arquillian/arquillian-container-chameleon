@@ -485,3 +485,37 @@
       configuration: *TOMCAT_MANAGED_CONFIG
   defaultType: managed
   dist: *TOMCAT_DIST
+  
+- name: TomEE
+  versionExpression: 1.*
+  adapters:
+    - type: remote
+      coordinates: org.apache.openejb:arquillian-tomee-remote:${version}
+      adapterClass: org.apache.tomee.arquillian.remote.RemoteTomEEContainer
+    - type: managed
+      coordinates: org.apache.openejb:arquillian-tomee-remote:${version}
+      adapterClass: org.apache.tomee.arquillian.remote.RemoteTomEEContainer
+      requireDist: false
+    - type: embedded
+      coordinates: org.apache.openejb:arquillian-tomee-embedded:${version}
+      adapterClass: org.apache.openejb.arquillian.embedded.EmbeddedTomEEContainer
+      requireDist: false
+  dist:  
+    coordinates: org.apache.openejb:apache-tomee:zip:${version}     
+      
+- name: TomEE
+  versionExpression: [7.*|8.*]
+  adapters:
+    - type: remote
+      coordinates: org.apache.tomee:arquillian-tomee-remote:${version}
+      adapterClass: org.apache.tomee.arquillian.remote.RemoteTomEEContainer
+    - type: managed
+      coordinates: org.apache.tomee:arquillian-tomee-remote:${version}
+      adapterClass: org.apache.tomee.arquillian.remote.RemoteTomEEContainer
+      requireDist: false
+    - type: embedded
+      coordinates: org.apache.tomee:arquillian-tomee-embedded:${version}
+      adapterClass: org.apache.openejb.arquillian.embedded.EmbeddedTomEEContainer
+      requireDist: false   
+  dist:  
+    coordinates: org.apache.tomee:apache-tomee:zip:${version}
