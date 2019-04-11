@@ -24,12 +24,7 @@ public class MavenBuildAutomaticDeployment extends AbstractAutomaticDeployment {
     }
 
     private Archive<?> runBuild(MavenBuild conf) {
-        final ConfigurationDistributionStage configurationDistributionStage = EmbeddedMaven.forProject(conf.pom())
-            .useMaven3Version(conf.version())
-            .setGoals(conf.goals())
-            .setProfiles(conf.profiles())
-            .setOffline(conf.offline())
-            .skipTests(true);
+        final ConfigurationDistributionStage configurationDistributionStage = getConfigurationDistributionStage(conf);
 
         configurationDistributionStage.setQuiet(conf.quiet());
 
@@ -69,6 +64,20 @@ public class MavenBuildAutomaticDeployment extends AbstractAutomaticDeployment {
 
         return build.getDefaultBuiltArchive();
 
+    }
+
+    ConfigurationDistributionStage getConfigurationDistributionStage(MavenBuild conf) {
+        ConfigurationDistributionStage configurationDistributionStage = EmbeddedMaven.forProject(conf.pom());
+        if (conf.useLocalInstallation()) {
+            configurationDistributionStage.useLocalInstallation();
+        } else {
+            configurationDistributionStage.useMaven3Version(conf.version());
+        }
+
+        return configurationDistributionStage.setGoals(conf.goals())
+            .setProfiles(conf.profiles())
+            .setOffline(conf.offline())
+            .skipTests(true);
     }
 
     private boolean isModuleSet(MavenBuild conf) {
