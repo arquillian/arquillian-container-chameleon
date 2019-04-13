@@ -23,6 +23,11 @@ public class MavenBuildAutomaticDeploymentTest {
 
     @Test
     public void givenTheMavenBuildWithLocalInstallation_whenMavenIsInThePath_thenItMustBuild() {
+
+        if (System.getenv("maven.home") == null && System.getenv("M2_HOME") == null) {
+            environmentVariables.set("M2_HOME", "/usr/local/maven"); // default location in travis-ci machine.
+        }
+
         final Archive<?> archive = buildWithTestCaseClass(TestCaseLocalMavenClass.class);
 
         assertThat(archive.toString())
@@ -33,6 +38,7 @@ public class MavenBuildAutomaticDeploymentTest {
     public void givenTheMavenBuildWithLocalInstallation_whenMavenIsNotInThePath_thenItThrowsAnException() {
 
         environmentVariables.set("M2_HOME", "/path/to/nowhere");
+        environmentVariables.set("maven.home", "/path/to/nowhere");
 
         MavenBuildAutomaticDeployment mavenBuildAutomaticDeployment = new MavenBuildAutomaticDeployment();
 
