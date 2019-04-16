@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.jboss</groupId>
     <artifactId>jboss-parent</artifactId>
-    <version>32</version>
+    <version>34</version>
     <relativePath />
   </parent>
 
@@ -50,9 +50,9 @@
     <version.arquillian_core>1.4.1.Final</version.arquillian_core>
     <version.arquillian_tck>1.0.0.Alpha1</version.arquillian_tck>
     <version.jboss.javaee-6_api>3.0.3.Final</version.jboss.javaee-6_api>
-    <version.jboss.logmanager>2.1.7.Final</version.jboss.logmanager>
+    <version.jboss.logmanager>2.1.9.Final</version.jboss.logmanager>
     <version.arquillian-spacelift>1.0.0.Alpha9</version.arquillian-spacelift>
-    <version.assertj>3.12.0</version.assertj>
+    <version.assertj>3.12.2</version.assertj>
     <version.jcip.annotations>1.0</version.jcip.annotations>
     <version.snakeyaml>1.24</version.snakeyaml>
     <version.mockito>2.13.0</version.mockito>
@@ -63,7 +63,7 @@
     <maven.compiler.target>1.7</maven.compiler.target>
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.min.version>3.0.5</maven.min.version>
-    <version.mockito-core>2.24.5</version.mockito-core>
+    <version.mockito-core>2.27.0</version.mockito-core>
   </properties>
 
   <dependencyManagement>
