@@ -70,4 +70,10 @@ public @interface MavenBuild {
      */
     boolean quiet() default true;
 
+    /**
+     * Uses maven from the local PATH. Any version defined in the "version" property will be ignored.
+     * @return
+     */
+    boolean useLocalInstallation() default false;
+
 }
