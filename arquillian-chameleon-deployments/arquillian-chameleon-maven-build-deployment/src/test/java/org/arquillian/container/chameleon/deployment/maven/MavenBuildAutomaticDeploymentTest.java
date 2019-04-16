@@ -15,33 +15,42 @@ public class MavenBuildAutomaticDeploymentTest {
 
     @Test
     public void should_get_archive_from_module() {
+        // given
+        // when
         final Archive<?> archive = buildWithTestCaseClass(TestCaseClass.class);
 
+        //then
         assertThat(archive.toString())
             .startsWith("arquillian-chameleon-deployment-api");
     }
 
     @Test
-    public void givenTheMavenBuildWithLocalInstallation_whenMavenIsInThePath_thenItMustBuild() {
+    public void should_get_archive_from_module_built_by_local_maven_installation() {
 
+        // given maven in the path
         if (System.getenv("maven.home") == null && System.getenv("M2_HOME") == null) {
             environmentVariables.set("M2_HOME", "/usr/local/maven"); // default location in travis-ci machine.
         }
 
+        // when @MavenBuild useLocalInstallation = true
         final Archive<?> archive = buildWithTestCaseClass(TestCaseLocalMavenClass.class);
 
+        // then
         assertThat(archive.toString())
             .startsWith("arquillian-chameleon-deployment-api");
     }
 
     @Test(expected = IllegalStateException.class) //thrown by shrinkwrap maven resolver
-    public void givenTheMavenBuildWithLocalInstallation_whenMavenIsNotInThePath_thenItThrowsAnException() {
+    public void should_throw_exception_due_to_no_maven_found() {
 
+        // given no maven in the path
         environmentVariables.set("M2_HOME", "/path/to/nowhere");
         environmentVariables.set("maven.home", "/path/to/nowhere");
 
+        // when
         MavenBuildAutomaticDeployment mavenBuildAutomaticDeployment = new MavenBuildAutomaticDeployment();
 
+        //then throws
         mavenBuildAutomaticDeployment.build(new TestClass(TestCaseLocalMavenClass.class));
 
     }
