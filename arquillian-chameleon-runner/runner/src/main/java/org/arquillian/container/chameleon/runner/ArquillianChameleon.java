@@ -24,21 +24,21 @@ public class ArquillianChameleon extends Arquillian {
     public void run(RunNotifier notifier) {
 
         final Class<?> testClass = getTestClass().getJavaClass();
-        final ClassLoader parent = Thread.currentThread().getContextClassLoader();
+        final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 
         synchronized (ArquillianChameleon.class) {
-            if (isInClientSide(parent) && !isSpecialChameleonFile(parent)) {
+            if (isInClientSide(classLoader) && !isSpecialChameleonFile(classLoader)) {
 
                 try {
                     final Path arquillianChameleonConfiguration =
-                        new ArquillianChameleonConfigurator().setup(testClass, parent);
+                        new ArquillianChameleonConfigurator().setup(testClass, classLoader);
 
                     log.info(String.format("Arquillian Configuration created by Chameleon runner is placed at %s.",
                         arquillianChameleonConfiguration.toFile().getAbsolutePath()));
 
                     createChameleonMarkerFile(arquillianChameleonConfiguration.getParent());
                     addsArquillianFile(arquillianChameleonConfiguration.getParent(),
-                        parent);
+                        classLoader);
                 } catch (Exception e) {
                     throw new IllegalArgumentException(e);
                 }
@@ -66,8 +66,8 @@ public class ArquillianChameleon extends Arquillian {
 
     private void addsArquillianFile(Path file, ClassLoader classLoader) throws Exception {
         final URL url = file.toUri().toURL();
-        final ClassLoader loader = URLClassLoader.newInstance(new URL[]{url}, classLoader);
-        Thread.currentThread().setContextClassLoader(loader);
+        final ClassLoader wrappedClassLoader = URLClassLoader.newInstance(new URL[]{url}, classLoader);
+        Thread.currentThread().setContextClassLoader(wrappedClassLoader);
     }
 
 }
