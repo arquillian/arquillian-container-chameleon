@@ -10,7 +10,7 @@ matrix:
     - jdk: oraclejdk8
       env: PROFILE=jdk8
     - jdk: oraclejdk9
-      env: PROFILE=jdk8
+      env: PROFILE=jdk9
 
 script: ./mvnw clean install -Ptest-all-$PROFILE
 
