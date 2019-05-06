@@ -12,6 +12,6 @@ import org.arquillian.container.chameleon.api.ChameleonTarget;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
-@ChameleonTarget("wildfly:9.0.0.Final:managed")
+@ChameleonTarget("wildfly:16.0.0.Final:managed")
 public @interface Wildfly {
 }

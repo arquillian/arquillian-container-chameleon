@@ -1,12 +1,12 @@
 package org.arquillian.container.chameleon.runner;
 
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.logging.Logger;
+
 import org.arquillian.container.chameleon.runner.extension.ChameleonRunnerAppender;
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.runner.notification.RunNotifier;
@@ -23,15 +23,14 @@ public class ArquillianChameleon extends Arquillian {
     @Override
     public void run(RunNotifier notifier) {
 
-        Class<?> testClass = getTestClass().getJavaClass();
-
+        final Class<?> testClass = getTestClass().getJavaClass();
         final ClassLoader parent = Thread.currentThread().getContextClassLoader();
 
         synchronized (ArquillianChameleon.class) {
             if (isInClientSide(parent) && !isSpecialChameleonFile(parent)) {
 
                 try {
-                    Path arquillianChameleonConfiguration =
+                    final Path arquillianChameleonConfiguration =
                         new ArquillianChameleonConfigurator().setup(testClass, parent);
 
                     log.info(String.format("Arquillian Configuration created by Chameleon runner is placed at %s.",
@@ -66,9 +65,9 @@ public class ArquillianChameleon extends Arquillian {
     }
 
     private void addsArquillianFile(Path file, ClassLoader classLoader) throws Exception {
-        Method method = URLClassLoader.class.getDeclaredMethod("addURL", new Class[] {URL.class});
-        method.setAccessible(true);
-        method.invoke(classLoader, new Object[] {file.toUri().toURL()});
+        final URL url = file.toUri().toURL();
+        final ClassLoader loader = URLClassLoader.newInstance(new URL[]{url}, classLoader);
+        Thread.currentThread().setContextClassLoader(loader);
     }
 
 }
