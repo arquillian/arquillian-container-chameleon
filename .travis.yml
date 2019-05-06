@@ -1,22 +1,19 @@
 language: java
 
-jdk:
-  - oraclejdk8
-  - oraclejdk9
-
 before_install:
   - sed -i.bak -e 's|https://nexus.codehaus.org/snapshots/|https://oss.sonatype.org/content/repositories/codehaus-snapshots/|g' $HOME/.m2/settings.xml
 
 install: true
 
-jobs:
+matrix:
   include:
-    - stage: jdk8-containers
-      jdk: oraclejdk8
-      script: ./mvnw clean install -Ptest-all-jdk8
-    - stage: jdk9-containers
-      jdk: oraclejdk9
-      script: ./mvnw clean install -Ptest-all-jdk9
+    - jdk: oraclejdk8
+      env: PROFILE=jdk8
+    - jdk: oraclejdk9
+      env: PROFILE=jdk8
+
+script: ./mvnw clean install -Ptest-all-$PROFILE
+
 
 
 
