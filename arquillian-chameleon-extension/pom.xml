@@ -112,6 +112,20 @@
             </configuration>
             <executions>
               <execution>
+                <id>wf16</id>
+                <goals>
+                  <goal>test</goal>
+                </goals>
+                <configuration>
+                  <skip>false</skip>
+                  <test>SimpleDeploymentTestCase</test>
+                  <systemPropertyVariables>
+                    <arq.container.chameleon.configuration.chameleonTarget>wildfly:16.0.0.Final:managed
+                    </arq.container.chameleon.configuration.chameleonTarget>
+                  </systemPropertyVariables>
+                </configuration>
+              </execution>
+              <execution>
                 <id>wf15</id>
                 <goals>
                   <goal>test</goal>
