@@ -14,8 +14,3 @@ matrix:
       env: PROFILE=jdk9
 
 script: ./mvnw clean install -Ptest-all-$PROFILE
-
-
-
-
-
