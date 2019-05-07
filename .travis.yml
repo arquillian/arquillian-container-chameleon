@@ -6,6 +6,7 @@ jdk:
 before_install:
   - sed -i.bak -e 's|https://nexus.codehaus.org/snapshots/|https://oss.sonatype.org/content/repositories/codehaus-snapshots/|g' $HOME/.m2/settings.xml
   - sed -i.bak -e 's|http://repo.maven.apache.org/maven2|https://repo.maven.apache.org/maven2|g' $HOME/.m2/settings.xml
+  - sed -i.bak -e 's|http://repo.gradle.org/gradle/libs-releases-local|https://repo.gradle.org/gradle/libs-releases-local|g' $HOME/.m2/settings.xml
 
 install: true
 
