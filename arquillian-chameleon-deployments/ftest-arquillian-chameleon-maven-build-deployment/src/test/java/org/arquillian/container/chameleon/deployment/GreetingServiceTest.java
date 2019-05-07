@@ -13,7 +13,7 @@ import org.junit.runner.RunWith;
 import static io.restassured.RestAssured.given;
 
 @RunWith(ArquillianChameleon.class)
-@ChameleonTarget("wildfly:9.0.0.Final:managed")
+@ChameleonTarget("wildfly:16.0.0.Final:managed")
 @MavenBuild(pom = "../hello-world-example/pom.xml")
 @DeploymentParameters(testable = false)
 public class GreetingServiceTest {

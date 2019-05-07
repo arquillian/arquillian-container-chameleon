@@ -57,7 +57,7 @@
         <version>2.22.2</version>
         <configuration>
           <systemPropertyVariables>
-            <arquillian.container>wildfly:8.2.0.Final:managed</arquillian.container>
+            <arquillian.container>wildfly:15.0.0.Final:managed</arquillian.container>
           </systemPropertyVariables>
         </configuration>
       </plugin>
