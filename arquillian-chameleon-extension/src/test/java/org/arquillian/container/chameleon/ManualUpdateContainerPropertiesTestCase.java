@@ -34,7 +34,7 @@ public class ManualUpdateContainerPropertiesTestCase extends ManualContainerCont
             "-Djboss.socket.binding.port-offset=1000 -Djboss.bind.address=%1$s -Djboss.bind.address.management=%1$s",
             localHost.getHostAddress());
         final Map<String, String> newContainerConfiguration = new Config()
-            .add("chameleonTarget", "wildfly:9.0.0.Final:managed")
+            .add("chameleonTarget", "wildfly:15.0.0.Final:managed")
             .add("javaVmArguments", jvmArguments)
             .add("managementPort", newPort.toString())
             .add("managementAddress", localHost.getHostAddress())

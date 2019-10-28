@@ -10,6 +10,8 @@
 
   <properties>
     <version.jboss.javaee-7_api>1.0.3.Final</version.jboss.javaee-7_api>
+    <maven.compiler.target>1.7</maven.compiler.target>
+    <maven.compiler.source>1.7</maven.compiler.source>
   </properties>
 
   <dependencies>

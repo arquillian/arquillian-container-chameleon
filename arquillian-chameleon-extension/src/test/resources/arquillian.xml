@@ -9,7 +9,7 @@
 
   <container qualifier="chameleon" default="true">
     <configuration>
-      <property name="chameleonTarget">wildfly:9.0.0.Final:managed</property>
+      <property name="chameleonTarget">wildfly:15.0.0.Final:managed</property>
     </configuration>
   </container>
   <container qualifier="tomcat6-managed">

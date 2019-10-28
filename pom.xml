@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.jboss</groupId>
     <artifactId>jboss-parent</artifactId>
-    <version>34</version>
+    <version>35</version>
     <relativePath />
   </parent>
 
@@ -50,7 +50,7 @@
     <version.arquillian_core>1.4.1.Final</version.arquillian_core>
     <version.arquillian_tck>1.0.0.Alpha1</version.arquillian_tck>
     <version.jboss.javaee-6_api>3.0.3.Final</version.jboss.javaee-6_api>
-    <version.jboss.logmanager>2.1.9.Final</version.jboss.logmanager>
+    <version.jboss.logmanager>2.1.11.Final</version.jboss.logmanager>
     <version.arquillian-spacelift>1.0.0.Alpha9</version.arquillian-spacelift>
     <version.assertj>3.12.2</version.assertj>
     <version.jcip.annotations>1.0</version.jcip.annotations>
@@ -63,7 +63,7 @@
     <maven.compiler.target>1.7</maven.compiler.target>
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.min.version>3.0.5</maven.min.version>
-    <version.mockito-core>2.27.0</version.mockito-core>
+    <version.mockito-core>2.28.2</version.mockito-core>
   </properties>
 
   <dependencyManagement>
@@ -181,7 +181,10 @@
     <!--This profile is to run tests for all type of profiles.
     Look for it under arquillian chameleon extension module.-->
     <profile>
-      <id>all</id>
+      <id>test-all-jdk8</id>
+    </profile>
+    <profile>
+      <id>test-all-jdk9</id>
     </profile>
     <!-- This profile is to run Test Compliance Kit for Arquillian Container Adapter implementations.
     Look for it under arquillian chameleon extension module -->
