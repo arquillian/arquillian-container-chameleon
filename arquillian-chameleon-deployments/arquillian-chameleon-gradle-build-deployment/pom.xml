@@ -13,7 +13,7 @@
   <name>Arquillian Chameleon Gradle Build Deployment</name>
 
   <properties>
-  	<version.gradle-tooling-api>4.10.2</version.gradle-tooling-api>
+  	<version.gradle-tooling-api>5.2</version.gradle-tooling-api>
   </properties>
 
   <repositories>
