@@ -58,7 +58,7 @@
     <version.mockito>2.13.0</version.mockito>
     <version.xmlpath>4.1.2</version.xmlpath>
     <version.system-rules>1.19.0</version.system-rules>
-    <version.shrinkwrap.resolver>3.0.1</version.shrinkwrap.resolver>
+    <version.shrinkwrap.resolver>3.1.4</version.shrinkwrap.resolver>
 
     <maven.compiler.target>1.7</maven.compiler.target>
     <maven.compiler.source>1.7</maven.compiler.source>
