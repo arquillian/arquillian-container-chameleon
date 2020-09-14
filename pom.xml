@@ -54,7 +54,7 @@
     <version.arquillian-spacelift>1.0.0.Alpha9</version.arquillian-spacelift>
     <version.assertj>3.14.0</version.assertj>
     <version.jcip.annotations>1.0</version.jcip.annotations>
-    <version.snakeyaml>1.25</version.snakeyaml>
+    <version.snakeyaml>1.27</version.snakeyaml>
     <version.mockito>2.13.0</version.mockito>
     <version.xmlpath>4.1.2</version.xmlpath>
     <version.system-rules>1.19.0</version.system-rules>
