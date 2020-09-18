@@ -63,7 +63,7 @@
     <maven.compiler.target>1.7</maven.compiler.target>
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.min.version>3.0.5</maven.min.version>
-    <version.mockito-core>3.1.0</version.mockito-core>
+    <version.mockito-core>3.5.11</version.mockito-core>
   </properties>
 
   <dependencyManagement>
