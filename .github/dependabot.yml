@@ -1,0 +1,22 @@
+version: 2
+updates:
+- package-ecosystem: maven
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "11:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: javax:javaee-api
+    versions:
+    - "> 7.0"
+  - dependency-name: org.mockito:mockito-core
+    versions:
+    - 3.7.7
+    - 3.8.0
+  - dependency-name: org.yaml:snakeyaml
+    versions:
+    - "1.27"
+  - dependency-name: org.jboss:jboss-parent
+    versions:
+    - "37"
