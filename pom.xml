@@ -52,7 +52,7 @@
     <version.jboss.javaee-6_api>3.0.3.Final</version.jboss.javaee-6_api>
     <version.jboss.logmanager>2.1.14.Final</version.jboss.logmanager>
     <version.arquillian-spacelift>1.0.0.Alpha9</version.arquillian-spacelift>
-    <version.assertj>3.14.0</version.assertj>
+    <version.assertj>3.20.1</version.assertj>
     <version.jcip.annotations>1.0</version.jcip.annotations>
     <version.snakeyaml>1.25</version.snakeyaml>
     <version.mockito>2.13.0</version.mockito>
